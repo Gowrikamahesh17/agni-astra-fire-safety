@@ -1,0 +1,178 @@
+{
+ "contract_version": "2.0",
+ "items": [
+  {
+   "investigation_id": "PSI-69",
+   "text": "FLEX burned isolated methanol (157 tests) and heptane (117 tests) droplets in microgravity while varying oxygen (12-34 %), pressure (0.7-3.09 bar) and diluent gases, measuring droplet size, flame extinction diameter, burning rate and burn time. Across 274 tests, flames extinguished in 186 cases, were disrupted in 61 and burned to completion in 27, including 104 tests at ISS-like conditions (21 % O2, 1.013 bar) and 17 tests at Lunar-habitat conditions (30 % O2, 0.703 bar).",
+   "cites": [
+    "PSI-69",
+    "PSI-69-0001",
+    "PSI-69-0019"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:30+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-159",
+   "text": "NASA’s CFI-G study examined normal and inverse spherical flames of ethane, propane and butane over 333 microgravity tests, varying oxygen from 12 % to 85 % and pressure from 0.5 to 3.31 bar using a porous CIR/ACME burner. Inverse flames self-extinguished in 81 tests, burned until stopped in 58 and failed to ignite in 15, while normal flames self-extinguished in 102, failed to ignite in 46 and burned until stopped in 31. The dataset includes 43 runs at ISS-like (21 % O₂, 1.013 bar) and 21 runs at Exploration/Pressurized rover conditions (34 % O₂, 0.565 bar).",
+   "cites": [
+    "PSI-159-0183",
+    "PSI-159-0190",
+    "PSI-159",
+    "PSI-159-0011",
+    "PSI-159-0033"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:31+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-25",
+   "text": "BASS-II burned solid spacecraft materials (PMMA rods, films and slabs, SIBAL cotton-fiberglass, Nomex) in a reduced-oxygen flow duct and recorded oxygen, CO₂ and CO levels, flow settings and video frames for 129 microgravity tests. The data span oxygen concentrations from 13.6 % to 22.2 % and include 98 PMMA, 27 SIBAL, 3 Nomex and 1 wax test, but the table does not contain a flame-out outcome column.",
+   "cites": [
+    "PSI-25",
+    "PSI-25-0061",
+    "PSI-25-0001"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:32+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-26",
+   "text": "BASS (Burning and Suppression of Solids) investigated how solid materials—including PMMA spheres and slabs, wax candles, SIBAL fabric, Nomex and Ultem—burn and extinguish in microgravity under varied flow conditions using MSG hardware, video cameras and a radiometer. The published test table contains 122 microgravity runs, with 78 PMMA, 23 wax, 12 SIBAL, 6 Nomex and 2 Ultem tests, but it does not record a flame-out outcome column, so the evidence is the description of the test matrix.",
+   "cites": [
+    "PSI-26"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:33+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-101",
+   "text": "SAME-R investigated heating spacecraft materials (Kapton, silicone, Teflon, Pyrell, lampwick) to generate and age smoke, measuring particle counts with a P-Trak counter and spacecraft smoke detectors. The 109-row test matrix records inlet velocity, heater resistance, duration and aging time for those five materials (Kapton 29, silicone 22, lampwick 20, Pyrell 20, Teflon 18) to inform detector design; no flame-out outcome column is included.",
+   "cites": [
+    "PSI-101"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:34+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-98",
+   "text": "Saffire-I burned a large cotton-fiberglass (SIBAL) sheet about 0.4 m × 1 m inside an uncrewed Cygnus vehicle after departure from the ISS to study large-scale flame spread in microgravity. The experiment recorded flame spread, cabin pressure, and O₂ and CO₂ levels using video, gas sensors, radiometers and thermocouples, providing data on fire behavior and atmospheric changes for spacecraft safety.",
+   "cites": [
+    "PSI-98"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:35+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-99",
+   "text": "Saffire-II ignited nine 5 cm × 30 cm samples of cotton-fiberglass, Nomex and PMMA inside a Cygnus vehicle to assess material flammability at spacecraft scale. The experiment recorded flame spread, material flammability, and cabin O₂ and CO₂ using video, gas sensors, radiometers and thermocouples, with the evidence provided by its published description rather than a test table.",
+   "cites": [
+    "PSI-99"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:36+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-100",
+   "text": "Saffire-III repeated the large-scale cotton-fiberglass burn from Saffire-I inside a Cygnus vehicle but under a different airflow condition, using video, O₂, CO₂, radiometer and thermocouple sensors to monitor flame spread, cabin pressure and gas concentrations. The investigation provides only a published description of these measurements, with no test table loaded.",
+   "cites": [
+    "PSI-100"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:37+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "PSI-102",
+   "text": "SAME (Smoke Aerosol Measurement Experiment) tested smoke from overheated spacecraft materials on the ISS, measuring particle size and number concentration with MSG hardware, particle counters and spacecraft smoke detectors. The published description provides evidence that these measurements were intended to evaluate how well spacecraft smoke detectors work in microgravity.",
+   "cites": [
+    "PSI-102"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:37+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "DAFT",
+   "text": "DAFT tested a commercial particle counter and related sensors on the ISS to verify operation in long-duration microgravity and to measure background dust that can trigger false smoke-detector alarms, a risk-reduction step for spacecraft fire safety. The investigation recorded particle number and dust mass concentrations, but no test table is available; the evidence is the published description.",
+   "cites": [
+    "DAFT"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:38+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "ACME-BRE",
+   "text": "The ACME-BRE investigation uses a CIR/ACME porous burner to generate gas flames that emulate burning solids and liquids, allowing study of material flammability, extinction and sustained-burn conditions. Sensors such as a color camera, radiometer, heat-flux gauges and thermocouples record heat flux, extinction conditions and burner temperature to inform spacecraft fire-safety design. The evidence is the published description, as no test table is loaded.",
+   "cites": [
+    "ACME-BRE"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:39+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "ACME-SFLAME",
+   "text": "The s-Flame (Structure and Response of Spherical Diffusion Flames) investigation studied spherical diffusion flames using a CIR/ACME burner to predict flame structure, dynamics and extinction for both soot-free and sooty conditions. Measurements of flame size, extinction behavior and radiative emission were made with a color camera, radiometer and thermocouples, and the evidence is the published description rather than a test table.",
+   "cites": [
+    "ACME-SFLAME"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:40+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "ACME-FLAMEDESIGN",
+   "text": "The Flame Design investigation tested soot inception and control in non-premixed, oxygen-enriched flames using a CIR/ACME burner and recorded flame size and soot formation with a color camera and radiometer. The published description provides evidence that the study measured soot formation and flame size to inform robust, soot-free flame designs for spacecraft fire safety.",
+   "cites": [
+    "ACME-FLAMEDESIGN"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:40+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "ACME-CLD",
+   "text": "The ACME-CLD investigation tested a coflow laminar diffusion flame using a CIR/ACME burner and recorded flame shape and soot volume fraction with a color camera and soot imaging. The results extend the range of flame conditions that chemical kinetic and soot formation submodels can predict accurately, supporting spacecraft fire-safety modeling. The evidence is the published description, as no test table is loaded.",
+   "cites": [
+    "ACME-CLD"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:41+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  },
+  {
+   "investigation_id": "ACME-EFIELD",
+   "text": "The ACME-EFIELD investigation examined how laminar diffusion flames generate ions and how applied electric fields can be used to control non-premixed flame shape, using a CIR/ACME burner with a color camera and ion-current probe to measure ion current and flame geometry. Because no test table is available, the evidence for these findings is the published description of the experiment.",
+   "cites": [
+    "ACME-EFIELD"
+   ],
+   "model": "openai/gpt-oss-120b",
+   "generated_at": "2026-11-14T13:27:42+00:00",
+   "prompt_version": "summary-v1",
+   "verified": true
+  }
+ ]
+}

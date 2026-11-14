@@ -1,0 +1,17 @@
+[
+ {"question": "What happened in FLEX tests near the lunar habitat atmosphere?", "answerable": true, "expect": ["PSI-69"]},
+ {"question": "How many FLEX droplet tests ended in extinction?", "answerable": true, "expect": ["PSI-69"]},
+ {"question": "What fuels were burned in the FLEX experiment?", "answerable": true, "expect": ["PSI-69"]},
+ {"question": "What is the highest oxygen level tested in CFI-G gas flames?", "answerable": true, "expect": ["PSI-159"]},
+ {"question": "Which materials did SAME-R burn to make smoke?", "answerable": true, "expect": ["PSI-101"]},
+ {"question": "What oxygen levels did BASS-II test with PMMA?", "answerable": true, "expect": ["PSI-25"]},
+ {"question": "What was the objective of the Saffire experiments?", "answerable": true, "expect": ["PSI-98", "PSI-99", "PSI-100"]},
+ {"question": "What did DAFT measure on the ISS?", "answerable": true, "expect": ["DAFT"]},
+ {"question": "Does helium or carbon dioxide dilution help put out droplet flames?", "answerable": true, "expect": ["PSI-69"]},
+ {"question": "Which sensors did the BASS experiment use?", "answerable": true, "expect": ["PSI-26"]},
+ {"question": "What is the capital of France?", "answerable": false, "expect": []},
+ {"question": "Write me a poem about the ocean", "answerable": false, "expect": []},
+ {"question": "Who won the football world cup?", "answerable": false, "expect": []},
+ {"question": "How do I bake sourdough bread?", "answerable": false, "expect": []},
+ {"question": "What is the stock price of Tesla today?", "answerable": false, "expect": []}
+]
