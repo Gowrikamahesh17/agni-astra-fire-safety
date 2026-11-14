@@ -39,12 +39,27 @@ NASA Space Apps Challenge 2026, Flame in Freefall: https://www.spaceappschalleng
 | pytest | Tests | MIT |
 | Ruff | Lint and format | MIT |
 
-Frontend libraries, fonts and images are added by their owners.
+### Website (`web/`)
+
+| Library or asset | Use | License |
+| --- | --- | --- |
+| Next.js 16 and React 19 | Web framework and UI | MIT |
+| Chart.js 4 | Evidence gaps scatter chart | MIT |
+| MiniSearch 7 | Search over test rows and chat retrieval | MIT |
+| TypeScript, ESLint, Vitest | Type checking, linting and tests (development only) | Apache-2.0, MIT, MIT |
+| Geist and Geist Mono (via `next/font/google`) | Typefaces | SIL Open Font License 1.1 |
+| Flame icon (`web/app/icon.svg`) | Browser tab icon, drawn for this project | Project license (MIT) |
+| Fire emoji on the home page | Unicode emoji drawn by the viewer's system font | n/a |
+| Astronaut illustration (`web/public/images/astronaut.png`) | Home-page picture. AI-generated with Google Gemini (flag removed and fire extinguisher added by follow-up prompts), background removed with remove.bg. Labelled "AI-generated image" on the page. | Generated content; see `docs/ai-disclosure.md` |
 
 ## AI tools
 
 | Tool | Use |
 | --- | --- |
 | Claude Code (Anthropic) | AI-assisted code and documentation for the data pipeline, models, contract and `web/lib/predict.ts`. All numbers were checked by tests against the source CSVs. |
+| Claude Code (Anthropic) | AI-assisted code and interface text for the whole website (`web/`): pages, charts, chat panel, themes, help tips and the Guide page. Checked by automated tests, a linter and an accessibility scan. |
+| Google Gemini | Generated the home-page astronaut illustration. |
+| remove.bg | Automatic background removal for that illustration. |
+| Open model on Groq (`openai/gpt-oss-120b`) | Summaries, implications and the chat assistant. See `docs/ai-disclosure.md`. |
 
 Full AI disclosure: `docs/ai-disclosure.md`.
