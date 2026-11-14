@@ -21,11 +21,11 @@ export default function Home() {
         </div>
         <figure className="hero-art">
           <Image
-            src="/images/astronaut.jpg"
+            src="/images/astronaut.png"
             alt="Illustration of an astronaut in a white spacesuit floating in space and holding a red fire extinguisher"
-            width={900}
-            height={1205}
-            sizes="(max-width: 800px) 320px, 400px"
+            width={432}
+            height={578}
+            sizes="(max-width: 800px) 280px, 380px"
             priority
           />
           <figcaption className="ai-mark">AI-generated image</figcaption>
