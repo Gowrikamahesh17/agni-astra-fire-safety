@@ -1,0 +1,75 @@
+{
+ "contract_version": "2.0",
+ "items": [
+  {
+   "id": "investigation:PSI-69",
+   "type": "investigation",
+   "title": "FLEX - Flame Extinguishment Experiment",
+   "text": "Burns isolated methanol and heptane droplets in microgravity across oxygen, pressure and diluent (CO2, helium) levels to find when flames go out, informing the choice of gaseous fire suppressants for spacecraft cabins.",
+   "investigation_id": "PSI-69"
+  },
+  {
+   "id": "investigation:PSI-159",
+   "type": "investigation",
+   "title": "CFI-G - Cool Flames Investigation with Gases",
+   "text": "Studies normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner over a wide range of oxygen and pressure, recording ignition, self-extinction and cool-flame behaviour relevant to gas leaks in oxygen-enriched cabins.",
+   "investigation_id": "PSI-159"
+  },
+  {
+   "id": "investigation:PSI-98",
+   "type": "investigation",
+   "title": "Saffire-I - Spacecraft Fire Experiment I",
+   "text": "Burned a large cotton-fiberglass (SIBAL) sheet, about 0.4 m by 1 m, inside an uncrewed Cygnus vehicle after it left the ISS, to measure large-scale flame spread and its effect on cabin atmosphere.",
+   "investigation_id": "PSI-98"
+  },
+  {
+   "id": "observation:PSI-69-0001",
+   "type": "observation",
+   "title": "PSI-69-0001",
+   "text": "methanol at 21.0 % O2, 1.0102 bar: disrupted",
+   "investigation_id": "PSI-69"
+  },
+  {
+   "id": "observation:PSI-69-0024",
+   "type": "observation",
+   "title": "PSI-69-0024",
+   "text": "heptane at 34.0 % O2, 0.7237 bar: disrupted",
+   "investigation_id": "PSI-69"
+  },
+  {
+   "id": "observation:PSI-69-0081",
+   "type": "observation",
+   "title": "PSI-69-0081",
+   "text": "heptane at 13.0 % O2, 1.0268 bar: extinguished",
+   "investigation_id": "PSI-69"
+  },
+  {
+   "id": "observation:PSI-69-0040",
+   "type": "observation",
+   "title": "PSI-69-0040",
+   "text": "methanol at 30.0 % O2, 0.7134 bar: disrupted",
+   "investigation_id": "PSI-69"
+  },
+  {
+   "id": "summary:PSI-69",
+   "type": "summary",
+   "title": "Summary PSI-69",
+   "text": "Example only. 17 FLEX droplet tests ran near the lunar-habitat atmosphere and none ended in extinction.",
+   "investigation_id": "PSI-69"
+  },
+  {
+   "id": "summary:PSI-159",
+   "type": "summary",
+   "title": "Summary PSI-159",
+   "text": "Example only. CFI-G burned ethane, propane and butane flames up to 85 % O2.",
+   "investigation_id": "PSI-159"
+  },
+  {
+   "id": "implication:suppression-01",
+   "type": "implication",
+   "title": "Suppression",
+   "text": "Example only. 17 FLEX tests at 30-34 % O2 and 0.71-0.72 bar; none ended in extinction.",
+   "investigation_id": null
+  }
+ ]
+}

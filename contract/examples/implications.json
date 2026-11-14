@@ -1,0 +1,40 @@
+{
+ "contract_version": "2.0",
+ "items": [
+  {
+   "id": "suppression-01",
+   "pillar": "suppression",
+   "statement": "Example only. 17 FLEX tests at 30-34 % O2 and 0.71-0.72 bar; none ended in extinction.",
+   "evidence": [
+    "PSI-69-0024"
+   ],
+   "scenario_ids": [
+    "lunar_habitat"
+   ],
+   "verified": false
+  },
+  {
+   "id": "prevention-01",
+   "pillar": "prevention",
+   "statement": "Example only. BASS and BASS-II solid tests stop at 22.2 % O2.",
+   "evidence": [
+    "PSI-25"
+   ],
+   "scenario_ids": [
+    "lunar_habitat",
+    "exploration_atm"
+   ],
+   "verified": false
+  },
+  {
+   "id": "detection-01",
+   "pillar": "detection",
+   "statement": "Example only. SAME-R detector results are in the cited documents, not in the table.",
+   "evidence": [
+    "PSI-101"
+   ],
+   "scenario_ids": [],
+   "verified": false
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scenario.schema.json",
+  "title": "scenarios.json",
+  "type": "object",
+  "required": ["contract_version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "2.0" },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/scenario" } }
+  },
+  "$defs": {
+    "scenario": {
+      "type": "object",
+      "required": [
+        "id", "name", "o2_pct", "pressure_bar", "gravity", "note", "assumption", "gravity_note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            "iss", "lunar_habitat", "exploration_atm", "pressurized_rover", "mars_transit",
+            "spacesuit", "custom"
+          ]
+        },
+        "name": { "type": "string" },
+        "o2_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "pressure_bar": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+        "gravity": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"] },
+        "assumption": { "type": "boolean" },
+        "gravity_note": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

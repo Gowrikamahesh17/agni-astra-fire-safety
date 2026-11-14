@@ -1,0 +1,236 @@
+{
+ "contract_version": "2.0",
+ "items": [
+  {
+   "doi": "10.60555/mbq8-0451",
+   "license": "CC0-1.0",
+   "table_files": [
+    "PSI-69_Experimental table_FLEX.csv"
+   ],
+   "id": "PSI-69",
+   "name": "Flame Extinguishment Experiment",
+   "short_name": "FLEX",
+   "program": null,
+   "fire_safety_role": [
+    "suppression"
+   ],
+   "fuel_phase": "liquid",
+   "objective": "Burns isolated methanol and heptane droplets in microgravity across oxygen, pressure and diluent (CO2, helium) levels to find when flames go out, informing the choice of gaseous fire suppressants for spacecraft cabins.",
+   "hardware": "CIR / MDCA",
+   "sensors": [
+    "backlit droplet camera",
+    "color flame camera",
+    "OH* chemiluminescence camera",
+    "radiometers"
+   ],
+   "measured_variables": [
+    "droplet initial diameter",
+    "flame extinction diameter",
+    "burning rate",
+    "burn time",
+    "test end (extinction, disruption, completion)"
+   ],
+   "psi_id": "PSI-69",
+   "source_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-69",
+   "has_table": true,
+   "evidence_type": "measured_rows",
+   "n_observations": 274,
+   "o2_pct_range": [
+    12.0,
+    34.0
+   ],
+   "pressure_bar_range": [
+    0.7017,
+    3.0929
+   ],
+   "scenario_components": {
+    "iss": {
+     "proximity": 100,
+     "n_near": 104,
+     "d_min": 0.002
+    },
+    "lunar_habitat": {
+     "proximity": 97,
+     "n_near": 17,
+     "d_min": 0.093
+    },
+    "exploration_atm": {
+     "proximity": 51,
+     "n_near": 0,
+     "d_min": 1.473
+    },
+    "pressurized_rover": {
+     "proximity": 51,
+     "n_near": 0,
+     "d_min": 1.473
+    },
+    "mars_transit": {
+     "proximity": 100,
+     "n_near": 104,
+     "d_min": 0.002
+    },
+    "spacesuit": {
+     "proximity": 0,
+     "n_near": 0,
+     "d_min": 13.8409
+    }
+   },
+   "static_scores": {
+    "fire_safety_relevance": 90,
+    "data_usability": 100
+   },
+   "score_formula_version": "2.0"
+  },
+  {
+   "doi": "10.60555/cyt1-kh64",
+   "license": "CC0-1.0",
+   "table_files": [
+    "PSI-159_Experimental table_CFI-G_Normal Flames.csv",
+    "PSI-159_Experimental table_CFI-G_Inverse Flames.csv"
+   ],
+   "id": "PSI-159",
+   "name": "Cool Flames Investigation with Gases",
+   "short_name": "CFI-G",
+   "program": "ACME",
+   "fire_safety_role": [
+    "flame_behavior"
+   ],
+   "fuel_phase": "gas",
+   "objective": "Studies normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner over a wide range of oxygen and pressure, recording ignition, self-extinction and cool-flame behaviour relevant to gas leaks in oxygen-enriched cabins.",
+   "hardware": "CIR / ACME burner",
+   "sensors": [
+    "color camera",
+    "photomultiplier tube",
+    "burner thermocouple"
+   ],
+   "measured_variables": [
+    "hot ignition",
+    "burn time",
+    "self-extinction vs flow termination",
+    "peak burner temperature",
+    "cool flame presence"
+   ],
+   "psi_id": "PSI-159",
+   "source_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-159",
+   "has_table": true,
+   "evidence_type": "measured_rows",
+   "n_observations": 333,
+   "o2_pct_range": [
+    12.0,
+    85.0
+   ],
+   "pressure_bar_range": [
+    0.4954,
+    3.3099
+   ],
+   "scenario_components": {
+    "iss": {
+     "proximity": 100,
+     "n_near": 43,
+     "d_min": 0.003
+    },
+    "lunar_habitat": {
+     "proximity": 50,
+     "n_near": 0,
+     "d_min": 1.514
+    },
+    "exploration_atm": {
+     "proximity": 81,
+     "n_near": 21,
+     "d_min": 0.5832
+    },
+    "pressurized_rover": {
+     "proximity": 81,
+     "n_near": 21,
+     "d_min": 0.5832
+    },
+    "mars_transit": {
+     "proximity": 100,
+     "n_near": 43,
+     "d_min": 0.003
+    },
+    "spacesuit": {
+     "proximity": 0,
+     "n_near": 0,
+     "d_min": 3.9412
+    }
+   },
+   "static_scores": {
+    "fire_safety_relevance": 70,
+    "data_usability": 100
+   },
+   "score_formula_version": "2.0"
+  },
+  {
+   "doi": null,
+   "license": "CC0-1.0",
+   "table_files": [],
+   "id": "PSI-98",
+   "name": "Spacecraft Fire Experiment I",
+   "short_name": "Saffire-I",
+   "program": "Saffire",
+   "fire_safety_role": [
+    "prevention"
+   ],
+   "fuel_phase": "solid",
+   "objective": "Burned a large cotton-fiberglass (SIBAL) sheet, about 0.4 m by 1 m, inside an uncrewed Cygnus vehicle after it left the ISS, to measure large-scale flame spread and its effect on cabin atmosphere.",
+   "hardware": "Cygnus (Saffire)",
+   "sensors": [
+    "video cameras",
+    "O2 sensor",
+    "CO2 sensor",
+    "radiometers",
+    "thermocouples"
+   ],
+   "measured_variables": [
+    "flame spread",
+    "cabin pressure",
+    "cabin O2 and CO2"
+   ],
+   "psi_id": "PSI-98",
+   "source_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-98",
+   "has_table": false,
+   "evidence_type": "text",
+   "n_observations": 0,
+   "o2_pct_range": null,
+   "pressure_bar_range": null,
+   "scenario_components": {
+    "iss": {
+     "proximity": null,
+     "n_near": 0,
+     "d_min": null
+    },
+    "lunar_habitat": {
+     "proximity": null,
+     "n_near": 0,
+     "d_min": null
+    },
+    "exploration_atm": {
+     "proximity": null,
+     "n_near": 0,
+     "d_min": null
+    },
+    "pressurized_rover": {
+     "proximity": null,
+     "n_near": 0,
+     "d_min": null
+    },
+    "mars_transit": {
+     "proximity": null,
+     "n_near": 0,
+     "d_min": null
+    },
+    "spacesuit": {
+     "proximity": null,
+     "n_near": 0,
+     "d_min": null
+    }
+   },
+   "static_scores": {
+    "fire_safety_relevance": 100,
+    "data_usability": 20
+   },
+   "score_formula_version": "2.0"
+  }
+ ]
+}

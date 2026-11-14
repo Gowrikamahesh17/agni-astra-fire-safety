@@ -32,6 +32,23 @@ pip install -r requirements-dev.txt
 
 Use `requirements.txt` instead if you only need to run the pipeline, not test or lint it.
 
+### Data pipeline (data/)
+
+```bash
+pip install -e data
+cd data
+python -m ffd_data       # clean tables, train models, write web/public/data and contract/examples
+python -m pytest
+```
+
+With `make` available: `make data`, `make model`, `make examples`, `make test`.
+
+### Contract
+
+```bash
+python contract/validate.py
+```
+
 ### Environment variables
 
 ```bash
@@ -39,6 +56,10 @@ cp .env.example .env.local
 ```
 
 Fill in `GROQ_API_KEY` and `GROQ_MODEL`. Next.js reads env files from its own folder, so also copy the file to `web/.env.local`. All `.env*` files except `.env.example` are git-ignored.
+
+## Ownership
+
+See `.github/CODEOWNERS`. A = `web/`, B = `data/`, `docs/` and the data files in `web/public/data/`, C = `ai/`, the chat route and the AI data files. `contract/` changes go through their own PR.
 
 ## License
 

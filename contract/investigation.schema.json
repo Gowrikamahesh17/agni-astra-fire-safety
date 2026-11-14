@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "investigation.schema.json",
+  "title": "investigations.json",
+  "type": "object",
+  "required": ["contract_version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "2.0" },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/investigation" } }
+  },
+  "$defs": {
+    "range": {
+      "type": ["array", "null"],
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "role": { "enum": ["prevention", "detection", "suppression", "flame_behavior"] },
+    "component": {
+      "type": "object",
+      "required": ["proximity", "n_near", "d_min"],
+      "additionalProperties": false,
+      "properties": {
+        "proximity": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+        "n_near": { "type": "integer", "minimum": 0 },
+        "d_min": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "investigation": {
+      "type": "object",
+      "required": [
+        "id", "name", "short_name", "program", "fire_safety_role", "fuel_phase", "objective",
+        "hardware", "sensors", "measured_variables", "doi", "license", "source_url", "psi_id",
+        "has_table", "evidence_type", "table_files", "n_observations", "o2_pct_range",
+        "pressure_bar_range", "scenario_components", "static_scores", "score_formula_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": ["string", "null"] },
+        "short_name": { "type": ["string", "null"] },
+        "program": { "type": ["string", "null"] },
+        "fire_safety_role": { "type": "array", "items": { "$ref": "#/$defs/role" }, "minItems": 1 },
+        "fuel_phase": { "enum": ["solid", "liquid", "gas", null] },
+        "objective": { "type": ["string", "null"] },
+        "hardware": { "type": ["string", "null"] },
+        "sensors": { "type": ["array", "null"], "items": { "type": "string" } },
+        "measured_variables": { "type": ["array", "null"], "items": { "type": "string" } },
+        "doi": { "type": ["string", "null"] },
+        "license": { "type": ["string", "null"] },
+        "source_url": { "type": ["string", "null"] },
+        "psi_id": { "type": ["string", "null"] },
+        "has_table": { "type": "boolean" },
+        "evidence_type": { "enum": ["measured_rows", "text"] },
+        "table_files": { "type": "array", "items": { "type": "string" } },
+        "n_observations": { "type": "integer", "minimum": 0 },
+        "o2_pct_range": { "$ref": "#/$defs/range" },
+        "pressure_bar_range": { "$ref": "#/$defs/range" },
+        "scenario_components": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/component" }
+        },
+        "static_scores": {
+          "type": "object",
+          "required": ["fire_safety_relevance", "data_usability"],
+          "additionalProperties": false,
+          "properties": {
+            "fire_safety_relevance": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "data_usability": { "type": "integer", "minimum": 0, "maximum": 100 }
+          }
+        },
+        "score_formula_version": { "const": "2.0" }
+      }
+    }
+  }
+}

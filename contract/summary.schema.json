@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "summary.schema.json",
+  "title": "summaries.json",
+  "type": "object",
+  "required": ["contract_version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "2.0" },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/summary" } }
+  },
+  "$defs": {
+    "summary": {
+      "type": "object",
+      "required": [
+        "investigation_id", "text", "cites", "model", "generated_at", "prompt_version", "verified"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "investigation_id": { "type": "string", "minLength": 1 },
+        "text": { "type": ["string", "null"] },
+        "cites": { "type": "array", "items": { "type": "string" } },
+        "model": { "type": ["string", "null"] },
+        "generated_at": { "type": ["string", "null"] },
+        "prompt_version": { "type": ["string", "null"] },
+        "verified": { "type": "boolean" }
+      }
+    }
+  }
+}

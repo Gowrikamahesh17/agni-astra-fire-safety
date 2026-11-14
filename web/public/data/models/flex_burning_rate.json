@@ -1,0 +1,367 @@
+{
+ "contract_version": "2.0",
+ "name": "flex_burning_rate",
+ "task": "regression",
+ "target": "burning_rate_mm2_s",
+ "positive_label": null,
+ "features": [
+  "pressure_bar",
+  "o2_pct",
+  "co2_pct",
+  "he_pct",
+  "droplet_d0_mm",
+  "fuel"
+ ],
+ "categories": {
+  "fuel": [
+   "heptane",
+   "methanol"
+  ]
+ },
+ "mean": {
+  "pressure_bar": 0.9320101167315176,
+  "o2_pct": 20.089494163424124,
+  "co2_pct": 11.439688715953308,
+  "he_pct": 4.902723735408561,
+  "droplet_d0_mm": 2.994863813229572,
+  "fuel=heptane": 0.0,
+  "fuel=methanol": 0.0
+ },
+ "std": {
+  "pressure_bar": 0.30111172140793036,
+  "o2_pct": 4.7722208626621825,
+  "co2_pct": 16.19498351199179,
+  "he_pct": 11.386825634422275,
+  "droplet_d0_mm": 0.6930893458821471,
+  "fuel=heptane": 1.0,
+  "fuel=methanol": 1.0
+ },
+ "weights": {
+  "pressure_bar": 0.008779522921252997,
+  "o2_pct": 0.09091295688205137,
+  "co2_pct": -0.02506687972014131,
+  "he_pct": 0.05698480379339275,
+  "droplet_d0_mm": -0.044428900190628735,
+  "fuel=heptane": 0.015928742622908144,
+  "fuel=methanol": -0.015928742622907513
+ },
+ "bias": 0.5048830191937157,
+ "valid_range": {
+  "pressure_bar": [
+   0.7017,
+   3.0927
+  ],
+  "o2_pct": [
+   12.0,
+   34.0
+  ],
+  "co2_pct": [
+   0.0,
+   70.0
+  ],
+  "he_pct": [
+   0.0,
+   45.0
+  ],
+  "droplet_d0_mm": [
+   1.1,
+   4.67
+  ]
+ },
+ "metrics": {
+  "n_rows": 257,
+  "cv_folds": 5,
+  "r2": 0.7133,
+  "mae": 0.0473,
+  "baseline_mae": 0.107
+ },
+ "fixtures": [
+  {
+   "input": {
+    "pressure_bar": 0.7125,
+    "o2_pct": 23.0,
+    "co2_pct": 25.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 2.07,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.5836198908,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 1.008,
+    "o2_pct": 20.0,
+    "co2_pct": 5.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 2.57,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.5021319559,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7163,
+    "o2_pct": 25.0,
+    "co2_pct": 15.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 2.48,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.6110276558,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7123,
+    "o2_pct": 34.0,
+    "co2_pct": 0.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.31,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.7205196162,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 3.0915,
+    "o2_pct": 21.0,
+    "co2_pct": 70.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.03,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.4518356903,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 1.015,
+    "o2_pct": 21.0,
+    "co2_pct": 0.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 1.87,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.6058549703,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 1.01,
+    "o2_pct": 14.0,
+    "co2_pct": 0.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.5,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.3360111418,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 1.0272,
+    "o2_pct": 30.0,
+    "co2_pct": 0.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.39,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.6802286318,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 1.0222,
+    "o2_pct": 24.0,
+    "co2_pct": 20.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.25,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.5437981715,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7127,
+    "o2_pct": 20.0,
+    "co2_pct": 35.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 4.2,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.3425999537,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7155,
+    "o2_pct": 17.0,
+    "co2_pct": 45.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.22,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.3328727152,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 1.0234,
+    "o2_pct": 18.0,
+    "co2_pct": 0.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 2.15,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.5309997813,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7134,
+    "o2_pct": 30.0,
+    "co2_pct": 0.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.77,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.6148626441,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7158,
+    "o2_pct": 24.0,
+    "co2_pct": 20.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 4.53,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.4209555136,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7153,
+    "o2_pct": 21.0,
+    "co2_pct": 30.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.56,
+    "fuel": "methanol"
+   },
+   "expected": {
+    "value": 0.4104910298,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7119,
+    "o2_pct": 24.0,
+    "co2_pct": 0.0,
+    "he_pct": 20.0,
+    "droplet_d0_mm": 3.78,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.6318216718,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 1.028,
+    "o2_pct": 30.0,
+    "co2_pct": 0.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 3.53,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.671277579,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 5.639,
+    "o2_pct": 23.0,
+    "co2_pct": 25.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 2.07,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.7272619897,
+    "out_of_range": [
+     "pressure_bar"
+    ]
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7125,
+    "o2_pct": 23.0,
+    "co2_pct": 25.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 0.1,
+    "fuel": "heptane"
+   },
+   "expected": {
+    "value": 0.7099022148,
+    "out_of_range": [
+     "droplet_d0_mm"
+    ]
+   }
+  },
+  {
+   "input": {
+    "pressure_bar": 0.7125,
+    "o2_pct": 23.0,
+    "co2_pct": 25.0,
+    "he_pct": 0.0,
+    "droplet_d0_mm": 2.07,
+    "fuel": "unknown"
+   },
+   "expected": {
+    "value": 0.5676911482,
+    "out_of_range": [
+     "fuel"
+    ]
+   }
+  }
+ ],
+ "trained_at": "2026-11-14T11:32:35+00:00"
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "implication.schema.json",
+  "title": "implications.json",
+  "type": "object",
+  "required": ["contract_version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "2.0" },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/implication" } }
+  },
+  "$defs": {
+    "implication": {
+      "type": "object",
+      "required": ["id", "pillar", "statement", "evidence", "scenario_ids", "verified"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "pillar": { "enum": ["prevention", "detection", "suppression"] },
+        "statement": { "type": ["string", "null"] },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "scenario_ids": { "type": "array", "items": { "type": "string" } },
+        "verified": { "type": "boolean" }
+      }
+    }
+  }
+}

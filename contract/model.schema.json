@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "model.schema.json",
+  "title": "models/<name>.json",
+  "type": "object",
+  "required": [
+    "contract_version", "name", "task", "target", "positive_label", "features", "categories",
+    "mean", "std", "weights", "bias", "valid_range", "metrics", "fixtures", "trained_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "2.0" },
+    "name": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "task": { "enum": ["classification", "regression"] },
+    "target": { "type": "string" },
+    "positive_label": { "type": ["string", "null"] },
+    "features": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "categories": {
+      "type": "object",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "mean": { "type": "object", "additionalProperties": { "type": "number" } },
+    "std": { "type": "object", "additionalProperties": { "type": "number", "exclusiveMinimum": 0 } },
+    "weights": { "type": "object", "additionalProperties": { "type": "number" } },
+    "bias": { "type": "number" },
+    "valid_range": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "number" },
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["n_rows", "cv_folds"],
+      "properties": {
+        "n_rows": { "type": "integer", "minimum": 1 },
+        "cv_folds": { "type": "integer", "minimum": 2 },
+        "balanced_accuracy": { "type": ["number", "null"] },
+        "roc_auc": { "type": ["number", "null"] },
+        "baseline_balanced_accuracy": { "type": ["number", "null"] },
+        "r2": { "type": ["number", "null"] },
+        "mae": { "type": ["number", "null"] },
+        "baseline_mae": { "type": ["number", "null"] }
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["input", "expected"],
+        "additionalProperties": false,
+        "properties": {
+          "input": {
+            "type": "object",
+            "additionalProperties": { "type": ["number", "string"] }
+          },
+          "expected": {
+            "type": "object",
+            "required": ["value", "out_of_range"],
+            "additionalProperties": false,
+            "properties": {
+              "value": { "type": "number" },
+              "out_of_range": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "trained_at": { "type": "string" }
+  }
+}

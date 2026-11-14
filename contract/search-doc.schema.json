@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "search-doc.schema.json",
+  "title": "search-docs.json",
+  "type": "object",
+  "required": ["contract_version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "2.0" },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/doc" } }
+  },
+  "$defs": {
+    "doc": {
+      "type": "object",
+      "required": ["id", "type", "title", "text", "investigation_id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["observation", "summary", "investigation", "implication"] },
+        "title": { "type": ["string", "null"] },
+        "text": { "type": ["string", "null"] },
+        "investigation_id": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
