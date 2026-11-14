@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Term } from "@/components/InfoTip";
 import { MODEL_NAMES, loadModel, loadScenarios, type ModelName } from "@/lib/data";
 import { predict, type ModelInput, type ModelSpec } from "@/lib/predict";
 import { useScenario } from "@/lib/scenarioStore";
@@ -93,7 +94,9 @@ export default function PredictView() {
   return (
     <div className="dash">
       <aside className="panel" aria-label="Model inputs">
-        <h2>Model</h2>
+        <h2>
+          Model <Term k="model_estimate" />
+        </h2>
         <label className="field">
           <span>Question</span>
           <select value={name} onChange={(e) => setName(e.target.value as ModelName)}>
@@ -111,7 +114,9 @@ export default function PredictView() {
               Use selected scenario: {scenarioId === "custom" ? "Custom" : (shared?.name ?? "…")}
             </button>
             <p className="small muted">Sets oxygen and pressure. Change the scenario on the Dashboard or Evidence gaps page.</p>
-            <h2>Inputs</h2>
+            <h2>
+              Inputs <Term k="valid_range" />
+            </h2>
             {ready.features.map((f) => {
               const { label, unit } = feat(f);
               const levels = ready.categories[f];
@@ -174,7 +179,8 @@ export default function PredictView() {
           <>
             <div className="card" aria-live="polite">
               <p className="muted small">{meta.question}</p>
-              <p className="big">
+              <p className="small muted">Model estimate for the inputs on the left:</p>
+              <p className={`big${result.out_of_range.length > 0 ? " unreliable" : ""}`}>
                 {isClass ? `${Math.round(result.value * 100)} %` : `${result.value.toFixed(2)} ${meta.unit ?? ""}`}
               </p>
               {result.out_of_range.length > 0 && (
@@ -195,13 +201,19 @@ export default function PredictView() {
               <ul className="shared small">
                 {isClass ? (
                   <>
-                    <li>Balanced accuracy: {m?.balanced_accuracy} (always guessing the majority gives {m?.baseline_balanced_accuracy})</li>
-                    <li>ROC AUC: {m?.roc_auc}</li>
+                    <li>
+                      Balanced accuracy <Term k="balanced_accuracy" />: {m?.balanced_accuracy} (always guessing the majority gives {m?.baseline_balanced_accuracy})</li>
+                    <li>
+                      ROC AUC <Term k="roc_auc" />: {m?.roc_auc}
+                    </li>
                   </>
                 ) : (
                   <>
-                    <li>R²: {m?.r2}</li>
-                    <li>Mean absolute error: {m?.mae} (guessing the average gives {m?.baseline_mae})</li>
+                    <li>
+                      R² <Term k="r2" />: {m?.r2}
+                    </li>
+                    <li>
+                      Mean absolute error <Term k="mae" />: {m?.mae} (guessing the average gives {m?.baseline_mae})</li>
                   </>
                 )}
               </ul>

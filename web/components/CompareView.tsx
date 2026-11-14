@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { loadInvestigations, loadObservations } from "@/lib/data";
+import { Term } from "@/components/InfoTip";
 import { outcomeCounts, similarities } from "@/lib/compare";
 import type { Investigation, Observation } from "@/lib/types";
 
 const MAX = 3;
 const label = (s: string) => s.replace(/_/g, " ");
-const range = (r: [number, number] | null, unit: string) => (r ? `${r[0]}–${r[1]} ${unit}` : "–");
+const NA = "not recorded";
+const range = (r: [number, number] | null, unit: string) => (r ? `${r[0]}–${r[1]} ${unit}` : NA);
 
 export default function CompareView() {
   const params = useSearchParams();
@@ -47,22 +49,23 @@ export default function CompareView() {
   const toggle = (id: string) =>
     setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : p.length >= MAX ? p : [...p, id]));
 
-  const rows: [string, (i: Investigation) => React.ReactNode][] = [
-    ["Objective", (i) => i.objective ?? "–"],
-    ["Hardware", (i) => i.hardware ?? "–"],
-    ["Fuel phase", (i) => i.fuel_phase ?? "–"],
-    ["Fire-safety role", (i) => i.fire_safety_role.map(label).join(", ")],
+  const rows: [string, (i: Investigation) => React.ReactNode, ("hardware" | "roles" | "outcome")?][] = [
+    ["Objective", (i) => i.objective ?? NA],
+    ["Hardware", (i) => i.hardware ?? NA, "hardware"],
+    ["Fuel phase", (i) => i.fuel_phase ?? NA],
+    ["Fire-safety role", (i) => i.fire_safety_role.map(label).join(", "), "roles"],
     ["Oxygen range", (i) => range(i.o2_pct_range, "%")],
     ["Pressure range", (i) => range(i.pressure_bar_range, "bar")],
-    ["Sensors", (i) => i.sensors?.join(", ") ?? "–"],
-    ["Measured variables", (i) => i.measured_variables?.join(", ") ?? "–"],
+    ["Sensors", (i) => i.sensors?.join(", ") ?? NA],
+    ["Measured variables", (i) => i.measured_variables?.join(", ") ?? NA],
     ["Number of tests", (i) => (i.has_table ? i.n_observations : "none (text evidence only)")],
     [
       "Outcome types",
       (i) => {
         const c = outcomeCounts(obs, i.id);
-        return c.length ? c.map(([k, n]) => `${label(k)} (${n})`).join(", ") : "–";
+        return c.length ? c.map(([k, n]) => `${label(k)} (${n})`).join(", ") : "no outcome recorded";
       },
+      "outcome",
     ],
   ];
 
@@ -94,6 +97,7 @@ export default function CompareView() {
         <>
           <div className="card">
             <h2>What they share</h2>
+            <p className="small muted">Only items present in every chosen investigation are listed. Everything else differs, as the table below shows.</p>
             <ul className="shared">
               <li>
                 <strong>Hardware:</strong> {sim.hardware.length ? sim.hardware.join(", ") : "none in common"}
@@ -129,9 +133,12 @@ export default function CompareView() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map(([name, get]) => (
+                {rows.map(([name, get, tip]) => (
                   <tr key={name}>
-                    <th scope="row">{name}</th>
+                    <th scope="row">
+                      {name}
+                      {tip && <Term k={tip} />}
+                    </th>
                     {chosen.map((i) => (
                       <td key={i.id} data-label={i.short_name ?? i.id}>
                         {get(i)}

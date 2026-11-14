@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { Term } from "@/components/InfoTip";
 import { loadImplications, loadScenarios } from "@/lib/data";
 import { PILLARS, byPillar, evidenceHref, visibleImplications } from "@/lib/implications";
 import { useScenario } from "@/lib/scenarioStore";
@@ -46,7 +47,10 @@ export default function ImplicationsView() {
           </button>
         ))}
       </div>
-      <p className="small muted">AI-generated, checked against source rows. Only statements that passed the number check are shown.</p>
+      <p className="small muted">
+        AI-generated, checked against source rows. Only statements that passed the number check are shown. Under each statement, the
+        <strong> evidence chips</strong> <Term k="evidence" /> are the tests it is based on: click one to open that test.
+      </p>
 
       {items.length === 0 && (
         <p className="banner">Implications are not available yet. They are generated and verified offline, then appear here.</p>
@@ -61,20 +65,7 @@ export default function ImplicationsView() {
             {grouped[p.id].map((i) => (
               <article key={i.id} className="card">
                 <p>{i.statement}</p>
-                <p className="chips">
-                  {i.evidence.map((ref) => {
-                    const href = evidenceHref(ref);
-                    return href ? (
-                      <Link key={ref} href={href} className="source-chip">
-                        {ref}
-                      </Link>
-                    ) : (
-                      <span key={ref} className="source-chip">
-                        {ref}
-                      </span>
-                    );
-                  })}
-                </p>
+                <Evidence refs={i.evidence} />
               </article>
             ))}
             {grouped[p.id].length === 0 && items.length > 0 && <p className="muted small">Nothing verified here yet.</p>}
@@ -82,5 +73,35 @@ export default function ImplicationsView() {
         ))}
       </div>
     </div>
+  );
+}
+
+const SHOWN = 4;
+
+/** Evidence chips, collapsed to the first few so long lists do not bury the statement. */
+function Evidence({ refs }: { refs: string[] }) {
+  const [all, setAll] = useState(false);
+  const list = all ? refs : refs.slice(0, SHOWN);
+  return (
+    <p className="chips">
+      <span className="small muted">Evidence:</span>
+      {list.map((ref) => {
+        const href = evidenceHref(ref);
+        return href ? (
+          <Link key={ref} href={href} className="source-chip">
+            {ref}
+          </Link>
+        ) : (
+          <span key={ref} className="source-chip">
+            {ref}
+          </span>
+        );
+      })}
+      {refs.length > SHOWN && (
+        <button type="button" className="link-button" onClick={() => setAll(!all)}>
+          {all ? "Show fewer" : `+${refs.length - SHOWN} more`}
+        </button>
+      )}
+    </p>
   );
 }

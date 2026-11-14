@@ -24,7 +24,7 @@ describe("implications", () => {
     expect(g.detection).toHaveLength(0);
   });
   it("maps evidence ids to investigation pages", () => {
-    expect(evidenceHref("PSI-69-0024")).toBe("/investigations/PSI-69");
+    expect(evidenceHref("PSI-69-0024")).toBe("/investigations/PSI-69?q=PSI-69-0024");
     expect(evidenceHref("PSI-25")).toBe("/investigations/PSI-25");
     expect(evidenceHref("NTRS 20200001234")).toBeNull();
   });

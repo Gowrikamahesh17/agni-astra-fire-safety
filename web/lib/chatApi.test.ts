@@ -38,7 +38,9 @@ describe("askChat", () => {
 
 describe("sourceHref", () => {
   it("links observations and investigations, prefers url", () => {
-    expect(sourceHref({ type: "observation", id: "PSI-69-0024" })).toBe("/investigations/PSI-69");
+    expect(sourceHref({ type: "observation", id: "PSI-69-0024" })).toBe("/investigations/PSI-69?q=PSI-69-0024");
+    expect(sourceHref({ type: "observation", id: "PSI-69-0024", url: "/investigations/PSI-69" })).toBe("/investigations/PSI-69?q=PSI-69-0024");
+    expect(sourceHref({ type: "implication", id: "SUP-1", url: "/implications" })).toBe("/implications");
     expect(sourceHref({ type: "investigation", id: "PSI-25" })).toBe("/investigations/PSI-25");
     expect(sourceHref({ type: "doc", id: "x", url: "https://ntrs.nasa.gov/x" })).toBe("https://ntrs.nasa.gov/x");
     expect(sourceHref({ type: "doc", id: "NTRS 1" })).toBeNull();

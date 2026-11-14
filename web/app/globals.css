@@ -251,3 +251,41 @@ td:first-child { white-space: nowrap; }
 table.compare td:first-child { white-space: normal; }
 
 p.badge { margin-left: 0; }
+
+/* ---- Help tips and how-to ---- */
+.tip { position: relative; display: inline-block; margin-left: 6px; vertical-align: middle; }
+.tip-btn { width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 1px solid var(--control); background: transparent; color: var(--muted); font-size: .75rem; font-weight: 700; line-height: 1; cursor: help; }
+.tip-btn:hover, .tip.open .tip-btn { color: var(--accent); border-color: var(--accent); }
+.tip-pop { display: none; position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; width: max-content; max-width: min(300px, 80vw); padding: 10px 12px; border-radius: 8px; background: var(--surface); color: var(--text); border: 1px solid var(--accent); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); font-size: .82rem; font-weight: 400; line-height: 1.45; text-align: left; white-space: normal; }
+.tip.right .tip-pop { left: auto; right: 0; }
+.tip.open .tip-pop, .tip:hover .tip-pop, .tip:focus-within .tip-pop { display: block; }
+.howto { margin: 12px 0 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.howto summary { cursor: pointer; padding: 10px 16px; font-weight: 600; color: var(--accent); }
+.howto-body { padding: 0 16px 14px; font-size: .92rem; }
+.howto-body ol, .howto-body ul { margin: 6px 0 0; padding-left: 1.3em; }
+.howto-body li { margin: 4px 0; }
+.def { border-bottom: 1px dotted var(--muted); cursor: help; }
+.score-wrap { text-align: right; line-height: 1.1; }
+.score-label { display: block; font-size: .7rem; color: var(--muted); font-weight: 400; }
+.ranked-for { margin: 0 0 12px; }
+.unreliable { opacity: .45; }
+.steps { list-style: none; padding: 0; margin: 24px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; counter-reset: step; }
+.steps li { counter-increment: step; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.steps li::before { content: counter(step); display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-bottom: 8px; border-radius: 50%; background: var(--accent-bg); color: var(--on-accent); font-weight: 800; }
+.steps h3 { margin: 0 0 4px; }
+.steps p { margin: 0; font-size: .9rem; }
+.eyebrow { margin: 0 0 8px; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.guide h2 { margin-top: 32px; }
+.guide dl { margin: 0; }
+.guide dt { font-weight: 700; margin-top: 12px; }
+.guide dd { margin: 2px 0 0; color: var(--muted); }
+.chat-starters { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.chat-starters .chip { text-align: left; border-radius: 12px; }
+
+/* On phones the explanation opens as a sheet at the bottom so it can never run off the screen */
+@media (max-width: 700px) {
+  .tip { position: static; }
+  .tip-pop { position: fixed; left: 12px; right: 12px; bottom: 12px; top: auto; width: auto; max-width: none; z-index: 60; font-size: .95rem; }
+  .tip.right .tip-pop { left: 12px; right: 12px; }
+  .tip:hover:not(.open) .tip-pop { display: none; }
+}

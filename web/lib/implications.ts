@@ -20,7 +20,7 @@ export function byPillar(items: Implication[]): Record<Implication["pillar"], Im
 /** Evidence id -> investigation page, or null if it is a document reference. */
 export function evidenceHref(ref: string): string | null {
   const row = /^([A-Za-z]+-\d+)-\d{4}$/.exec(ref); // observation id, e.g. PSI-69-0024
-  if (row) return `/investigations/${row[1]}`;
+  if (row) return `/investigations/${row[1]}?q=${encodeURIComponent(ref)}`; // opens the table filtered to that test
   if (/^PSI-\d+$/.test(ref)) return `/investigations/${ref}`; // investigation id
   return null;
 }

@@ -9,12 +9,13 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Flame in Freefall · BrahmAstra Analytics",
+  title: { default: "Flame in Freefall · BrahmAstra Analytics", template: "%s · Flame in Freefall" },
   description:
     "AI-assisted dashboard that ranks and interprets NASA microgravity combustion experiments for crew-habitat fire safety.",
 };
 
 const NAV = [
+  ["/guide", "Guide"],
   ["/dashboard", "Dashboard"],
   ["/compare", "Compare"],
   ["/gaps", "Evidence gaps"],

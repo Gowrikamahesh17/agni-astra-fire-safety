@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { loadInvestigations, loadObservations, loadScenarios } from "@/lib/data";
 import { DEFAULT_WEIGHTS, componentFor, siteScore, type Weights } from "@/lib/scoring";
+import { Term } from "@/components/InfoTip";
 import { useScenario } from "@/lib/scenarioStore";
 import type { Investigation, Observation, Role, Scenario, ScenarioId } from "@/lib/types";
 
@@ -92,7 +93,9 @@ export default function Dashboard() {
   return (
     <div className="dash">
       <aside className="panel" aria-label="Controls">
-        <h2>Mission scenario</h2>
+        <h2>
+          Mission scenario <Term k="scenario" />
+        </h2>
         <label className="field">
           <span>Preset</span>
           <select value={scenarioId} onChange={(e) => setScenarioId(e.target.value as ScenarioId)}>
@@ -119,7 +122,9 @@ export default function Dashboard() {
           )
         )}
 
-        <h2>Focus</h2>
+        <h2>
+          Focus on <Term k="roles" />
+        </h2>
         <div className="chips" role="group" aria-label="Fire-safety role">
           {ROLES.map((r) => (
             <button
@@ -134,7 +139,9 @@ export default function Dashboard() {
           ))}
         </div>
 
-        <h2>Score weights</h2>
+        <h2>
+          Score weights <Term k="weights" />
+        </h2>
         <Slider label="Scenario proximity" min={0} max={1} step={0.05} value={weights.proximity} onChange={(v) => setWeights({ ...weights, proximity: v })} />
         <Slider label="Fire-safety relevance" min={0} max={1} step={0.05} value={weights.relevance} onChange={(v) => setWeights({ ...weights, relevance: v })} />
         <Slider label="Data usability" min={0} max={1} step={0.05} value={weights.usability} onChange={(v) => setWeights({ ...weights, usability: v })} />
@@ -147,6 +154,12 @@ export default function Dashboard() {
         {showGravityNote && <p className="banner">{scenario?.gravity_note}</p>}
         {isCustom && <p className="banner">PSI has no partial-gravity combustion data. Results are microgravity only.</p>}
         {waitingForRows && <p className="muted">Loading test rows for the custom scenario…</p>}
+        <p className="ranked-for" aria-live="polite">
+          Ranked for <strong>{isCustom ? "your custom atmosphere" : (scenario?.name ?? "")}</strong>
+          {isCustom ? ` (${customO2} % O₂, ${customP} bar)` : scenario?.o2_pct != null ? ` (${scenario.o2_pct} % O₂, ${scenario.pressure_bar} bar)` : ""}
+          {" · "}
+          {ranked.length} of {investigations.length} investigations
+        </p>
         <ol className="ranking">
           {ranked.map(({ inv, comp, parts, score }, idx) => (
             <li key={inv.id} className="card rank-card">
@@ -161,26 +174,47 @@ export default function Dashboard() {
                     {!inv.has_table && <span className="badge">Text evidence only</span>}
                   </p>
                 </div>
-                <div className="score" aria-label={`Score ${Math.round(score)} out of 100`}>
-                  {Math.round(score)}
+                <div className="score-wrap">
+                  <div className="score" aria-label={`Score ${Math.round(score)} out of 100`}>
+                    {Math.round(score)}
+                  </div>
+                  <span className="score-label">
+                    out of 100 <Term k="score" align="right" />
+                  </span>
                 </div>
               </div>
               {inv.objective && <p className="small">{inv.objective}</p>}
               <dl className="parts">
                 <div>
-                  <dt>Proximity</dt>
-                  <dd>{parts.proximity === null ? "no rows" : parts.proximity}</dd>
+                  <dt>
+                    Proximity <Term k="proximity" />
+                  </dt>
+                  <dd>
+                    {parts.proximity === null ? (
+                      <span className="def" title="This investigation has no test rows with both oxygen and pressure, so it cannot be matched to an atmosphere.">
+                        no rows
+                      </span>
+                    ) : (
+                      parts.proximity
+                    )}
+                  </dd>
                 </div>
                 <div>
-                  <dt>Relevance</dt>
+                  <dt>
+                    Relevance <Term k="relevance" />
+                  </dt>
                   <dd>{parts.relevance}</dd>
                 </div>
                 <div>
-                  <dt>Usability</dt>
+                  <dt>
+                    Usability <Term k="usability" />
+                  </dt>
                   <dd>{parts.usability}</dd>
                 </div>
                 <div>
-                  <dt>Tests near scenario</dt>
+                  <dt>
+                    Close matches <Term k="near" />
+                  </dt>
                   <dd>{inv.has_table ? comp.n_near : "–"}</dd>
                 </div>
               </dl>

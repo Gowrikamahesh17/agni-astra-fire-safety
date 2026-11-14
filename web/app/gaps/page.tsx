@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import GapsView from "@/components/GapsView";
+
+export const metadata: Metadata = { title: "Evidence gaps" };
 
 export default function Page() {
   return (
