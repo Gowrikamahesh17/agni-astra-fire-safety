@@ -5,18 +5,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Chart, type ChartDataset, type TooltipItem } from "chart.js/auto";
 import { loadInvestigations, loadObservations, loadScenarios } from "@/lib/data";
 import { distance } from "@/lib/scoring";
+import { useTheme } from "@/lib/theme";
 import { useScenario } from "@/lib/scenarioStore";
 import type { Investigation, Observation, Scenario, ScenarioId } from "@/lib/types";
 
-// Categorical slots 1 and 2, dark-mode steps (validated on the dark surface). Shape is the secondary encoding.
+// Categorical slots 1 and 2, validated for each theme's surface. Shape is the secondary encoding.
 const SERIES = [
-  { id: "PSI-69", color: "#3987e5", shape: "circle" },
-  { id: "PSI-159", color: "#d95926", shape: "triangle" },
+  { id: "PSI-69", shape: "circle" },
+  { id: "PSI-159", shape: "triangle" },
 ] as const;
-const INK = "#e8ebf5";
-const MUTED = "#8f9bbf";
-const GRID = "#243059";
-const GOLD = "#f5b942";
+const PALETTE = {
+  dark: { series: ["#3987e5", "#d95926"], ink: "#e8ebf5", muted: "#8f9bbf", grid: "#243059", surface: "#121c3d", marker: "#f5b942" },
+  light: { series: ["#2a78d6", "#eb6834"], ink: "#121a3a", muted: "#4c5778", grid: "#d3d9ea", surface: "#ffffff", marker: "#8a5200" },
+} as const;
 
 type Pt = { x: number; y: number; o: Observation; d: number | null };
 
@@ -29,6 +30,8 @@ export default function GapsView() {
   const [asTable, setAsTable] = useState(false);
   const [hidden, setHidden] = useState<string[]>([]);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const theme = useTheme();
+  const pal = PALETTE[theme];
 
   useEffect(() => {
     Promise.all([loadInvestigations(), loadObservations(), loadScenarios()])
@@ -72,13 +75,13 @@ export default function GapsView() {
     const el = canvas.current;
     if (!el || asTable || !points.length) return;
     const datasets: ChartDataset<"scatter", Pt[]>[] = [];
-    for (const s of SERIES) {
+    for (const [si, s] of SERIES.entries()) {
       if (hidden.includes(s.id)) continue;
       datasets.push({
         label: invs.find((i) => i.id === s.id)?.short_name ?? s.id,
         data: points.filter((p) => p.o.investigation_id === s.id),
-        backgroundColor: s.color + "cc",
-        borderColor: "#121c3d", // 2px-style surface ring so overlapping marks separate
+        backgroundColor: pal.series[si] + "cc",
+        borderColor: pal.surface, // surface ring so overlapping marks separate
         borderWidth: 1,
         pointStyle: s.shape,
         pointRadius: 4,
@@ -89,7 +92,7 @@ export default function GapsView() {
       label: "Within d ≤ 1 of scenario",
       data: near.filter((p) => !hidden.includes(p.o.investigation_id)),
       backgroundColor: "transparent",
-      borderColor: INK,
+      borderColor: pal.ink,
       borderWidth: 2,
       pointRadius: 8,
       pointHoverRadius: 8,
@@ -98,8 +101,8 @@ export default function GapsView() {
       datasets.push({
         label: "Selected scenario",
         data: [{ x: target.o2, y: target.p } as Pt],
-        backgroundColor: GOLD,
-        borderColor: "#121c3d",
+        backgroundColor: pal.marker,
+        borderColor: pal.surface,
         borderWidth: 2,
         pointStyle: "rectRot",
         pointRadius: 10,
@@ -113,8 +116,8 @@ export default function GapsView() {
         maintainAspectRatio: false,
         animation: false,
         scales: {
-          x: { min: 0, max: 100, title: { display: true, text: "Oxygen (%)", color: MUTED }, ticks: { color: MUTED }, grid: { color: GRID } },
-          y: { min: 0, max: 3.5, title: { display: true, text: "Pressure (bar)", color: MUTED }, ticks: { color: MUTED }, grid: { color: GRID } },
+          x: { min: 0, max: 100, title: { display: true, text: "Oxygen (%)", color: pal.muted }, ticks: { color: pal.muted }, grid: { color: pal.grid } },
+          y: { min: 0, max: 3.5, title: { display: true, text: "Pressure (bar)", color: pal.muted }, ticks: { color: pal.muted }, grid: { color: pal.grid } },
         },
         plugins: {
           legend: { display: false }, // custom HTML legend below carries identity
@@ -138,7 +141,7 @@ export default function GapsView() {
       },
     });
     return () => chart.destroy();
-  }, [points, near, hidden, asTable, invs, target?.o2, target?.p]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [points, near, hidden, asTable, invs, target?.o2, target?.p, pal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (error) return <p role="alert">Could not load data: {error}</p>;
   if (!scenarios.length) return <p className="muted">Loading…</p>;
@@ -189,10 +192,10 @@ export default function GapsView() {
             <canvas ref={canvas} role="img" aria-label="Scatter chart of oxygen percent against pressure in bar for every PSI test" />
           </div>
           <ul className="legend" aria-label="Legend">
-            {SERIES.map((s) => (
+            {SERIES.map((s, si) => (
               <li key={s.id}>
                 <button type="button" className="legend-btn" aria-pressed={!hidden.includes(s.id)} onClick={() => toggle(s.id)}>
-                  <span className="swatch" style={{ background: s.color, borderRadius: s.shape === "circle" ? "50%" : 0, clipPath: s.shape === "triangle" ? "polygon(50% 0, 0 100%, 100% 100%)" : undefined }} />
+                  <span className="swatch" style={{ background: pal.series[si], borderRadius: s.shape === "circle" ? "50%" : 0, clipPath: s.shape === "triangle" ? "polygon(50% 0, 0 100%, 100% 100%)" : undefined }} />
                   {invs.find((i) => i.id === s.id)?.short_name ?? s.id} ({plottedBy(s.id)} tests)
                 </button>
               </li>

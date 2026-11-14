@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ChatPanel from "@/components/ChatPanel";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -23,7 +24,14 @@ const NAV = [
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var s=localStorage.getItem("ffd.theme");var t=s==="light"||s==="dark"?s:(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
@@ -40,6 +48,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 </Link>
               ))}
             </nav>
+            <div className="header-actions">
+              <ThemeToggle />
+              <ChatPanel />
+            </div>
           </div>
         </header>
         <main id="main" className="container" tabIndex={-1}>{children}</main>
@@ -49,7 +61,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             Built by BrahmAstra Analytics for NASA Space Apps Challenge 2026.
           </div>
         </footer>
-        <ChatPanel />
       </body>
     </html>
   );

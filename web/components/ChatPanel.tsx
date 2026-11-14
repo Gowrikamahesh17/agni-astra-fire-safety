@@ -41,7 +41,7 @@ export default function ChatPanel() {
   return (
     <>
       {!open && (
-        <button type="button" className="chat-fab" onClick={() => setOpen(true)}>
+        <button type="button" className="chat-trigger" onClick={() => setOpen(true)}>
           Ask the data
         </button>
       )}
