@@ -4,6 +4,7 @@ import Link from "next/link";
 import MiniSearch from "minisearch";
 import { useEffect, useMemo, useState } from "react";
 import { downloadCsv, observationsToCsv } from "@/lib/csv";
+import { formatFlow, formatGeometry } from "@/lib/format";
 import { loadInvestigations, loadObservations, loadSummaries } from "@/lib/data";
 import type { Investigation, Observation, Summary } from "@/lib/types";
 
@@ -33,7 +34,7 @@ function measurementsText(o: Observation): string {
   return Object.entries(o.measurements)
     .filter(([, v]) => typeof v === "number")
     .slice(0, 4)
-    .map(([k, v]) => `${k.replace(/_/g, " ")}: ${v}`)
+    .map(([k, v]) => `${k.replace(/_/g, " ")}: ${typeof v === "number" ? Math.round(v * 1000) / 1000 : v}`)
     .join(" · ");
 }
 
@@ -72,6 +73,10 @@ export default function InvestigationView({ id }: { id: string }) {
     );
     return ms;
   }, [rows]);
+
+  // Hide a column when no row of this investigation has a value for it.
+  const hasGeometry = useMemo(() => rows.some((o) => formatGeometry(o.geometry) !== null), [rows]);
+  const hasFlow = useMemo(() => rows.some((o) => formatFlow(o.flow) !== null), [rows]);
 
   const filtered = useMemo(() => {
     const q = query.trim();
@@ -217,6 +222,8 @@ export default function InvestigationView({ id }: { id: string }) {
                         <th>Fuel</th>
                         <th>O₂ %</th>
                         <th>Pressure bar</th>
+                        {hasGeometry && <th>Geometry</th>}
+                        {hasFlow && <th>Flow</th>}
                         <th>Outcome</th>
                         <th>Measurements</th>
                         <th>Source</th>
@@ -232,6 +239,8 @@ export default function InvestigationView({ id }: { id: string }) {
                           </td>
                           <td>{fmt(o.o2_pct, 1)}</td>
                           <td>{fmt(o.pressure_bar, 3)}</td>
+                          {hasGeometry && <td>{formatGeometry(o.geometry) ?? "–"}</td>}
+                          {hasFlow && <td>{formatFlow(o.flow) ?? "–"}</td>}
                           <td>
                             {label(o.outcome)}
                             {o.censored && <span className="muted" title="Burn time is a lower bound"> (at least)</span>}

@@ -8,15 +8,15 @@ import type { Scenario } from "@/lib/types";
 
 const MODELS: Record<ModelName, { title: string; question: string; unit?: string }> = {
   flex_extinction: {
-    title: "FLEX droplet flames: will the flame go out?",
+    title: "FLEX: will the flame go out?",
     question: "Chance the flame goes out (extinguishes), rather than being disrupted or burning to completion.",
   },
   cfig_self_extinction: {
-    title: "CFI-G gas flames: will the flame go out by itself?",
+    title: "CFI-G: will it go out by itself?",
     question: "Chance the flame goes out on its own, rather than burning until the test was stopped.",
   },
   flex_burning_rate: {
-    title: "FLEX droplet flames: burning rate",
+    title: "FLEX: burning rate",
     question: "Predicted droplet burning-rate constant.",
     unit: "mm²/s",
   },

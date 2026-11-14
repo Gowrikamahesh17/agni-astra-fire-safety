@@ -11,6 +11,7 @@
   --banner-bg: #3a2f12;
   --warn: #ff9b73;
   --danger: #b4553a;
+  --track: #2a3868;
   --hero-glow: rgba(245, 185, 66, .22);
   --hero-shadow: rgba(0, 0, 0, .55);
   color-scheme: dark;
@@ -28,6 +29,7 @@
   --banner-bg: #fff4d6;
   --warn: #b24a1a;
   --danger: #b4381a;
+  --track: #cdd4ea;
   --hero-glow: rgba(245, 185, 66, .35);
   --hero-shadow: rgba(18, 26, 58, .28);
   color-scheme: light;
@@ -73,7 +75,7 @@ main.container { flex: 1; padding-top: 32px; padding-bottom: 48px; }
 .panel h2:first-child { margin-top: 0; }
 .field { display: block; margin: 10px 0; font-size: .9rem; }
 .field span { display: block; margin-bottom: 4px; }
-.field select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--control); background: var(--bg); color: var(--text); }
+.field select { width: 100%; border: 1px solid var(--control); background-color: var(--bg); color: var(--text); }
 .field input[type="range"] { width: 100%; accent-color: var(--accent-bg); }
 .small { font-size: .85rem; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -208,3 +210,44 @@ h1, h2, h3, p, dd { overflow-wrap: break-word; }
 .hero-art img { position: relative; z-index: 1; width: 100%; height: auto; display: block; filter: drop-shadow(0 18px 28px var(--hero-shadow)); }
 .ai-mark { position: relative; z-index: 1; margin-top: 6px; text-align: center; font-size: .75rem; color: var(--muted); }
 @media (max-width: 800px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } .hero-art { max-width: 280px; } }
+
+/* ---- Form controls: one look in every browser (Safari draws its own small system styling otherwise) ---- */
+button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+select, input[type="search"], input[type="number"], input.num, .chat-form input {
+  font-size: 1rem; line-height: 1.3; min-height: 40px; -webkit-appearance: none; appearance: none;
+}
+select {
+  padding: 8px 34px 8px 12px; border-radius: 8px; cursor: pointer; color: var(--text);
+  background-color: var(--bg);
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
+  background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
+}
+input[type="number"] { -moz-appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+button { -webkit-appearance: none; appearance: none; }
+.chip, .theme-toggle, .chat-trigger, .legend-btn, .link-button { line-height: 1.2; }
+
+/* Sliders: same track and thumb everywhere */
+input[type="range"] { -webkit-appearance: none; appearance: none; height: 24px; background: transparent; cursor: pointer; margin: 4px 0; }
+input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: var(--track); }
+input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--track); }
+input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--accent-bg); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; margin-top: -7px; border-radius: 50%; background: var(--accent-bg); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--control); }
+input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--accent-bg); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--control); }
+input[type="checkbox"] { accent-color: var(--accent-bg); }
+
+/* ---- Spacing: nothing sits flush against the block below it ---- */
+.toolbar { margin-bottom: 16px; }
+div.chips { margin-bottom: 16px; }
+.banner { margin-top: 0; }
+.field { margin-bottom: 12px; }
+.toolbar .field { margin-bottom: 0; }
+.chip { padding: 7px 14px; }
+
+.toolbar .field select { min-width: 210px; }
+
+td:first-child { white-space: nowrap; }
+table.compare td:first-child { white-space: normal; }
+
+p.badge { margin-left: 0; }
