@@ -1,0 +1,12 @@
+# Data pipeline
+numpy>=1.26,<3
+pandas>=2.2,<3
+scikit-learn>=1.5,<2
+
+# AI layer
+httpx>=0.27,<1
+PyYAML>=6.0,<7
+python-dotenv>=1.0,<2
+
+# Shared
+jsonschema>=4.23,<5
