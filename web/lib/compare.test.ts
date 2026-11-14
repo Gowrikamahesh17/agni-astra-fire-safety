@@ -31,3 +31,25 @@ describe("compare helpers", () => {
     ]);
   });
 });
+
+import { listsDiffer, rowDiffers, uniqueItems } from "./compare";
+
+describe("difference highlighting", () => {
+  it("rowDiffers ignores case and spacing", () => {
+    expect(rowDiffers(["Liquid", " liquid "])).toBe(false);
+    expect(rowDiffers(["liquid", "gas"])).toBe(true);
+    expect(rowDiffers(["only one"])).toBe(false);
+  });
+  it("uniqueItems marks items missing from at least one list", () => {
+    const u = uniqueItems([["CIR", "MDCA"], ["cir", "ACME burner"]]);
+    expect([...u[0]]).toEqual(["mdca"]);
+    expect([...u[1]]).toEqual(["acme burner"]);
+  });
+  it("with three lists an item must be in all of them to count as shared", () => {
+    const u = uniqueItems([["a", "b"], ["a"], ["a", "b"]]);
+    expect([...u[0]]).toEqual(["b"]);
+    expect([...u[1]]).toEqual([]);
+    expect(listsDiffer([["a"], ["a"], ["a"]])).toBe(false);
+    expect(listsDiffer([["a"], ["a", "b"]])).toBe(true);
+  });
+});

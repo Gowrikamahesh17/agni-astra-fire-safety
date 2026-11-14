@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import ImplicationsView from "@/components/ImplicationsView";
+
+export const metadata: Metadata = { title: "Implications" };
 
 export default function Page() {
   return (

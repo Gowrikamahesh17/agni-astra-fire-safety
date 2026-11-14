@@ -7,6 +7,20 @@ import { MAX_CHARS, askChat, sourceHref, type ChatMessage, type ChatSource } fro
 
 type Entry = ChatMessage & { sources?: ChatSource[]; refused?: boolean; failed?: boolean };
 
+const STARTERS = [
+  "What happened in FLEX tests near the lunar atmosphere?",
+  "Why does oxygen level matter for putting out a flame?",
+  "Is there any data on partial gravity?",
+];
+
+function sourceLabel(s: ChatSource): string {
+  if (s.file) return `${s.file}${s.row ? ` · row ${s.row}` : ""}`;
+  if (s.type === "implication") return `Implication ${s.id}`;
+  if (s.type === "summary") return `Summary ${s.id.replace(/^summary:/, "")}`;
+  if (s.type === "investigation") return `Investigation ${s.id.replace(/^investigation:/, "")}`;
+  return s.id;
+}
+
 export default function ChatPanel() {
   const [open, setOpen] = useState(false);
   const { scenarioId } = useScenario();
@@ -19,9 +33,8 @@ export default function ChatPanel() {
     endRef.current?.scrollIntoView?.({ block: "end" });
   }, [entries, busy, open]);
 
-  async function send(e: React.FormEvent) {
-    e.preventDefault();
-    const q = text.trim();
+  async function ask(q: string) {
+    q = q.trim();
     if (!q || busy) return;
     const next: Entry[] = [...entries, { role: "user", content: q }];
     setEntries(next);
@@ -36,6 +49,11 @@ export default function ChatPanel() {
         ? [...cur, { role: "assistant", content: result.reply.answer, sources: result.reply.sources, refused: result.reply.refused }]
         : [...cur, { role: "assistant", content: result.message, failed: true }],
     );
+  }
+
+  function send(e: React.FormEvent) {
+    e.preventDefault();
+    void ask(text);
   }
 
   return (
@@ -55,10 +73,19 @@ export default function ChatPanel() {
           </header>
           <div className="chat-log" role="log" aria-live="polite">
             {entries.length === 0 && (
-              <p className="muted small">
-                Ask about the NASA experiments, for example “What happened in FLEX tests near the lunar atmosphere?”. Answers cite their
-                sources, or say when something is not in the PSI data. AI-generated, so check the sources.
-              </p>
+              <>
+                <p className="muted small">
+                  Ask a question about the NASA experiments in plain English. Answers use only the data on this site and cite their sources, or
+                  say &ldquo;Not in the PSI data we loaded.&rdquo; AI-generated, so check the sources.
+                </p>
+                <div className="chat-starters" aria-label="Example questions">
+                  {STARTERS.map((q) => (
+                    <button key={q} type="button" className="chip" onClick={() => void ask(q)}>
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
             {entries.map((m, i) => (
               <div key={i} className={`msg ${m.role}${m.failed ? " failed" : ""}`}>
@@ -68,7 +95,7 @@ export default function ChatPanel() {
                   <p className="chips">
                     {m.sources.map((s) => {
                       const href = sourceHref(s);
-                      const label = s.file ? `${s.file}${s.row ? ` · row ${s.row}` : ""}` : s.id;
+                      const label = sourceLabel(s);
                       const external = href?.startsWith("http");
                       return href ? (
                         external ? (

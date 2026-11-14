@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import MiniSearch from "minisearch";
 import { useEffect, useMemo, useState } from "react";
 import { downloadCsv, observationsToCsv } from "@/lib/csv";
 import { formatFlow, formatGeometry } from "@/lib/format";
+import { Term } from "@/components/InfoTip";
+import HowTo from "@/components/HowTo";
+import { OUTCOME_HELP, measureLabel } from "@/lib/glossary";
 import { loadInvestigations, loadObservations, loadSummaries } from "@/lib/data";
 import type { Investigation, Observation, Summary } from "@/lib/types";
 
@@ -34,7 +38,7 @@ function measurementsText(o: Observation): string {
   return Object.entries(o.measurements)
     .filter(([, v]) => typeof v === "number")
     .slice(0, 4)
-    .map(([k, v]) => `${k.replace(/_/g, " ")}: ${typeof v === "number" ? Math.round(v * 1000) / 1000 : v}`)
+    .map(([k, v]) => `${measureLabel(k)}: ${typeof v === "number" ? Math.round(v * 1000) / 1000 : v}`)
     .join(" · ");
 }
 
@@ -43,7 +47,8 @@ export default function InvestigationView({ id }: { id: string }) {
   const [rows, setRows] = useState<Observation[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") ?? ""); // evidence links open the page filtered to one test
   const [groupBy, setGroupBy] = useState<GroupBy>("none");
   const [shown, setShown] = useState(PAGE);
 
@@ -174,6 +179,13 @@ export default function InvestigationView({ id }: { id: string }) {
               ({filtered.length} of {rows.length})
             </span>
           </h2>
+          <HowTo title="How to read this table">
+            <ul>
+              <li>Each row is one test from NASA&apos;s published table. The <strong>source</strong> chip names the exact file and row, so any value can be checked.</li>
+              <li>Search by fuel, outcome or test id. <strong>Group by</strong> sorts the rows into sections. <strong>Download CSV</strong> saves whatever is showing, for your own analysis.</li>
+              <li>Dotted-underlined outcomes explain themselves when you hover or tap them. A dash means the table did not record that value.</li>
+            </ul>
+          </HowTo>
           <div className="toolbar">
             <label className="field grow">
               <span>Search</span>
@@ -224,9 +236,15 @@ export default function InvestigationView({ id }: { id: string }) {
                         <th>Pressure bar</th>
                         {hasGeometry && <th>Geometry</th>}
                         {hasFlow && <th>Flow</th>}
-                        <th>Outcome</th>
-                        <th>Measurements</th>
-                        <th>Source</th>
+                        <th>
+                          Outcome <Term k="outcome" />
+                        </th>
+                        <th>
+                          Measurements <Term k="measurements" />
+                        </th>
+                        <th>
+                          Source <Term k="source" align="right" />
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -242,7 +260,13 @@ export default function InvestigationView({ id }: { id: string }) {
                           {hasGeometry && <td>{formatGeometry(o.geometry) ?? "–"}</td>}
                           {hasFlow && <td>{formatFlow(o.flow) ?? "–"}</td>}
                           <td>
-                            {label(o.outcome)}
+                            {o.outcome ? (
+                              <span className="def" title={OUTCOME_HELP[o.outcome]}>
+                                {label(o.outcome)}
+                              </span>
+                            ) : (
+                              "–"
+                            )}
                             {o.censored && <span className="muted" title="Burn time is a lower bound"> (at least)</span>}
                           </td>
                           <td className="small">{measurementsText(o)}</td>

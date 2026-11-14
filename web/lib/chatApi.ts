@@ -40,7 +40,11 @@ export async function askChat(
 
 /** Where a source chip should link, or null for plain text. */
 export function sourceHref(s: ChatSource): string | null {
-  if (s.url) return s.url;
+  if (s.url) {
+    // an observation source opens the investigation filtered to that test
+    return s.type === "observation" && s.url.startsWith("/investigations/") ? `${s.url}?q=${encodeURIComponent(s.id)}` : s.url;
+  }
   const m = /^([A-Za-z]+-\d+)(-\d{4})?$/.exec(s.id);
-  return m ? `/investigations/${m[1]}` : null;
+  if (!m) return null;
+  return m[2] ? `/investigations/${m[1]}?q=${encodeURIComponent(s.id)}` : `/investigations/${m[1]}`;
 }

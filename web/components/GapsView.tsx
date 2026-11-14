@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Chart, type ChartDataset, type TooltipItem } from "chart.js/auto";
 import { loadInvestigations, loadObservations, loadScenarios } from "@/lib/data";
+import { Term } from "@/components/InfoTip";
 import { distance } from "@/lib/scoring";
 import { useTheme } from "@/lib/theme";
 import { useScenario } from "@/lib/scenarioStore";
@@ -188,6 +189,10 @@ export default function GapsView() {
 
       {!asTable && (
         <>
+          <p className="small muted">
+            <strong>How to read it:</strong> each dot is one NASA test, placed by its oxygen level (across) and pressure (up). Blue circles are FLEX droplet flames and orange
+            triangles are CFI-G gas flames. The gold diamond is your scenario, and ringed dots are tests close to it. Hover a dot for its details and source row.
+          </p>
           <div className="chart-box">
             <canvas ref={canvas} role="img" aria-label="Scatter chart of oxygen percent against pressure in bar for every PSI test" />
           </div>
@@ -200,7 +205,7 @@ export default function GapsView() {
                 </button>
               </li>
             ))}
-            <li><span className="swatch ring" /> Within d ≤ 1 of the scenario ({near.length})</li>
+            <li><span className="swatch ring" /> Close match: within 5 % O₂ and 0.1 bar ({near.length})</li>
             <li><span className="swatch diamond" /> Selected scenario</li>
           </ul>
         </>
@@ -213,8 +218,12 @@ export default function GapsView() {
             <tr>
               <th>Investigation</th>
               <th>Plotted tests</th>
-              <th>Tests with d ≤ 1</th>
-              <th>Closest test (d)</th>
+              <th>
+                Close matches <Term k="near" />
+              </th>
+              <th>
+                Closest test <Term k="distance" align="right" />
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -236,11 +245,11 @@ export default function GapsView() {
 
       {asTable && (
         <>
-          <h2>Tests within d ≤ 1</h2>
+          <h2>Close-match tests</h2>
           <div className="table-wrap">
             <table>
               <thead>
-                <tr><th>ID</th><th>O₂ %</th><th>Pressure bar</th><th>Outcome</th><th>d</th><th>Source</th></tr>
+                <tr><th>ID</th><th>O₂ %</th><th>Pressure bar</th><th>Outcome</th><th>Distance</th><th>Source</th></tr>
               </thead>
               <tbody>
                 {[...near].sort((a, b) => (a.d as number) - (b.d as number)).slice(0, 200).map((p) => (
@@ -259,7 +268,7 @@ export default function GapsView() {
 
       <p className="small muted">
         {unplotted} of {obs.length} tests are not plotted because they have no oxygen or pressure value (BASS and SAME-R tables
-        have no pressure column). d is the distance to the scenario, where 5 points of O₂ or 0.1 bar count as one unit.
+        have no pressure column). The distance score counts 5 points of O₂ or 0.1 bar as one step; a close match is within one step.
       </p>
       <p className="banner">PSI has no partial-gravity combustion data, so the Moon, Mars and rover scenarios cannot be matched on gravity.</p>
     </div>
