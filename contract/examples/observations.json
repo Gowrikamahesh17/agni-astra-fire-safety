@@ -1,0 +1,441 @@
+{
+ "contract_version": "2.0",
+ "items": [
+  {
+   "id": "PSI-69-0001",
+   "investigation_id": "PSI-69",
+   "flame_type": null,
+   "fuel": "methanol",
+   "fuel_raw": "Methanol",
+   "fuel_fraction_pct": 100.0,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": 1.69,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "droplet"
+   },
+   "o2_pct": 21.0,
+   "pressure_bar": 1.0102,
+   "co2_pct": 0.0,
+   "he_pct": 0.0,
+   "n2_pct": 79.0,
+   "flow": null,
+   "gravity": "micro",
+   "ignited": true,
+   "outcome": "disrupted",
+   "outcome_raw": "Disruption",
+   "censored": false,
+   "measurements": {
+    "test_number": "1",
+    "flex_identifier": "20CAL08",
+    "test_date": "3/5/2009",
+    "test_gmt": "17:22:03",
+    "pressure_mmhg": 757.7,
+    "droplet_d0_mm": 1.69,
+    "extinction_d_mm": 0.89,
+    "burning_rate_mm2_s": 0.52,
+    "burn_time_s": 4.3,
+    "burn_time_approx": false
+   },
+   "distance": {
+    "iss": 0.028,
+    "lunar_habitat": 3.5605,
+    "exploration_atm": 5.1556,
+    "pressurized_rover": 5.1556,
+    "mars_transit": 0.028,
+    "spacesuit": 17.3392
+   },
+   "source": {
+    "file": "PSI-69_Experimental table_FLEX.csv",
+    "row": 2
+   }
+  },
+  {
+   "id": "PSI-69-0024",
+   "investigation_id": "PSI-69",
+   "flame_type": null,
+   "fuel": "heptane",
+   "fuel_raw": "Heptane",
+   "fuel_fraction_pct": 100.0,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": null,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "droplet"
+   },
+   "o2_pct": 34.0,
+   "pressure_bar": 0.7237,
+   "co2_pct": 0.0,
+   "he_pct": 0.0,
+   "n2_pct": 66.0,
+   "flow": null,
+   "gravity": "micro",
+   "ignited": true,
+   "outcome": "disrupted",
+   "outcome_raw": "Disruption",
+   "censored": false,
+   "measurements": {
+    "test_number": "24",
+    "flex_identifier": "196F003",
+    "test_date": "10/24/09",
+    "test_gmt": "19:44:04",
+    "pressure_mmhg": 542.8,
+    "droplet_d0_mm": null,
+    "extinction_d_mm": null,
+    "burning_rate_mm2_s": null,
+    "burn_time_s": null,
+    "burn_time_approx": false
+   },
+   "distance": {
+    "iss": 3.8897,
+    "lunar_habitat": 0.8263,
+    "exploration_atm": 1.587,
+    "pressurized_rover": 1.587,
+    "mars_transit": 3.8897,
+    "spacesuit": 13.8756
+   },
+   "source": {
+    "file": "PSI-69_Experimental table_FLEX.csv",
+    "row": 25
+   }
+  },
+  {
+   "id": "PSI-69-0081",
+   "investigation_id": "PSI-69",
+   "flame_type": null,
+   "fuel": "heptane",
+   "fuel_raw": "Heptane",
+   "fuel_fraction_pct": 100.0,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": null,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "droplet"
+   },
+   "o2_pct": 13.0,
+   "pressure_bar": 1.0268,
+   "co2_pct": 0.0,
+   "he_pct": 0.0,
+   "n2_pct": 85.0,
+   "flow": null,
+   "gravity": "micro",
+   "ignited": true,
+   "outcome": "extinguished",
+   "outcome_raw": "Extinction",
+   "censored": false,
+   "measurements": {
+    "test_number": "81",
+    "flex_identifier": "207F002",
+    "test_date": "3/30/2010",
+    "test_gmt": "3:59:28",
+    "pressure_mmhg": 770.2,
+    "droplet_d0_mm": null,
+    "extinction_d_mm": null,
+    "burning_rate_mm2_s": null,
+    "burn_time_s": 1.5,
+    "burn_time_approx": false
+   },
+   "distance": {
+    "iss": 1.6059,
+    "lunar_habitat": 4.6952,
+    "exploration_atm": 6.2423,
+    "pressurized_rover": 6.2423,
+    "mars_transit": 1.6059,
+    "spacesuit": 18.8724
+   },
+   "source": {
+    "file": "PSI-69_Experimental table_FLEX.csv",
+    "row": 82
+   }
+  },
+  {
+   "id": "PSI-69-0040",
+   "investigation_id": "PSI-69",
+   "flame_type": null,
+   "fuel": "methanol",
+   "fuel_raw": "Methanol",
+   "fuel_fraction_pct": 100.0,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": 3.77,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "droplet"
+   },
+   "o2_pct": 30.0,
+   "pressure_bar": 0.7134,
+   "co2_pct": 0.0,
+   "he_pct": 0.0,
+   "n2_pct": 70.0,
+   "flow": null,
+   "gravity": "micro",
+   "ignited": true,
+   "outcome": "disrupted",
+   "outcome_raw": "Disruption",
+   "censored": false,
+   "measurements": {
+    "test_number": "40",
+    "flex_identifier": "219R001",
+    "test_date": "1/8/2010",
+    "test_gmt": "5:02:52",
+    "pressure_mmhg": 535.1,
+    "droplet_d0_mm": 3.77,
+    "extinction_d_mm": null,
+    "burning_rate_mm2_s": 0.62,
+    "burn_time_s": 19.2,
+    "burn_time_approx": false
+   },
+   "distance": {
+    "iss": 3.4951,
+    "lunar_habitat": 0.104,
+    "exploration_atm": 1.6859,
+    "pressurized_rover": 1.6859,
+    "mars_transit": 3.4951,
+    "spacesuit": 14.609
+   },
+   "source": {
+    "file": "PSI-69_Experimental table_FLEX.csv",
+    "row": 41
+   }
+  },
+  {
+   "id": "PSI-159-0001",
+   "investigation_id": "PSI-159",
+   "flame_type": "normal",
+   "fuel": "ethane",
+   "fuel_raw": "ethane",
+   "fuel_fraction_pct": 100.0,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": null,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "porous spherical burner"
+   },
+   "o2_pct": 39.39,
+   "pressure_bar": 0.9444,
+   "co2_pct": null,
+   "he_pct": null,
+   "n2_pct": null,
+   "flow": {
+    "value": 2.0,
+    "unit": "mg/s",
+    "kind": "mass_flow"
+   },
+   "gravity": "micro",
+   "ignited": true,
+   "outcome": "self_extinguished",
+   "outcome_raw": "SE",
+   "censored": false,
+   "measurements": {
+    "test": "21088A1",
+    "day": 1.0,
+    "burn_time_s": 50.0,
+    "peak_burner_t_c": 290.617198,
+    "hot_ignition": "yes",
+    "tfp": "no",
+    "adiabatic_flame_t_k": 2719.323211,
+    "stoich_mixture_fraction": 0.102651783,
+    "comments": null,
+    "xf_burner": 1.0,
+    "o2_after_pct": 38.982,
+    "fuel_flow_mg_s": 2.0,
+    "cool_flame": null
+   },
+   "distance": {
+    "iss": 3.7414,
+    "lunar_habitat": 3.0585,
+    "exploration_atm": 3.9442,
+    "pressurized_rover": 3.9442,
+    "mars_transit": 3.7414,
+    "spacesuit": 13.7472
+   },
+   "source": {
+    "file": "PSI-159_Experimental table_CFI-G_Normal Flames.csv",
+    "row": 2
+   }
+  },
+  {
+   "id": "PSI-159-0010",
+   "investigation_id": "PSI-159",
+   "flame_type": "normal",
+   "fuel": "ethane",
+   "fuel_raw": "ethane",
+   "fuel_fraction_pct": 100.0,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": null,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "porous spherical burner"
+   },
+   "o2_pct": 36.455,
+   "pressure_bar": 0.9444,
+   "co2_pct": null,
+   "he_pct": null,
+   "n2_pct": null,
+   "flow": {
+    "value": 1.0,
+    "unit": "mg/s",
+    "kind": "mass_flow"
+   },
+   "gravity": "micro",
+   "ignited": true,
+   "outcome": "sustained_until_stopped",
+   "outcome_raw": "FT",
+   "censored": true,
+   "measurements": {
+    "test": "21088 H2",
+    "day": 1.0,
+    "burn_time_s": 127.0,
+    "peak_burner_t_c": 421.915051,
+    "hot_ignition": "yes",
+    "tfp": "yes",
+    "adiabatic_flame_t_k": 2616.399176,
+    "stoich_mixture_fraction": 0.170339735,
+    "comments": null,
+    "xf_burner": 0.5,
+    "o2_after_pct": 35.898,
+    "fuel_flow_mg_s": 1.0,
+    "cool_flame": null
+   },
+   "distance": {
+    "iss": 3.1662,
+    "lunar_habitat": 2.7375,
+    "exploration_atm": 3.8256,
+    "pressurized_rover": 3.8256,
+    "mars_transit": 3.1662,
+    "spacesuit": 14.2675
+   },
+   "source": {
+    "file": "PSI-159_Experimental table_CFI-G_Normal Flames.csv",
+    "row": 11
+   }
+  },
+  {
+   "id": "PSI-159-0180",
+   "investigation_id": "PSI-159",
+   "flame_type": "inverse",
+   "fuel": "ethane",
+   "fuel_raw": "ethane",
+   "fuel_fraction_pct": 29.81,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": null,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "porous spherical burner"
+   },
+   "o2_pct": 21.0,
+   "pressure_bar": 1.1,
+   "co2_pct": null,
+   "he_pct": null,
+   "n2_pct": null,
+   "flow": {
+    "value": 5.59,
+    "unit": "mg/s",
+    "kind": "mass_flow"
+   },
+   "gravity": "micro",
+   "ignited": false,
+   "outcome": "no_ignition",
+   "outcome_raw": "-",
+   "censored": false,
+   "measurements": {
+    "test": "21196 A1",
+    "day": 1.0,
+    "burn_time_s": 0.0,
+    "peak_burner_t_c": 27.1,
+    "hot_ignition": "no",
+    "tfp": "no",
+    "adiabatic_flame_t_k": 2120.0,
+    "stoich_mixture_fraction": 0.1665,
+    "comments": "Failed to ignite",
+    "xf_after_pct": 29.81,
+    "fuel_burn_rate_mg_s": 1.5,
+    "o2_flow_mg_s": 5.59,
+    "color": "-"
+   },
+   "distance": {
+    "iss": 0.87,
+    "lunar_habitat": 4.359,
+    "exploration_atm": 5.9483,
+    "pressurized_rover": 5.9483,
+    "mars_transit": 0.87,
+    "spacesuit": 17.728
+   },
+   "source": {
+    "file": "PSI-159_Experimental table_CFI-G_Inverse Flames.csv",
+    "row": 2
+   }
+  },
+  {
+   "id": "PSI-159-0181",
+   "investigation_id": "PSI-159",
+   "flame_type": "inverse",
+   "fuel": "ethane",
+   "fuel_raw": "ethane",
+   "fuel_fraction_pct": 29.81,
+   "material": null,
+   "geometry": {
+    "shape": "sphere",
+    "diameter_mm": null,
+    "thickness_mm": null,
+    "width_mm": null,
+    "raw": "porous spherical burner"
+   },
+   "o2_pct": 21.0,
+   "pressure_bar": 1.1,
+   "co2_pct": null,
+   "he_pct": null,
+   "n2_pct": null,
+   "flow": {
+    "value": 5.59,
+    "unit": "mg/s",
+    "kind": "mass_flow"
+   },
+   "gravity": "micro",
+   "ignited": true,
+   "outcome": "sustained_until_stopped",
+   "outcome_raw": "FT",
+   "censored": true,
+   "measurements": {
+    "test": "21196 A2",
+    "day": 1.0,
+    "burn_time_s": 35.0,
+    "peak_burner_t_c": 162.9,
+    "hot_ignition": "yes",
+    "tfp": "no",
+    "adiabatic_flame_t_k": 2120.0,
+    "stoich_mixture_fraction": 0.1665,
+    "comments": null,
+    "xf_after_pct": 29.543,
+    "fuel_burn_rate_mg_s": 1.5,
+    "o2_flow_mg_s": 5.59,
+    "color": "yellow"
+   },
+   "distance": {
+    "iss": 0.87,
+    "lunar_habitat": 4.359,
+    "exploration_atm": 5.9483,
+    "pressurized_rover": 5.9483,
+    "mars_transit": 0.87,
+    "spacesuit": 17.728
+   },
+   "source": {
+    "file": "PSI-159_Experimental table_CFI-G_Inverse Flames.csv",
+    "row": 3
+   }
+  }
+ ]
+}

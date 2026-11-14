@@ -1,0 +1,36 @@
+{
+ "contract_version": "2.0",
+ "items": [
+  {
+   "investigation_id": "PSI-69",
+   "text": "Example only. 17 FLEX droplet tests ran near the lunar-habitat atmosphere and none ended in extinction.",
+   "cites": [
+    "PSI-69-0024"
+   ],
+   "model": "example",
+   "generated_at": "2026-11-14T00:00:00+00:00",
+   "prompt_version": "example",
+   "verified": false
+  },
+  {
+   "investigation_id": "PSI-159",
+   "text": "Example only. CFI-G burned ethane, propane and butane flames up to 85 % O2.",
+   "cites": [
+    "PSI-159-0180"
+   ],
+   "model": "example",
+   "generated_at": "2026-11-14T00:00:00+00:00",
+   "prompt_version": "example",
+   "verified": false
+  },
+  {
+   "investigation_id": "PSI-98",
+   "text": null,
+   "cites": [],
+   "model": null,
+   "generated_at": null,
+   "prompt_version": null,
+   "verified": false
+  }
+ ]
+}

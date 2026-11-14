@@ -1,0 +1,346 @@
+{
+ "contract_version": "2.0",
+ "name": "cfig_self_extinction",
+ "task": "classification",
+ "target": "self_extinguished",
+ "positive_label": "self_extinguished",
+ "features": [
+  "o2_pct",
+  "pressure_bar",
+  "fuel_fraction_pct",
+  "fuel",
+  "flame_type"
+ ],
+ "categories": {
+  "fuel": [
+   "butane",
+   "ethane",
+   "propane"
+  ],
+  "flame_type": [
+   "inverse",
+   "normal"
+  ]
+ },
+ "mean": {
+  "o2_pct": 47.80143382352941,
+  "pressure_bar": 1.5379617647058823,
+  "fuel_fraction_pct": 30.39627941176471,
+  "fuel=butane": 0.0,
+  "fuel=ethane": 0.0,
+  "fuel=propane": 0.0,
+  "flame_type=inverse": 0.0,
+  "flame_type=normal": 0.0
+ },
+ "std": {
+  "o2_pct": 25.07225024442661,
+  "pressure_bar": 0.9148996760782365,
+  "fuel_fraction_pct": 26.005906682761847,
+  "fuel=butane": 1.0,
+  "fuel=ethane": 1.0,
+  "fuel=propane": 1.0,
+  "flame_type=inverse": 1.0,
+  "flame_type=normal": 1.0
+ },
+ "weights": {
+  "o2_pct": 0.19709489607523442,
+  "pressure_bar": 0.7695761723393116,
+  "fuel_fraction_pct": -0.35290139212746613,
+  "fuel=butane": -0.42050947277477685,
+  "fuel=ethane": 0.0898298706584015,
+  "fuel=propane": 0.3278478571213178,
+  "flame_type=inverse": -0.9166001026242004,
+  "flame_type=normal": 0.9137683576291383
+ },
+ "bias": 0.2366916389527084,
+ "valid_range": {
+  "o2_pct": [
+   13.5,
+   85.0
+  ],
+  "pressure_bar": [
+   0.4954,
+   3.3099
+  ],
+  "fuel_fraction_pct": [
+   5.648,
+   100.0
+  ]
+ },
+ "metrics": {
+  "n_rows": 272,
+  "cv_folds": 5,
+  "balanced_accuracy": 0.6789,
+  "roc_auc": 0.7341,
+  "baseline_balanced_accuracy": 0.5
+ },
+ "fixtures": [
+  {
+   "input": {
+    "o2_pct": 20.97,
+    "pressure_bar": 0.5067,
+    "fuel_fraction_pct": 50.0,
+    "fuel": "butane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.3510442902,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 38.961,
+    "pressure_bar": 2.0266,
+    "fuel_fraction_pct": 30.0,
+    "fuel": "butane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.7458984,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 38.87,
+    "pressure_bar": 0.5067,
+    "fuel_fraction_pct": 30.0,
+    "fuel": "ethane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.5763973767,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 39.78,
+    "pressure_bar": 1.0133,
+    "fuel_fraction_pct": 30.0,
+    "fuel": "butane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.5574814722,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 50.0,
+    "pressure_bar": 2.2066,
+    "fuel_fraction_pct": 8.913,
+    "fuel": "propane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.6269566441,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 15.0,
+    "pressure_bar": 1.1033,
+    "fuel_fraction_pct": 28.834,
+    "fuel": "ethane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.2328384243,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 85.0,
+    "pressure_bar": 1.1033,
+    "fuel_fraction_pct": 20.439,
+    "fuel": "propane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.4279699016,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 21.159,
+    "pressure_bar": 1.0133,
+    "fuel_fraction_pct": 100.0,
+    "fuel": "propane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.4707882573,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 85.0,
+    "pressure_bar": 0.5516,
+    "fuel_fraction_pct": 24.0,
+    "fuel": "ethane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.2610444383,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 40.0,
+    "pressure_bar": 3.3099,
+    "fuel_fraction_pct": 5.709,
+    "fuel": "butane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.6601008987,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 85.0,
+    "pressure_bar": 3.3099,
+    "fuel_fraction_pct": 7.995,
+    "fuel": "propane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.8500290052,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 85.0,
+    "pressure_bar": 0.5516,
+    "fuel_fraction_pct": 14.06,
+    "fuel": "butane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.1952893917,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 50.0,
+    "pressure_bar": 2.2066,
+    "fuel_fraction_pct": 8.68,
+    "fuel": "butane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.4437361094,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 34.081,
+    "pressure_bar": 0.5067,
+    "fuel_fraction_pct": 30.0,
+    "fuel": "ethane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.5671800076,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 21.0,
+    "pressure_bar": 0.5516,
+    "fuel_fraction_pct": 20.457,
+    "fuel": "ethane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.183086066,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 85.0,
+    "pressure_bar": 2.2066,
+    "fuel_fraction_pct": 8.927,
+    "fuel": "propane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.6887175326,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 85.0,
+    "pressure_bar": 2.2066,
+    "fuel_fraction_pct": 8.688,
+    "fuel": "butane",
+    "flame_type": "inverse"
+   },
+   "expected": {
+    "value": 0.5122516411,
+    "out_of_range": []
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 128.5,
+    "pressure_bar": 0.5067,
+    "fuel_fraction_pct": 50.0,
+    "fuel": "butane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.5574574513,
+    "out_of_range": [
+     "o2_pct"
+    ]
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 20.97,
+    "pressure_bar": 0.5067,
+    "fuel_fraction_pct": 4.648,
+    "fuel": "butane",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.5002441818,
+    "out_of_range": [
+     "fuel_fraction_pct"
+    ]
+   }
+  },
+  {
+   "input": {
+    "o2_pct": 20.97,
+    "pressure_bar": 0.5067,
+    "fuel_fraction_pct": 50.0,
+    "fuel": "unknown",
+    "flame_type": "normal"
+   },
+   "expected": {
+    "value": 0.4516657578,
+    "out_of_range": [
+     "fuel"
+    ]
+   }
+  }
+ ],
+ "trained_at": "2026-11-14T11:32:35+00:00"
+}

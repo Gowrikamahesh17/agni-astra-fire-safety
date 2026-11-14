@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "observation.schema.json",
+  "title": "observations.json",
+  "type": "object",
+  "required": ["contract_version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "2.0" },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/observation" } }
+  },
+  "$defs": {
+    "num": { "type": ["number", "null"] },
+    "geometry": {
+      "type": "object",
+      "required": ["shape", "diameter_mm", "thickness_mm", "width_mm", "raw"],
+      "additionalProperties": false,
+      "properties": {
+        "shape": { "enum": ["rod", "film", "sheet", "sphere", "slab", "fabric", null] },
+        "diameter_mm": { "$ref": "#/$defs/num" },
+        "thickness_mm": { "$ref": "#/$defs/num" },
+        "width_mm": { "$ref": "#/$defs/num" },
+        "raw": { "type": ["string", "null"] }
+      }
+    },
+    "flow": {
+      "type": ["object", "null"],
+      "required": ["value", "unit", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "$ref": "#/$defs/num" },
+        "unit": { "type": ["string", "null"] },
+        "kind": { "enum": ["velocity", "mass_flow", "device_setting"] }
+      }
+    },
+    "outcome": {
+      "enum": [
+        "extinguished", "disrupted", "burned_to_completion",
+        "self_extinguished", "sustained_until_stopped", "no_ignition", null
+      ]
+    },
+    "observation": {
+      "type": "object",
+      "required": [
+        "id", "investigation_id", "flame_type", "fuel", "fuel_raw", "fuel_fraction_pct",
+        "material", "geometry", "o2_pct", "pressure_bar", "co2_pct", "he_pct", "n2_pct", "flow",
+        "gravity", "ignited", "outcome", "outcome_raw", "censored", "measurements", "distance",
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z]+-[0-9]+-[0-9]{4}$" },
+        "investigation_id": { "type": "string", "minLength": 1 },
+        "flame_type": { "enum": ["normal", "inverse", null] },
+        "fuel": { "type": ["string", "null"] },
+        "fuel_raw": { "type": ["string", "null"] },
+        "fuel_fraction_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "material": { "type": ["string", "null"] },
+        "geometry": { "$ref": "#/$defs/geometry" },
+        "o2_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "pressure_bar": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+        "co2_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "he_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "n2_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "flow": { "$ref": "#/$defs/flow" },
+        "gravity": { "const": "micro" },
+        "ignited": { "type": ["boolean", "null"] },
+        "outcome": { "$ref": "#/$defs/outcome" },
+        "outcome_raw": { "type": ["string", "null"] },
+        "censored": { "type": "boolean" },
+        "measurements": {
+          "type": "object",
+          "additionalProperties": { "type": ["number", "string", "boolean", "null"] }
+        },
+        "distance": {
+          "type": "object",
+          "additionalProperties": { "type": ["number", "null"], "minimum": 0 }
+        },
+        "source": {
+          "type": "object",
+          "required": ["file", "row"],
+          "additionalProperties": false,
+          "properties": {
+            "file": { "type": "string", "minLength": 1 },
+            "row": { "type": "integer", "minimum": 2 }
+          }
+        }
+      }
+    }
+  }
+}

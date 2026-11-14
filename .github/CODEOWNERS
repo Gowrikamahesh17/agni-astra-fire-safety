@@ -1,0 +1,18 @@
+/web/ @person-a
+/data/ @person-b
+/ai/ @person-c
+/contract/ @person-a @person-b @person-c
+/docs/ @person-b
+/docs/demo/ @person-c
+/docs/ai-disclosure.md @person-c
+/web/app/api/chat/ @person-c
+/web/lib/chat/ @person-c
+/web/lib/predict.ts @person-b
+/web/lib/predict.test.ts @person-b
+/web/public/data/investigations.json @person-b
+/web/public/data/observations.json @person-b
+/web/public/data/scenarios.json @person-b
+/web/public/data/models/ @person-b
+/web/public/data/summaries.json @person-c
+/web/public/data/implications.json @person-c
+/web/public/data/search-docs.json @person-c
