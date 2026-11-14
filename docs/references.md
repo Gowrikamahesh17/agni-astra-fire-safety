@@ -25,7 +25,15 @@ NASA Space Apps Challenge 2026, Flame in Freefall: https://www.spaceappschalleng
 | Saffire-I, II, III | PSI-98, PSI-99, PSI-100 (to verify) | https://psi.nasa.gov/physci/repo/data/investigations/PSI-98 and following; https://www.nasa.gov/wp-content/uploads/2025/07/spacecraft-fire-safety-demonstration-saffire.pdf |
 | SAME | PSI-102 (to verify) | https://psi.nasa.gov/physci/repo/data/investigations/PSI-102 |
 | ACME: BRE, s-Flame, Flame Design, CLD Flame, E-FIELD Flames | not in PSI | https://science.nasa.gov/mission/acme |
-| DAFT | not in PSI | NASA Glenn status reports and NTRS (link to confirm) |
+| DAFT | no PSI listing found (the PSI search page needs a browser, so confirm there) | W. A. Sheredy, "Fundamental Research Applied To Enable Hardware Performance in Microgravity", Research and Technology 2004, NASA Glenn, 2005: https://ntrs.nasa.gov/citations/20050215648 |
+
+## Other NASA sources used
+
+| Source | Used for |
+| --- | --- |
+| Choi, M. Y., Avedisian, C. T., et al. *Detailed Results from the Flame Extinguishment Experiment (FLEX) March 2009 to December 2011*, NASA/TP-2015-216046, Nov 2015. https://ntrs.nasa.gov/citations/20150023456 | Confirms that the FLEX `CO` column is CO2 (Appendix A, Table IX) |
+| Siders, B., et al. *Effects of Mild Hypobaric Hypoxia on Response From Mild Exercise in NASA Exploration Atmosphere Tests*, AsMA 94th Annual Scientific Meeting, May 2024. https://ntrs.nasa.gov/citations/20230015594 | Definition of the exploration atmosphere: 56.5 kPa (8.2 psia), 34 % O2, 66 % N2, described as an alternate habitat atmosphere the study aims to validate |
+| Sanders, R., Ray, K., Law, J., Reyes, D. *Medical Lessons Learned from the Exploration Atmospheres Study*, AsMA 2023. https://ntrs.nasa.gov/citations/20220015741 | Describes 8.2 psia / 34 % O2 as a proposed alternative cabin environment for future habitats and planetary EVAs |
 
 ## Software
 

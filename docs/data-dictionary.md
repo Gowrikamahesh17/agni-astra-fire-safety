@@ -54,7 +54,7 @@ BASS-II, BASS and SAME-R have no outcome column, so `outcome` is `null`.
 
 ### FLEX (PSI-69)
 
-- Columns `O`, `N`, `CO`, `He` are O2, N2, **CO2** and He. Subscripts were lost in the export; CO values up to 0.70 mole fraction only fit the CO2 diluent. To confirm against the PSI description.
+- Columns `O`, `N`, `CO`, `He` are O2, N2, **CO2** and He. Subscripts were lost in the export. Confirmed against NASA's own report on these tests (NASA/TP-2015-216046, Appendix A, Table IX), whose column heading "Initial ambient composition, mole fraction" lists O2, N2, **CO2**, He, and whose first rows match this CSV (FLEX-001: 757.7 mmHg, 0.21 O2, 0.79 N2, droplet 1.69 mm, extinction diameter 0.89 mm, burning rate 0.52 mm2/s, burn time 4.3 s, Disruption). The PSI-69 web page itself could not be read automatically (it needs a browser).
 - One row has pressure `0`; it is stored as `null` and left out of models and charts.
 - Some cells contain a mis-encoded character (U+FFFD), mostly in the extinction diameter of disrupted tests. Stored as `null`.
 - `Burn time` values like `~6` are stored as 6 with `measurements.burn_time_approx = true`.
