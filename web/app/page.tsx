@@ -24,6 +24,28 @@ export default function Home() {
           atmosphere. None ended in extinction.
         </p>
       </section>
+      <section aria-labelledby="earth-heading">
+        <h2 id="earth-heading">Why it matters on Earth</h2>
+        <p className="muted">
+          Studying flames without gravity strips away buoyancy, so the basics of how fires start, spread and go out show up clearly.
+          That kind of research can inform fire safety here too.
+        </p>
+        <ul className="earth">
+          <li>
+            <h3>Extinguishers</h3>
+            <p>Learning how fine water mist and gas diluents put flames out can guide cleaner, lower-waste extinguishing agents.</p>
+          </li>
+          <li>
+            <h3>Smoke detection</h3>
+            <p>Studying how smoke forms and moves without gravity can help detectors sense fires earlier and with fewer false alarms.</p>
+          </li>
+          <li>
+            <h3>Firefighter gear</h3>
+            <p>Better knowledge of how materials ignite and burn can feed into safer protective clothing and equipment.</p>
+          </li>
+        </ul>
+        <p className="small muted">General context only. None of these applications are measured in the PSI tables used on this site.</p>
+      </section>
     </>
   );
 }

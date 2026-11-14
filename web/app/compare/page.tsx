@@ -1,8 +1,16 @@
+import { Suspense } from "react";
+import CompareView from "@/components/CompareView";
+
 export default function Page() {
   return (
     <section>
       <h1>Compare</h1>
-      <p className="muted">Coming soon.</p>
+      <p className="muted">
+        Put two or three investigations side by side: what they tested, with which hardware and sensors, and where they differ.
+      </p>
+      <Suspense fallback={<p className="muted">Loading…</p>}>
+        <CompareView />
+      </Suspense>
     </section>
   );
 }
