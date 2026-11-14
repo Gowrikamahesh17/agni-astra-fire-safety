@@ -25,6 +25,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <header className="site-header">
           <div className="container">
             <Link href="/" className="brand">
@@ -39,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </nav>
           </div>
         </header>
-        <main className="container">{children}</main>
+        <main id="main" className="container" tabIndex={-1}>{children}</main>
         <footer className="site-footer">
           <div className="container">
             Data: NASA Physical Sciences Informatics (PSI), CC0-1.0. AI-generated content is labelled.
