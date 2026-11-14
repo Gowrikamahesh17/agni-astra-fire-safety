@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { MODEL_NAMES, loadModel, loadScenarios, type ModelName } from "@/lib/data";
 import { predict, type ModelInput, type ModelSpec } from "@/lib/predict";
+import { useScenario } from "@/lib/scenarioStore";
 import type { Scenario } from "@/lib/types";
 
 const MODELS: Record<ModelName, { title: string; question: string; unit?: string }> = {
@@ -46,6 +47,7 @@ export default function PredictView() {
   const [model, setModel] = useState<ModelSpec | null>(null);
   const [input, setInput] = useState<ModelInput>({});
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
+  const { scenarioId, customO2, customP } = useScenario();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -72,13 +74,15 @@ export default function PredictView() {
 
   if (error) return <p role="alert">Could not load the model: {error}</p>;
 
-  const applyScenario = (id: string) => {
-    const s = scenarios.find((x) => x.id === id);
-    if (!s || !ready) return;
+  const shared = scenarios.find((x) => x.id === scenarioId);
+  const sharedO2 = scenarioId === "custom" ? customO2 : (shared?.o2_pct ?? null);
+  const sharedP = scenarioId === "custom" ? customP : (shared?.pressure_bar ?? null);
+  const applyScenario = () => {
+    if (!ready) return;
     setInput((cur) => ({
       ...cur,
-      ...(ready.features.includes("o2_pct") && s.o2_pct != null ? { o2_pct: s.o2_pct } : {}),
-      ...(ready.features.includes("pressure_bar") && s.pressure_bar != null ? { pressure_bar: s.pressure_bar } : {}),
+      ...(ready.features.includes("o2_pct") && sharedO2 != null ? { o2_pct: sharedO2 } : {}),
+      ...(ready.features.includes("pressure_bar") && sharedP != null ? { pressure_bar: sharedP } : {}),
     }));
   };
 
@@ -103,19 +107,10 @@ export default function PredictView() {
 
         {ready && (
           <>
-            <label className="field">
-              <span>Fill from scenario</span>
-              <select value="" onChange={(e) => applyScenario(e.target.value)}>
-                <option value="">Choose…</option>
-                {scenarios
-                  .filter((s) => s.id !== "custom")
-                  .map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-              </select>
-            </label>
+            <button type="button" className="chip" onClick={applyScenario} disabled={sharedO2 == null || sharedP == null}>
+              Use selected scenario: {scenarioId === "custom" ? "Custom" : (shared?.name ?? "…")}
+            </button>
+            <p className="small muted">Sets oxygen and pressure. Change the scenario on the Dashboard or Evidence gaps page.</p>
             <h2>Inputs</h2>
             {ready.features.map((f) => {
               const { label, unit } = feat(f);

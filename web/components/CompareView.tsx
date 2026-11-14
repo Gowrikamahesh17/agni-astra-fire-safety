@@ -133,7 +133,9 @@ export default function CompareView() {
                   <tr key={name}>
                     <th scope="row">{name}</th>
                     {chosen.map((i) => (
-                      <td key={i.id}>{get(i)}</td>
+                      <td key={i.id} data-label={i.short_name ?? i.id}>
+                        {get(i)}
+                      </td>
                     ))}
                   </tr>
                 ))}

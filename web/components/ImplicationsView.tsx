@@ -4,12 +4,16 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { loadImplications, loadScenarios } from "@/lib/data";
 import { PILLARS, byPillar, evidenceHref, visibleImplications } from "@/lib/implications";
+import { useScenario } from "@/lib/scenarioStore";
 import type { Implication, Scenario, ScenarioId } from "@/lib/types";
 
 export default function ImplicationsView() {
   const [items, setItems] = useState<Implication[] | null>(null);
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
-  const [scenario, setScenario] = useState<ScenarioId | null>(null);
+  const { scenarioId, setScenarioId } = useScenario();
+  const [showAll, setShowAll] = useState(true);
+  // The custom scenario has no written statements, so it shows everything.
+  const scenario: ScenarioId | null = showAll || scenarioId === "custom" ? null : scenarioId;
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -30,11 +34,14 @@ export default function ImplicationsView() {
   return (
     <div>
       <div className="chips" role="group" aria-label="Filter by scenario">
-        <button type="button" className="chip" aria-pressed={scenario === null} onClick={() => setScenario(null)}>
+        <button type="button" className="chip" aria-pressed={scenario === null} onClick={() => setShowAll(true)}>
           All scenarios
         </button>
         {scenarios.map((s) => (
-          <button key={s.id} type="button" className="chip" aria-pressed={scenario === s.id} onClick={() => setScenario(s.id)}>
+          <button key={s.id} type="button" className="chip" aria-pressed={scenario === s.id} onClick={() => {
+              setScenarioId(s.id);
+              setShowAll(false);
+            }}>
             {s.name}
           </button>
         ))}

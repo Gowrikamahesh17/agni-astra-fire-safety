@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { loadInvestigations, loadObservations, loadScenarios } from "@/lib/data";
 import { DEFAULT_WEIGHTS, componentFor, siteScore, type Weights } from "@/lib/scoring";
+import { useScenario } from "@/lib/scenarioStore";
 import type { Investigation, Observation, Role, Scenario, ScenarioId } from "@/lib/types";
 
 const ROLES: { id: Role; label: string }[] = [
@@ -20,11 +21,10 @@ export default function Dashboard() {
   const [observations, setObservations] = useState<Observation[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const [scenarioId, setScenarioId] = useState<ScenarioId>("lunar_habitat");
-  const [customO2, setCustomO2] = useState(30);
-  const [customP, setCustomP] = useState(0.7);
+  const { scenarioId, customO2, customP, setScenarioId, setCustomO2, setCustomP } = useScenario();
   const [weights, setWeights] = useState<Weights>(DEFAULT_WEIGHTS);
   const [roles, setRoles] = useState<Role[]>([]);
+  const [picked, setPicked] = useState<string[]>([]);
 
   useEffect(() => {
     Promise.all([loadInvestigations(), loadScenarios()])
@@ -76,6 +76,9 @@ export default function Dashboard() {
     rows.sort((a, b) => b.score - a.score);
     return rows;
   }, [investigations, roles, isCustom, byInvestigation, customO2, customP, scenarioId, weights]);
+
+  const togglePick = (id: string) =>
+    setPicked((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : cur.length >= 3 ? cur : [...cur, id]));
 
   const toggleRole = (r: Role) =>
     setRoles((cur) => (cur.includes(r) ? cur.filter((x) => x !== r) : [...cur, r]));
@@ -181,9 +184,33 @@ export default function Dashboard() {
                   <dd>{inv.has_table ? comp.n_near : "–"}</dd>
                 </div>
               </dl>
+              <label className="compare-pick">
+                <input
+                  type="checkbox"
+                  checked={picked.includes(inv.id)}
+                  disabled={!picked.includes(inv.id) && picked.length >= 3}
+                  onChange={() => togglePick(inv.id)}
+                />
+                Compare {inv.short_name ?? inv.id}
+              </label>
             </li>
           ))}
         </ol>
+        {picked.length > 0 && (
+          <div className="compare-bar" role="region" aria-label="Compare selection">
+            <span>{picked.length} selected (max 3)</span>
+            {picked.length >= 2 ? (
+              <Link className="button" href={`/compare?ids=${picked.join(",")}`}>
+                Compare
+              </Link>
+            ) : (
+              <span className="muted small">Pick one more to compare</span>
+            )}
+            <button type="button" className="link-button" onClick={() => setPicked([])}>
+              Clear
+            </button>
+          </div>
+        )}
         {ranked.length === 0 && <p className="muted">No investigations match this focus.</p>}
       </section>
     </div>
