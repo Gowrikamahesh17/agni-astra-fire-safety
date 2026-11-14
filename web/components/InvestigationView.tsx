@@ -3,6 +3,7 @@
 import Link from "next/link";
 import MiniSearch from "minisearch";
 import { useEffect, useMemo, useState } from "react";
+import { downloadCsv, observationsToCsv } from "@/lib/csv";
 import { loadInvestigations, loadObservations, loadSummaries } from "@/lib/data";
 import type { Investigation, Observation, Summary } from "@/lib/types";
 
@@ -190,6 +191,14 @@ export default function InvestigationView({ id }: { id: string }) {
                 <option value="o2_band">O₂ band</option>
               </select>
             </label>
+            <button
+              type="button"
+              className="chip"
+              disabled={filtered.length === 0}
+              onClick={() => downloadCsv(`${inv.id}-filtered-tests.csv`, observationsToCsv(filtered))}
+            >
+              Download CSV ({filtered.length})
+            </button>
           </div>
 
           {visible.map(([name, slice, total]) => {

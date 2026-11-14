@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ChatPanel from "@/components/ChatPanel";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             Built by BrahmAstra Analytics for NASA Space Apps Challenge 2026.
           </div>
         </footer>
+        <ChatPanel />
       </body>
     </html>
   );
