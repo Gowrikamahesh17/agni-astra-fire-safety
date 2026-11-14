@@ -1,17 +1,15 @@
 import { Suspense } from "react";
+import InvestigationView from "@/components/InvestigationView";
 
-async function Investigation({ params }: { params: Promise<{ id: string }> }) {
+async function Loaded({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return <h1>Investigation {id}</h1>;
+  return <InvestigationView id={decodeURIComponent(id)} />;
 }
 
 export default function Page({ params }: PageProps<"/investigations/[id]">) {
   return (
-    <section>
-      <Suspense fallback={<h1>Investigation</h1>}>
-        <Investigation params={params} />
-      </Suspense>
-      <p className="muted">Coming soon.</p>
-    </section>
+    <Suspense fallback={<p className="muted">Loading…</p>}>
+      <Loaded params={params} />
+    </Suspense>
   );
 }

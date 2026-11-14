@@ -10,3 +10,18 @@ describe("siteScore", () => {
     expect(siteScore({ proximity: null, relevance: 100, usability: 100 })).toBeCloseTo(50);
   });
 });
+
+import { componentFor, distance } from "./scoring";
+
+describe("custom scenario", () => {
+  it("distance is 1 at 5 points O2 or 0.1 bar", () => {
+    expect(distance(26, 1, 21, 1)).toBeCloseTo(1);
+    expect(distance(21, 1.1, 21, 1)).toBeCloseTo(1);
+  });
+  it("proximity is 100 at d=0 and 0 at d>=3; skips rows without values", () => {
+    expect(componentFor([{ o2_pct: 21, pressure_bar: 1 }], 21, 1).proximity).toBe(100);
+    expect(componentFor([{ o2_pct: 36, pressure_bar: 1 }], 21, 1).proximity).toBe(0);
+    const c = componentFor([{ o2_pct: null, pressure_bar: 1 }], 21, 1);
+    expect(c).toEqual({ proximity: null, n_near: 0, d_min: null });
+  });
+});
