@@ -148,7 +148,7 @@ export default function InvestigationView({ id }: { id: string }) {
         <p className="small muted">
           {inv.source_url && (
             <a href={inv.source_url} target="_blank" rel="noreferrer">
-              PSI page
+              {inv.psi_id ? "PSI page" : "NASA source page"}
             </a>
           )}
           {inv.doi && (

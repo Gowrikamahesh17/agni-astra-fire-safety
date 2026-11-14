@@ -27,7 +27,7 @@
    "o2_pct": 34.0,
    "pressure_bar": 0.565,
    "gravity": "0.16 g",
-   "note": "NASA exploration atmosphere, 34 % O2 at 8.2 psi. Source to be verified.",
+   "note": "NASA's proposed exploration atmosphere: 8.2 psia (56.5 kPa), 34 % O2, 66 % N2. Sources: NTRS 20230015594 and NTRS 20220015741.",
    "assumption": false,
    "gravity_note": "PSI has no partial-gravity combustion data. Results are microgravity only."
   },

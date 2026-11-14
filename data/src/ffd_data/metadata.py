@@ -208,7 +208,8 @@ INVESTIGATIONS = [
         "sensors": ["P-Trak particle counter", "Dust-Trak", "ionization smoke detector"],
         "measured_variables": ["particle number concentration", "dust mass concentration"],
         "psi_id": None,
-        "source_url": None,
+        # No PSI listing found; NASA Glenn's Research and Technology 2004 report describes DAFT.
+        "source_url": "https://ntrs.nasa.gov/citations/20050215648",
     },
     {
         "id": "ACME-BRE",
