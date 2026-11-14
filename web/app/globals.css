@@ -149,3 +149,9 @@ input.num[aria-invalid="true"] { border-color: #ff9b73; }
 }
 
 h1, h2, h3, p, dd { overflow-wrap: break-word; }
+
+/* Compare picks on the dashboard */
+.compare-pick { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; font-size: .85rem; cursor: pointer; }
+.compare-pick input { width: 18px; height: 18px; accent-color: var(--gold); }
+.compare-bar { position: sticky; bottom: 16px; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; background: var(--navy-2); border: 1px solid var(--gold); border-radius: 12px; padding: 10px 16px; margin: 16px 0; box-shadow: 0 4px 16px rgba(0,0,0,.4); }
+.compare-bar .button { padding: 8px 18px; }

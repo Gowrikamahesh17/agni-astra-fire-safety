@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useScenario } from "@/lib/scenarioStore";
 import { MAX_CHARS, askChat, sourceHref, type ChatMessage, type ChatSource } from "@/lib/chatApi";
 
 type Entry = ChatMessage & { sources?: ChatSource[]; refused?: boolean; failed?: boolean };
 
 export default function ChatPanel() {
   const [open, setOpen] = useState(false);
+  const { scenarioId } = useScenario();
   const [entries, setEntries] = useState<Entry[]>([]);
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -27,7 +29,7 @@ export default function ChatPanel() {
     setBusy(true);
     // Failed turns and error notes are not sent back to the model.
     const history = next.filter((m) => !m.failed).map(({ role, content }) => ({ role, content }));
-    const result = await askChat(history);
+    const result = await askChat(history, scenarioId === "custom" ? undefined : scenarioId);
     setBusy(false);
     setEntries((cur) =>
       result.ok

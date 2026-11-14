@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Chart, type ChartDataset, type TooltipItem } from "chart.js/auto";
 import { loadInvestigations, loadObservations, loadScenarios } from "@/lib/data";
 import { distance } from "@/lib/scoring";
+import { useScenario } from "@/lib/scenarioStore";
 import type { Investigation, Observation, Scenario, ScenarioId } from "@/lib/types";
 
 // Categorical slots 1 and 2, dark-mode steps (validated on the dark surface). Shape is the secondary encoding.
@@ -24,9 +25,7 @@ export default function GapsView() {
   const [obs, setObs] = useState<Observation[]>([]);
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [scenarioId, setScenarioId] = useState<ScenarioId>("lunar_habitat");
-  const [customO2, setCustomO2] = useState(30);
-  const [customP, setCustomP] = useState(0.7);
+  const { scenarioId, customO2, customP, setScenarioId, setCustomO2, setCustomP } = useScenario();
   const [asTable, setAsTable] = useState(false);
   const [hidden, setHidden] = useState<string[]>([]);
   const canvas = useRef<HTMLCanvasElement>(null);
