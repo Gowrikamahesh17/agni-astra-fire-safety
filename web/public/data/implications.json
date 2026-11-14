@@ -1,0 +1,185 @@
+{
+ "contract_version": "2.0",
+ "items": [
+  {
+   "id": "SUP-1",
+   "pillar": "suppression",
+   "statement": "Seventeen FLEX droplet tests at 30-34 % O₂ and 0.71-0.72 bar, matching the planned lunar habitat atmosphere of 30 % O₂ at 0.703 bar, resulted in 0 extinguished, 15 disrupted, and 2 burned to completion, with the flame never going out before the droplet was consumed or broke apart. In an atmosphere close to the planned lunar habitat, droplet flames did not go out by themselves, so a fire there should not be expected to self-extinguish and needs active suppression.",
+   "evidence": [
+    "PSI-69",
+    "PSI-69-0019",
+    "PSI-69-0020",
+    "PSI-69-0021",
+    "PSI-69-0022",
+    "PSI-69-0023",
+    "PSI-69-0024",
+    "PSI-69-0025",
+    "PSI-69-0026",
+    "PSI-69-0027",
+    "PSI-69-0028",
+    "PSI-69-0037",
+    "PSI-69-0038",
+    "PSI-69-0039",
+    "PSI-69-0040",
+    "PSI-69-0041",
+    "PSI-69-0042",
+    "PSI-69-0043"
+   ],
+   "scenario_ids": [
+    "lunar_habitat",
+    "exploration_atm"
+   ],
+   "verified": true
+  },
+  {
+   "id": "SUP-2",
+   "pillar": "suppression",
+   "statement": "At 15 % O2 or less, 45 of 48 FLEX droplet flames were extinguished, while above 25 % O2 only 2 of 24 FLEX droplet flames were extinguished, showing that lowering oxygen is the strongest single driver of droplet flame extinction in FLEX. Lowering oxygen strongly favours extinction of droplet flames.",
+   "evidence": [
+    "PSI-69",
+    "PSI-69-0065",
+    "PSI-69-0066",
+    "PSI-69-0067",
+    "PSI-69-0068",
+    "PSI-69-0069",
+    "PSI-69-0070",
+    "PSI-69-0019",
+    "PSI-69-0020",
+    "PSI-69-0021",
+    "PSI-69-0022",
+    "PSI-69-0023"
+   ],
+   "scenario_ids": [
+    "iss",
+    "lunar_habitat",
+    "exploration_atm",
+    "mars_transit",
+    "pressurized_rover",
+    "spacesuit"
+   ],
+   "verified": true
+  },
+  {
+   "id": "SUP-3",
+   "pillar": "suppression",
+   "statement": "FLEX tested CO2 dilution in 123 tests and helium dilution in 50 tests; at 15–21 % O2 flames were extinguished in 63 of 75 CO2-diluted, 32 of 39 helium-diluted, and 26 of 44 tests without diluent, and model shows CO2 and helium affect extinction. At the same oxygen level, CO2 or helium dilution went with more extinctions, which supports diluent gases as suppressants; other test conditions were not held fixed.",
+   "evidence": [
+    "PSI-69",
+    "PSI-69-0010",
+    "PSI-69-0011",
+    "PSI-69-0012",
+    "PSI-69-0013",
+    "PSI-69-0222",
+    "PSI-69-0223",
+    "PSI-69-0224",
+    "PSI-69-0225",
+    "PSI-69-0001",
+    "PSI-69-0002",
+    "PSI-69-0003"
+   ],
+   "scenario_ids": [
+    "iss",
+    "lunar_habitat",
+    "exploration_atm",
+    "mars_transit",
+    "pressurized_rover"
+   ],
+   "verified": true
+  },
+  {
+   "id": "PRE-1",
+   "pillar": "prevention",
+   "statement": "In 48 CFI-G tests at 30 % O₂ or more and ≤0.703 bar, 29 flames were still burning when the test ended, 14 self-extinguished, and 5 did not ignite, with flames having burned up to 85 % O₂ in other tests. Gas-leak flames in a lunar-habitat-like atmosphere often kept burning for the whole test, so leaks need to be stopped quickly.",
+   "evidence": [
+    "PSI-159",
+    "PSI-159-0196",
+    "PSI-159-0031",
+    "PSI-159-0032",
+    "PSI-159-0033",
+    "PSI-159-0034",
+    "PSI-159-0035",
+    "PSI-159-0036",
+    "PSI-159-0037",
+    "PSI-159-0038",
+    "PSI-159-0039",
+    "PSI-159-0125"
+   ],
+   "scenario_ids": [
+    "lunar_habitat",
+    "exploration_atm"
+   ],
+   "verified": true
+  },
+  {
+   "id": "PRE-2",
+   "pillar": "prevention",
+   "statement": "Highest oxygen level in BASS-II solid-material tests is 22.2 % O2, BASS table lacks oxygen column, lunar habitat plan is 30 % O2, exploration atmosphere is 34 % O2, and loaded PSI tables have no solid-material flammability tests at habitat oxygen levels, a data gap. Solid-material flammability at habitat oxygen levels is a data gap in the loaded tables.",
+   "evidence": [
+    "PSI-25",
+    "PSI-26",
+    "PSI-25-0001"
+   ],
+   "scenario_ids": [
+    "lunar_habitat",
+    "exploration_atm",
+    "spacesuit"
+   ],
+   "verified": true
+  },
+  {
+   "id": "PRE-3",
+   "pillar": "prevention",
+   "statement": "Saffire I, II and III burned material samples inside uncrewed Cygnus vehicles after they left the ISS; Saffire I burned a cotton-fiberglass (SIBAL) sheet about 0.4 m by 1 m to measure flame spread and cabin atmosphere effects, and the results are in published Saffire documents. Large-scale burn results are in the Saffire documents and should be read alongside the loaded tables.",
+   "evidence": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ],
+   "scenario_ids": [
+    "iss",
+    "mars_transit"
+   ],
+   "verified": true
+  },
+  {
+   "id": "DET-1",
+   "pillar": "detection",
+   "statement": "SAME-R ran 109 smoke tests on spacecraft materials—Kapton 29, Silicone 22, Lampwick 20, Pyrell 20, Teflon 18—and the detector results are reported in the cited SAME-R documents, not in the table. The table shows which spacecraft materials were used to make smoke; detector performance must be read from the SAME-R documents.",
+   "evidence": [
+    "PSI-101",
+    "PSI-101-0001",
+    "PSI-101-0002",
+    "PSI-101-0003",
+    "PSI-101-0004",
+    "PSI-101-0005",
+    "PSI-101-0006",
+    "PSI-101-0007",
+    "PSI-101-0008",
+    "PSI-101-0009",
+    "PSI-101-0010",
+    "PSI-101-0011"
+   ],
+   "scenario_ids": [
+    "iss",
+    "lunar_habitat",
+    "mars_transit",
+    "pressurized_rover"
+   ],
+   "verified": true
+  },
+  {
+   "id": "DET-2",
+   "pillar": "detection",
+   "statement": "The first ISS smoke experiment measured particle size of smoke from overheated spacecraft materials to assess detector performance, and the DAFT check verified a particle counter in long-duration microgravity and measured station background dust that can cause false alarms, with results described only in documents. Smoke detectors in spacecraft must handle real smoke particle sizes and background dust that can cause false alarms; the measured results are in the documents.",
+   "evidence": [
+    "PSI-102",
+    "DAFT"
+   ],
+   "scenario_ids": [
+    "iss",
+    "mars_transit"
+   ],
+   "verified": true
+  }
+ ]
+}
