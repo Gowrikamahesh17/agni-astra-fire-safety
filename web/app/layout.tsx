@@ -60,6 +60,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="container">
             Data: NASA Physical Sciences Informatics (PSI), CC0-1.0. AI-generated content is labelled.
             Built by BrahmAstra Analytics for NASA Space Apps Challenge 2026.
+            <br />
+            Team: Gowrika Mahesh, Utkarsh Sawant, Arun Kumar.
           </div>
         </footer>
       </body>

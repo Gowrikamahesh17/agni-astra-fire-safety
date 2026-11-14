@@ -41,3 +41,22 @@ export function similarities(invs: Investigation[]): Similarities {
     sameFuelPhase: invs.length > 1 && invs.every((i) => i.fuel_phase !== null && i.fuel_phase === invs[0].fuel_phase),
   };
 }
+
+// ---- Highlighting what differs between chosen investigations ----
+
+/** True when the cells are not all the same text (ignoring case and spacing). */
+export function rowDiffers(cells: string[]): boolean {
+  const n = cells.map((c) => c.trim().toLowerCase());
+  return n.some((c) => c !== n[0]);
+}
+
+/** For each list, the items that are not present in every list (the ones worth highlighting). */
+export function uniqueItems(lists: string[][]): Set<string>[] {
+  const sets = lists.map((l) => new Set(l.map(norm)));
+  return lists.map((l) => new Set(l.filter((x) => !sets.every((s) => s.has(norm(x)))).map(norm)));
+}
+
+/** True when the lists do not all hold the same items. */
+export function listsDiffer(lists: string[][]): boolean {
+  return uniqueItems(lists).some((u) => u.size > 0);
+}

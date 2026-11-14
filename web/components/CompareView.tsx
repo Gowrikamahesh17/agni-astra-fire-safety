@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { loadInvestigations, loadObservations } from "@/lib/data";
 import { Term } from "@/components/InfoTip";
-import { outcomeCounts, similarities } from "@/lib/compare";
+import { hardwareParts, listsDiffer, outcomeCounts, rowDiffers, similarities, uniqueItems } from "@/lib/compare";
 import type { Investigation, Observation } from "@/lib/types";
 
 const MAX = 3;
@@ -18,6 +18,7 @@ export default function CompareView() {
   const [invs, setInvs] = useState<Investigation[]>([]);
   const [obs, setObs] = useState<Observation[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [onlyDiff, setOnlyDiff] = useState(false);
   const [picked, setPicked] = useState<string[]>(() => (params.get("ids") ?? "").split(",").filter(Boolean).slice(0, MAX));
 
   useEffect(() => {
@@ -49,25 +50,34 @@ export default function CompareView() {
   const toggle = (id: string) =>
     setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : p.length >= MAX ? p : [...p, id]));
 
-  const rows: [string, (i: Investigation) => React.ReactNode, ("hardware" | "roles" | "outcome")?][] = [
-    ["Objective", (i) => i.objective ?? NA],
-    ["Hardware", (i) => i.hardware ?? NA, "hardware"],
-    ["Fuel phase", (i) => i.fuel_phase ?? NA],
-    ["Fire-safety role", (i) => i.fire_safety_role.map(label).join(", "), "roles"],
-    ["Oxygen range", (i) => range(i.o2_pct_range, "%")],
-    ["Pressure range", (i) => range(i.pressure_bar_range, "bar")],
-    ["Sensors", (i) => i.sensors?.join(", ") ?? NA],
-    ["Measured variables", (i) => i.measured_variables?.join(", ") ?? NA],
-    ["Number of tests", (i) => (i.has_table ? i.n_observations : "none (text evidence only)")],
-    [
-      "Outcome types",
-      (i) => {
-        const c = outcomeCounts(obs, i.id);
-        return c.length ? c.map(([k, n]) => `${label(k)} (${n})`).join(", ") : "no outcome recorded";
-      },
-      "outcome",
-    ],
+  type Row = { name: string; tip?: "hardware" | "roles" | "outcome"; text?: (i: Investigation) => string; list?: (i: Investigation) => string[] };
+  const rows: Row[] = [
+    { name: "Objective", text: (i) => i.objective ?? NA },
+    { name: "Hardware", tip: "hardware", list: (i) => hardwareParts(i.hardware) },
+    { name: "Fuel phase", text: (i) => i.fuel_phase ?? NA },
+    { name: "Fire-safety role", tip: "roles", list: (i) => i.fire_safety_role.map(label) },
+    { name: "Oxygen range", text: (i) => range(i.o2_pct_range, "%") },
+    { name: "Pressure range", text: (i) => range(i.pressure_bar_range, "bar") },
+    { name: "Sensors", list: (i) => i.sensors ?? [] },
+    { name: "Measured variables", list: (i) => i.measured_variables ?? [] },
+    { name: "Number of tests", text: (i) => String(i.has_table ? i.n_observations : "none (text evidence only)") },
+    {
+      name: "Outcome types",
+      tip: "outcome",
+      list: (i) => outcomeCounts(obs, i.id).map(([k, n]) => `${label(k)} (${n})`),
+    },
   ];
+  // For every row: does it differ across the chosen investigations, and which list items are unique to each?
+  const analysed = rows.map((r) => {
+    if (r.list) {
+      const lists = chosen.map((i) => r.list!(i));
+      return { r, lists, uniq: uniqueItems(lists), differs: listsDiffer(lists) };
+    }
+    const texts = chosen.map((i) => r.text!(i));
+    return { r, texts, differs: rowDiffers(texts) };
+  });
+  const differCount = analysed.filter((a) => a.differs).length;
+  const shownRows = onlyDiff ? analysed.filter((a) => a.differs) : analysed;
 
   return (
     <div>
@@ -97,7 +107,7 @@ export default function CompareView() {
         <>
           <div className="card">
             <h2>What they share</h2>
-            <p className="small muted">Only items present in every chosen investigation are listed. Everything else differs, as the table below shows.</p>
+            <p className="small muted">Only items present in every chosen investigation are listed here. The table below marks everything that differs.</p>
             <ul className="shared">
               <li>
                 <strong>Hardware:</strong> {sim.hardware.length ? sim.hardware.join(", ") : "none in common"}
@@ -117,6 +127,20 @@ export default function CompareView() {
             </ul>
           </div>
 
+          <div className="diff-legend">
+            <p className="small">
+              <strong>
+                {differCount} of {rows.length} properties differ.
+              </strong>{" "}
+              <span className="diff-tag">differs</span> rows and <span className="diff-item">highlighted items</span> are not shared by all of the chosen investigations;{" "}
+              <span className="same-tag">same</span> rows match.
+            </p>
+            <label className="compare-pick">
+              <input type="checkbox" checked={onlyDiff} onChange={(e) => setOnlyDiff(e.target.checked)} />
+              Show only the differences
+            </label>
+          </div>
+
           <div className="table-wrap">
             <table className="compare">
               <thead>
@@ -133,15 +157,29 @@ export default function CompareView() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map(([name, get, tip]) => (
-                  <tr key={name}>
+                {shownRows.map((a) => (
+                  <tr key={a.r.name} className={a.differs ? "row-diff" : undefined}>
                     <th scope="row">
-                      {name}
-                      {tip && <Term k={tip} />}
+                      {a.r.name}
+                      {a.r.tip && <Term k={a.r.tip} />}
+                      <span className={a.differs ? "diff-tag" : "same-tag"}>{a.differs ? "differs" : "same"}</span>
                     </th>
-                    {chosen.map((i) => (
+                    {chosen.map((i, idx) => (
                       <td key={i.id} data-label={i.short_name ?? i.id}>
-                        {get(i)}
+                        {"lists" in a && a.lists && a.uniq ? (
+                          a.lists[idx].length === 0 ? (
+                            NA
+                          ) : (
+                            a.lists[idx].map((item, k) => (
+                              <span key={item}>
+                                {k > 0 && ", "}
+                                <span className={a.uniq[idx].has(item.trim().toLowerCase()) ? "diff-item" : undefined}>{item}</span>
+                              </span>
+                            ))
+                          )
+                        ) : (
+                          a.texts?.[idx]
+                        )}
                       </td>
                     ))}
                   </tr>
@@ -149,6 +187,7 @@ export default function CompareView() {
               </tbody>
             </table>
           </div>
+          {shownRows.length === 0 && <p className="muted">These investigations match on every property compared.</p>}
         </>
       )}
     </div>

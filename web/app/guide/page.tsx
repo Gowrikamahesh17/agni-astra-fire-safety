@@ -95,6 +95,12 @@ export default function Page() {
         ))}
       </dl>
 
+      <h2>Team</h2>
+      <p>
+        BrahmAstra Analytics: Gowrika Mahesh, Utkarsh Sawant and Arun Kumar. Built for the NASA Space Apps Challenge 2026, challenge &ldquo;Flame in Freefall: AI-Powered
+        Fire Safety Insights from Microgravity Combustion Data&rdquo;.
+      </p>
+
       <h2>Data and credits</h2>
       <p>
         Data: NASA Physical Sciences Informatics (PSI), CC0-1.0. Built by BrahmAstra Analytics for the NASA Space Apps Challenge 2026. The astronaut
