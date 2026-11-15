@@ -56,6 +56,7 @@ NASA Space Apps Challenge 2026, Flame in Freefall: https://www.spaceappschalleng
 | MiniSearch 7 | Search over test rows and chat retrieval | MIT |
 | TypeScript, ESLint, Vitest | Type checking, linting and tests (development only) | Apache-2.0, MIT, MIT |
 | Geist and Geist Mono (via `next/font/google`) | Typefaces | SIL Open Font License 1.1 |
+| Noto Sans Devanagari (via `next/font/google`) | Typeface for the two Devanagari phrases in the team section (Agni Shant, Agni Rakshaks) | SIL Open Font License 1.1 |
 | Flame icon (`web/app/icon.svg`) | Browser tab icon, drawn for this project | Project license (MIT) |
 | Fire emoji on the home page | Unicode emoji drawn by the viewer's system font | n/a |
 | Astronaut illustration (`web/public/images/astronaut.png`) | Home-page picture. AI-generated with Google Gemini (flag removed and fire extinguisher added by follow-up prompts), background removed with remove.bg. Labelled "AI-generated image" on the page. | Generated content; see `docs/ai-disclosure.md` |
