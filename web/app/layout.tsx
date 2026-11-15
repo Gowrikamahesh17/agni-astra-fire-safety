@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import ChatPanel from "@/components/ChatPanel";
 import StarField from "@/components/StarField";
@@ -9,6 +9,8 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Only for the two Devanagari phrases on the home page (Agni Shant, Agni Rakshaks).
+const deva = Noto_Sans_Devanagari({ variable: "--font-deva", subsets: ["devanagari"], weight: ["500", "700"], display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "Flame in Freefall · BrahmAstra Analytics", template: "%s · Flame in Freefall" },
@@ -27,7 +29,7 @@ const NAV = [
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${deva.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
