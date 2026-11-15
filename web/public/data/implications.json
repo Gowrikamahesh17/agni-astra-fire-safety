@@ -89,10 +89,10 @@
   {
    "id": "PRE-1",
    "pillar": "prevention",
-   "statement": "In 48 CFI-G tests at 30 % O₂ or more and ≤0.703 bar, 29 flames were still burning when the test ended, 14 self-extinguished, and 5 did not ignite, with flames having burned up to 85 % O₂ in other tests. Gas-leak flames in a lunar-habitat-like atmosphere often kept burning for the whole test, so leaks need to be stopped quickly.",
+   "statement": "In 20 CFI-G normal-flame tests at 30 % O₂ or higher and 0.703 bar or less, the flame was burning when the test ended in 5 cases, self-extinguished in 13 cases, and did not ignite in 2 cases, while flames burned gaseous fuel in atmospheres up to 39.97 % O₂. Some gas-leak flames in a lunar-habitat-like atmosphere kept burning until the test ended, so leaks still need to be stopped quickly.",
    "evidence": [
     "PSI-159",
-    "PSI-159-0196",
+    "PSI-159-0139",
     "PSI-159-0031",
     "PSI-159-0032",
     "PSI-159-0033",
@@ -108,7 +108,7 @@
     "lunar_habitat",
     "exploration_atm"
    ],
-   "verified": true
+   "verified": false
   },
   {
    "id": "PRE-2",

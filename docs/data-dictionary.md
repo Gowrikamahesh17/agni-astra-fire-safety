@@ -26,7 +26,7 @@ One entry per test row in the original CSVs.
 | `fuel_fraction_pct` | CFI-G normal: from the fuel name (`30% butane` -> 30, pure gas -> 100). CFI-G inverse: `Xf before test` x 100. FLEX: 100 |
 | `material` | Parsed solid material: PMMA, SIBAL, Nomex, Ultem, wax |
 | `geometry` | `{shape, diameter_mm, thickness_mm, width_mm, raw}`. Shapes: rod, film, sheet, sphere, slab, fabric |
-| `o2_pct`, `pressure_bar` | Test atmosphere before the test |
+| `o2_pct`, `pressure_bar` | Test atmosphere before the test. Exception: in CFI-G inverse flames `o2_pct` is the oxidizer stream from the burner, not the chamber air (the chamber holds fuel) |
 | `co2_pct`, `he_pct`, `n2_pct` | Diluents (FLEX). BASS-II `co2_pct` is the initial CO2 reading |
 | `flow` | `{value, unit, kind}`. `velocity` (SAME-R, cm/s), `mass_flow` (CFI-G burner flow, mg/s), `device_setting` (BASS-II flow restrictor, not a velocity) |
 | `gravity` | Always `micro`. PSI has no partial-gravity combustion data |
