@@ -233,13 +233,6 @@
    "investigation_id": "PSI-69"
   },
   {
-   "id": "PRE-1",
-   "type": "implication",
-   "title": "Prevention implication PRE-1",
-   "text": "In 48 CFI-G tests at 30 % O₂ or more and ≤0.703 bar, 29 flames were still burning when the test ended, 14 self-extinguished, and 5 did not ignite, with flames having burned up to 85 % O₂ in other tests. Gas-leak flames in a lunar-habitat-like atmosphere often kept burning for the whole test, so leaks need to be stopped quickly.",
-   "investigation_id": "PSI-159"
-  },
-  {
    "id": "PRE-2",
    "type": "implication",
    "title": "Prevention implication PRE-2",

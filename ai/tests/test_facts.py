@@ -46,8 +46,10 @@ def test_seed_diluents(implications):
 
 def test_seed_cfig(implications):
     t = text(implications["PRE-1"])
-    assert "up to 85 % O2" in t
-    assert "48 CFI-G tests" in t
+    assert "up to 39.97 % O2" in t
+    assert "20 CFI-G normal-flame tests" in t
+    assert "28 CFI-G inverse-flame tests are left out" in t
+    assert "48 CFI-G" not in t
 
 
 def test_seed_solid_gap(implications):
