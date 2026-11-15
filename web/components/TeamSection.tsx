@@ -33,7 +33,7 @@ function Photo({ m }: { m: Member }) {
   if (!m.photo) return <div className="tm-ini" role="img" aria-label={`${m.name}, initials ${m.initials}`}>{m.initials}</div>;
   // A plain <img>: the helmet crops it, and its size is set by the layout.
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={m.photo} alt={`Photo of ${m.name}`} />;
+  return <img src={m.photo} alt={`Photo of ${m.name}`} style={{ objectPosition: "50% 20%" }} />;
 }
 
 /** Embers that drift up and cool from orange to calm blue. They run once and stop, so nothing keeps animating. */
