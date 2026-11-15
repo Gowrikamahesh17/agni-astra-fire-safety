@@ -1,14 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
-import { lunarHeadline } from "@/lib/headline";
+import GravityFlame from "@/components/GravityFlame";
+import LaunchButton from "@/components/LaunchButton";
+import ScrollDive, { type DiveStage } from "@/components/ScrollDive";
+import { flexFacts, lunarHeadline } from "@/lib/headline";
 
 const num = (n: number) => String(Math.round(n * 100) / 100);
+
+function diveStages(): DiveStage[] {
+  const f = flexFacts();
+  return [
+    { scale: "12,742 km across", title: "Earth", text: "We start with the whole planet. NASA's fire experiments ran about 400 km above it." },
+    { scale: "About 400 km up", title: "The space station", text: "On the International Space Station, crews burned small, carefully controlled fires to learn how fire behaves without gravity." },
+    { scale: "About 2 m", title: "The combustion rack", text: "The Combustion Integrated Rack holds a sealed chamber where a small fire can be run, filmed and put out safely." },
+    {
+      scale: f ? `${Math.round(f.dropletMm[0])}–${Math.round(f.dropletMm[1])} mm` : "A few millimetres",
+      title: "One fuel droplet",
+      text: "FLEX burned single droplets of methanol and heptane, each only a few millimetres wide.",
+    },
+    {
+      scale: "One flame",
+      title: "…and the data behind it",
+      text: `Without gravity a droplet flame burns as a round, blue sphere.${f ? ` FLEX ran ${f.tests} of these tests.` : ""} Every one is a row you can open.`,
+      cta: { href: "/dashboard", label: "See the experiments" },
+    },
+  ];
+}
 
 export default function Home() {
   const h = lunarHeadline();
   return (
     <>
       <section className="hero hero-grid">
+        <div className="hero-limb" aria-hidden="true">
+          <div />
+        </div>
         <div>
           <p className="eyebrow">NASA Space Apps Challenge 2026 · BrahmAstra Analytics</p>
           <span className="flame" aria-hidden="true">🔥</span>
@@ -20,10 +46,8 @@ export default function Home() {
             finding links to its source row.
           </p>
           <p>
-            <Link href="/dashboard" className="button">
-              Open dashboard
-            </Link>{" "}
-            <Link href="/guide">New here? Read the guide</Link>
+            <LaunchButton href="/dashboard">Open dashboard</LaunchButton>{" "}
+            <Link href="/guide">New here? Read the guide</Link> · <a href="#dive-title">Dive in ↓</a>
           </p>
           <p className="muted small">Made for aerospace researchers, engineers and students. No account needed. The flame animation is an illustration, not a simulation.</p>
         </div>
@@ -38,6 +62,21 @@ export default function Home() {
           />
           <figcaption className="ai-mark">AI-generated image</figcaption>
         </figure>
+      </section>
+      <section className="dive-intro" aria-labelledby="dive-title">
+        <p className="eyebrow">Scroll story</p>
+        <h2 id="dive-title">From orbit to one flame</h2>
+        <p className="muted">The page holds still while the camera zooms in, from the whole Earth down to a single flame and the data behind it.</p>
+      </section>
+      <ScrollDive stages={diveStages()} />
+      <section aria-labelledby="gravity-title">
+        <p className="eyebrow">Why it matters</p>
+        <h2 id="gravity-title">Why a flame in space looks different</h2>
+        <p className="muted">
+          On Earth, hot gas rises, which pulls a flame into a teardrop. Without gravity nothing rises, so the flame goes round and blue. Move the slider to see the
+          idea behind everything in our data.
+        </p>
+        <GravityFlame />
       </section>
       <section aria-labelledby="how-heading">
         <h2 id="how-heading">How it works</h2>

@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { loadInvestigations, loadObservations, loadScenarios } from "@/lib/data";
 import { DEFAULT_WEIGHTS, componentFor, siteScore, type Weights } from "@/lib/scoring";
+import CabinAir from "@/components/CabinAir";
+import CountUp from "@/components/CountUp";
 import { Term } from "@/components/InfoTip";
+import { useFlip } from "@/lib/flip";
+import { useReducedMotion } from "@/lib/motion";
 import { useScenario } from "@/lib/scenarioStore";
 import type { Investigation, Observation, Role, Scenario, ScenarioId } from "@/lib/types";
 
@@ -47,6 +51,12 @@ export default function Dashboard() {
 
   const scenario = scenarios.find((s) => s.id === scenarioId);
   const isCustom = scenarioId === "custom";
+  // The atmosphere shown in the little cabin picture: the custom sliders, or the chosen preset.
+  const air = isCustom
+    ? { o2: customO2, p: customP }
+    : scenario?.o2_pct != null && scenario.pressure_bar != null
+      ? { o2: scenario.o2_pct, p: scenario.pressure_bar }
+      : null;
 
   const byInvestigation = useMemo(() => {
     const m = new Map<string, Observation[]>();
@@ -80,6 +90,9 @@ export default function Dashboard() {
 
   const togglePick = (id: string) =>
     setPicked((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : cur.length >= 3 ? cur : [...cur, id]));
+
+  const reduceMotion = useReducedMotion();
+  const flip = useFlip(ranked.map((r) => r.inv.id).join(","), !reduceMotion);
 
   const toggleRole = (r: Role) =>
     setRoles((cur) => (cur.includes(r) ? cur.filter((x) => x !== r) : [...cur, r]));
@@ -121,6 +134,7 @@ export default function Dashboard() {
             </p>
           )
         )}
+        {air && <CabinAir o2={air.o2} pressure={air.p} />}
 
         <h2>
           Focus on <Term k="roles" />
@@ -162,7 +176,7 @@ export default function Dashboard() {
         </p>
         <ol className="ranking">
           {ranked.map(({ inv, comp, parts, score }, idx) => (
-            <li key={inv.id} className="card rank-card">
+            <li key={inv.id} ref={flip(inv.id)} className="card rank-card">
               <div className="rank-head">
                 <span className="rank-num">{idx + 1}</span>
                 <div className="rank-title">
@@ -175,13 +189,16 @@ export default function Dashboard() {
                   </p>
                 </div>
                 <div className="score-wrap">
-                  <div className="score" aria-label={`Score ${Math.round(score)} out of 100`}>
-                    {Math.round(score)}
+                  <div className="score" role="img" aria-label={`Score ${Math.round(score)} out of 100`}>
+                    <CountUp value={Math.round(score)} />
                   </div>
                   <span className="score-label">
                     out of 100 <Term k="score" align="right" />
                   </span>
                 </div>
+              </div>
+              <div className="rank-meter" aria-hidden="true">
+                <i style={{ width: `${Math.round(score)}%` }} />
               </div>
               {inv.objective && <p className="small">{inv.objective}</p>}
               <dl className="parts">

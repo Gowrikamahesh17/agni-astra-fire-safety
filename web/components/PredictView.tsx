@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import FlameMeter from "@/components/FlameMeter";
 import { Term } from "@/components/InfoTip";
 import { MODEL_NAMES, loadModel, loadScenarios, type ModelName } from "@/lib/data";
 import { predict, type ModelInput, type ModelSpec } from "@/lib/predict";
@@ -180,9 +181,12 @@ export default function PredictView() {
             <div className="card" aria-live="polite">
               <p className="muted small">{meta.question}</p>
               <p className="small muted">Model estimate for the inputs on the left:</p>
-              <p className={`big${result.out_of_range.length > 0 ? " unreliable" : ""}`}>
-                {isClass ? `${Math.round(result.value * 100)} %` : `${result.value.toFixed(2)} ${meta.unit ?? ""}`}
-              </p>
+              <div className={isClass ? "pm" : undefined}>
+                <p className={`big${result.out_of_range.length > 0 ? " unreliable" : ""}`}>
+                  {isClass ? `${Math.round(result.value * 100)} %` : `${result.value.toFixed(2)} ${meta.unit ?? ""}`}
+                </p>
+                {isClass && <FlameMeter probability={result.value} unreliable={result.out_of_range.length > 0} />}
+              </div>
               {result.out_of_range.length > 0 && (
                 <p className="banner" role="alert">
                   Outside the range this model was trained on: {result.out_of_range.map((f) => feat(f).label).join(", ")}. Treat this number

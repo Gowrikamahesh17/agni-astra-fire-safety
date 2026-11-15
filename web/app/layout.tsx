@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ChatPanel from "@/components/ChatPanel";
+import StarField from "@/components/StarField";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -34,6 +36,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body>
+        <Suspense fallback={null}>
+          <StarField />
+        </Suspense>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
