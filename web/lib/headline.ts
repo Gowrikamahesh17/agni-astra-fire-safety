@@ -25,3 +25,18 @@ export function lunarHeadline(): Headline | null {
     return null;
   }
 }
+
+export type FlexFacts = { tests: number; dropletMm: [number, number] };
+
+/** Facts about the FLEX droplet tests for the scroll story, counted from the shipped data. */
+export function flexFacts(): FlexFacts | null {
+  try {
+    const raw = JSON.parse(readFileSync(join(process.cwd(), "public", "data", "observations.json"), "utf8"));
+    const flex = unwrap<Observation>("observations", raw).filter((o) => o.investigation_id === "PSI-69");
+    const d = flex.map((o) => o.measurements.droplet_d0_mm).filter((v): v is number => typeof v === "number");
+    if (flex.length === 0 || d.length === 0) return null;
+    return { tests: flex.length, dropletMm: [Math.min(...d), Math.max(...d)] };
+  } catch {
+    return null;
+  }
+}
