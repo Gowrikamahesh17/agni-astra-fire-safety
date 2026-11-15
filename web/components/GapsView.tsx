@@ -196,6 +196,7 @@ export default function GapsView() {
           <div className="chart-box">
             <canvas ref={canvas} role="img" aria-label="Scatter chart of oxygen percent against pressure in bar for every PSI test" />
           </div>
+          <p className="small muted">Inverse-flame points are plotted at burner-stream oxygen, not chamber oxygen.</p>
           <ul className="legend" aria-label="Legend">
             {SERIES.map((s, si) => (
               <li key={s.id}>

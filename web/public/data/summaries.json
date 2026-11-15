@@ -16,17 +16,19 @@
   },
   {
    "investigation_id": "PSI-159",
-   "text": "NASA’s CFI-G study examined normal and inverse spherical flames of ethane, propane and butane over 333 microgravity tests, varying oxygen from 12 % to 85 % and pressure from 0.5 to 3.31 bar using a porous CIR/ACME burner. Inverse flames self-extinguished in 81 tests, burned until stopped in 58 and failed to ignite in 15, while normal flames self-extinguished in 102, failed to ignite in 46 and burned until stopped in 31. The dataset includes 43 runs at ISS-like (21 % O₂, 1.013 bar) and 21 runs at Exploration/Pressurized rover conditions (34 % O₂, 0.565 bar).",
+   "text": "CFI-G studied normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner in microgravity across 333 tests at 0.5-3.31 bar. Normal flames (17.97-39.97 % chamber oxygen): 102 self-extinguished, 46 did not ignite, 31 burned until stopped. Inverse flames (12-85 % burner-stream oxygen): 81 self-extinguished, 58 burned until flow stopped, 15 did not ignite.",
    "cites": [
-    "PSI-159-0183",
-    "PSI-159-0190",
     "PSI-159",
-    "PSI-159-0011",
-    "PSI-159-0033"
+    "PSI-159-0183",
+    "PSI-159-0196",
+    "PSI-159-0014",
+    "PSI-159-0139",
+    "PSI-159-0190",
+    "PSI-159-0220"
    ],
-   "model": "openai/gpt-oss-120b",
-   "generated_at": "2026-11-14T13:27:31+00:00",
-   "prompt_version": "summary-v1",
+   "model": "human-edited (draft by openai/gpt-oss-120b)",
+   "generated_at": "2026-11-15T10:31:14+00:00",
+   "prompt_version": "summary-v2",
    "verified": true
   },
   {

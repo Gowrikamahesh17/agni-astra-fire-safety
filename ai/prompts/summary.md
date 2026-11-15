@@ -7,5 +7,6 @@ Rules:
 - Only use ids that appear in square brackets in the facts.
 - Copy numbers exactly as they appear in the facts. Do not round, convert units or compute new numbers.
 - Say what was tested and what the data shows for spacecraft fire safety. If there is no test table, say the evidence is the published description.
+- If the facts give oxygen separately for different flame types, keep them separate and name the flame type. Never combine them into one oxygen range or count.
 - Results are from microgravity only. Do not claim anything about lunar or Martian gravity.
 - Output only the summary text.
