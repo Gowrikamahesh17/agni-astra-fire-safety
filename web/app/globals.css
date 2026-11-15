@@ -211,18 +211,14 @@ h1, h2, h3, p, dd { overflow-wrap: break-word; }
 .hero-art { position: relative; margin: 0; justify-self: center; width: 100%; max-width: 380px; }
 /* Soft glow behind the cut-out so it sits in the page instead of on top of it */
 .hero-art::before { content: ""; position: absolute; inset: 8% -6% 4%; z-index: 0; border-radius: 50%; background: radial-gradient(closest-side, var(--hero-glow), transparent 72%); pointer-events: none; }
-.hero-art { container-type: inline-size; }
 .hero-astro { position: relative; z-index: 1; }
 .hero-float { position: relative; transform-origin: 45% 55%; animation: heroDriftX 7.3s ease-in-out infinite alternate, heroDriftY 4.7s ease-in-out infinite alternate, heroTumble 11.3s ease-in-out infinite alternate; }
 @keyframes heroDriftX { from { translate: -9px 0; } to { translate: 9px 0; } }
 @keyframes heroDriftY { from { top: -12px; } to { top: 12px; } }
 @keyframes heroTumble { from { transform: rotate(-2.6deg); } 50% { transform: rotate(1.2deg); } to { transform: rotate(3deg); } }
 .nz { position: absolute; left: 90.5%; top: 45.2%; width: 0; height: 0; z-index: 2; }
-.nz svg { position: absolute; left: -26.3cqw; top: -44.7cqw; width: 63.2cqw; height: 63.2cqw; overflow: visible; pointer-events: none; }
-.nz-spray { fill: #eef6ff; }
-.nz-smoke { fill: #9aa4c0; }
-.nz-ember { fill: #ffd28a; }
-:root[data-theme="light"] .nz-spray { fill: #d3e0f7; stroke: rgba(40, 60, 120, .3); stroke-width: .6; }
+.hero-fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 14; pointer-events: none; }
+.hero-flash { position: fixed; inset: 0; z-index: 14; pointer-events: none; opacity: 0; background: radial-gradient(60% 50% at 68% 45%, rgba(255, 230, 170, .3), rgba(120, 170, 255, .1) 40%, transparent 70%); }
 .hero-flame-note { margin: 6px 0 0; text-align: center; min-height: 1.4em; }
 @media (prefers-reduced-motion: reduce) { .hero-float { animation: none; } }
 /* On phones the picture sits left so the nozzle flame stays on screen; clip (never a scroll container) catches any stray glow. */
