@@ -8,6 +8,14 @@ import { useReducedMotion } from "@/lib/motion";
 
 export type DiveStage = { scale: string; title: string; text: string; cta?: { href: string; label: string } };
 
+const WING_ANGLES = [-48, -24, 0, 24, 48];
+const TICKS = Array.from({ length: 24 }, (_, i) => i * 15);
+// Twelve petals that cool from orange (fire) through gold and teal to blue.
+const PETALS: [number, string][] = [
+  [0, "#ff8a3d"], [30, "#ff9a3c"], [60, "#ffb040"], [90, "#f5b942"], [120, "#d8c26a"], [150, "#9bd0c0"],
+  [180, "#8be8cf"], [210, "#6fcfe8"], [240, "#4db8ff"], [270, "#4d94ff"], [300, "#4d84ff"], [330, "#4d84ff"],
+];
+
 const SECTION_VH = 440; // how much scrolling the dive takes, as a share of the screen height
 
 function applyLayer(el: HTMLElement | null, l: Layer, extra = "") {
@@ -99,37 +107,62 @@ export default function ScrollDive({ stages }: { stages: DiveStage[] }) {
           <div className="dive-stage" ref={stageRef} data-start="1">
             <div className="dive-layer" aria-hidden="true">
               <div className="dive-earth" ref={earth} style={{ transform: "scale(0.5)" }}>
-                <div className="dive-land" ref={land} />
-                <div className="dive-cloud" ref={cloud} />
+                <div className="dive-globe">
+                  <div className="dive-land" ref={land} />
+                  <div className="dive-cloud" ref={cloud} />
+                </div>
+                <div className="dive-orbit">
+                  <div className="dive-orbit-spin">
+                    <i />
+                  </div>
+                </div>
               </div>
             </div>
             <div className="dive-layer" aria-hidden="true">
               <div className="dive-obj" ref={station} style={{ opacity: 0, visibility: "hidden" }}>
-                <svg viewBox="0 0 900 360">
+                <svg viewBox="0 0 900 460">
                   <defs>
-                    <linearGradient id="dive-panel" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stopColor="#3b6be0" />
+                    <linearGradient id="dive-lp" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0" stopColor="#4a7bf0" />
                       <stop offset="1" stopColor="#1a2f78" />
                     </linearGradient>
+                    <path id="dive-wing" d="M0 0 C 40 -34 150 -36 230 0 C 150 36 40 34 0 0 Z" />
+                    <filter id="dive-soft">
+                      <feGaussianBlur stdDeviation="5" />
+                    </filter>
                   </defs>
-                  <rect x="60" y="165" width="780" height="8" fill="#9aa4c8" />
-                  <g stroke="#a9bcff" strokeOpacity=".6" fill="url(#dive-panel)">
-                    <rect x="90" y="40" width="160" height="90" />
-                    <rect x="90" y="208" width="160" height="90" />
-                    <rect x="650" y="40" width="160" height="90" />
-                    <rect x="650" y="208" width="160" height="90" />
+                  <g transform="translate(300 230)" stroke="#f5b942" strokeWidth="2" fill="url(#dive-lp)">
+                    <g transform="scale(-1 1)">
+                      {WING_ANGLES.map((a) => (
+                        <use key={a} href="#dive-wing" transform={`rotate(${a})`} />
+                      ))}
+                    </g>
                   </g>
-                  <g stroke="#a9bcff" strokeOpacity=".5" fill="none">
-                    <path d="M130 40v90M170 40v90M210 40v90M90 85h160M130 208v90M170 208v90M210 208v90M90 253h160" />
-                    <path d="M690 40v90M730 40v90M770 40v90M650 85h160M690 208v90M730 208v90M770 208v90M650 253h160" />
+                  <g transform="translate(600 230)" stroke="#f5b942" strokeWidth="2" fill="url(#dive-lp)">
+                    {WING_ANGLES.map((a) => (
+                      <use key={a} href="#dive-wing" transform={`rotate(${a})`} />
+                    ))}
                   </g>
-                  <rect x="320" y="132" width="260" height="76" rx="30" fill="#dfe5f7" />
-                  <rect x="340" y="144" width="60" height="52" rx="8" fill="#9fb0e6" />
-                  <rect x="500" y="144" width="60" height="52" rx="8" fill="#9fb0e6" />
-                  <circle cx="450" cy="170" r="22" fill="#0b1432" stroke="#f5b942" strokeWidth="3" />
-                  <circle cx="450" cy="170" r="9" fill="#f5b942" opacity=".85" />
-                  <rect x="298" y="150" width="26" height="40" rx="6" fill="#aab3d4" />
-                  <rect x="576" y="150" width="26" height="40" rx="6" fill="#aab3d4" />
+                  <rect x="290" y="222" width="320" height="16" fill="#9aa4c8" />
+                  <rect x="330" y="190" width="240" height="80" rx="34" fill="#e7ecff" stroke="#f5b942" strokeWidth="2" />
+                  <circle cx="450" cy="230" r="26" fill="#0b1432" stroke="#f5b942" strokeWidth="3" />
+                  <circle cx="450" cy="230" r="11" fill="#4d84ff" />
+                  <circle cx="450" cy="230" r="5" fill="#c7e1ff" />
+                  <g>
+                    <circle className="dive-pod" cx="372" cy="170" r="26" fill="#ff8a3d" opacity=".55" filter="url(#dive-soft)" />
+                    <rect x="356" y="160" width="32" height="40" rx="14" fill="#ff8a3d" stroke="#fff" strokeWidth="2.5" />
+                    <path d="M372 168c5 6 7 10 5 14-2 4-10 4-10 0-2-4 2-8 5-14z" fill="#fff6d0" />
+                  </g>
+                  <g>
+                    <circle className="dive-pod b" cx="528" cy="170" r="26" fill="#4db8ff" opacity=".55" filter="url(#dive-soft)" />
+                    <rect x="512" y="160" width="32" height="40" rx="14" fill="#4db8ff" stroke="#fff" strokeWidth="2.5" />
+                    <path d="M528 168c6 8 8 11 6 15-2 4-10 4-12 0-2-4 2-7 6-15z" fill="#eaf7ff" />
+                  </g>
+                  <g>
+                    <circle className="dive-pod c" cx="450" cy="300" r="26" fill="#8be8cf" opacity=".55" filter="url(#dive-soft)" />
+                    <rect x="434" y="278" width="32" height="40" rx="14" fill="#8be8cf" stroke="#fff" strokeWidth="2.5" />
+                    <path d="M441 295h13a4 4 0 1 0-3-6M441 301h17a4 4 0 1 1-3 6" fill="none" stroke="#0b3a30" strokeWidth="2" strokeLinecap="round" />
+                  </g>
                 </svg>
               </div>
             </div>
@@ -138,7 +171,21 @@ export default function ScrollDive({ stages }: { stages: DiveStage[] }) {
                 <svg viewBox="0 0 600 420">
                   <circle cx="300" cy="210" r="190" fill="#0a1230" stroke="#6a77a8" strokeWidth="14" />
                   <circle cx="300" cy="210" r="172" fill="none" stroke="#243059" strokeWidth="3" />
-                  <path d="M300 60v50M300 310v50M150 210h50M400 210h50" stroke="#3a4a86" strokeWidth="2" />
+                  <g className="dive-turn" style={{ transformOrigin: "300px 210px" }}>
+                    <g transform="translate(300 210)" stroke="#f5b942" strokeOpacity=".7" fill="none" strokeWidth="1.6">
+                      {TICKS.map((a) => (
+                        <path key={a} d="M0 -172V-156" transform={`rotate(${a})`} />
+                      ))}
+                    </g>
+                    <g transform="translate(300 210)" stroke="#f5b942" strokeOpacity=".45" fill="none" strokeWidth="1.4">
+                      {[0, 60, 120, 180, 240, 300].map((a) => (
+                        <path key={a} d="M0 -128 C 14 -108 14 -92 0 -76 C -14 -92 -14 -108 0 -128Z" transform={`rotate(${a})`} />
+                      ))}
+                    </g>
+                  </g>
+                  <circle cx="300" cy="46" r="7" fill="#ff8a3d" />
+                  <circle cx="465" cy="300" r="7" fill="#4db8ff" />
+                  <circle cx="135" cy="300" r="7" fill="#8be8cf" />
                   <path d="M300 186V90M300 234v110" stroke="#c5cdea" strokeWidth="1.5" strokeDasharray="3 4" />
                   <circle cx="300" cy="210" r="24" fill="#d9b25a" />
                   <circle cx="294" cy="203" r="8" fill="#fff6d0" opacity=".7" />
@@ -152,7 +199,17 @@ export default function ScrollDive({ stages }: { stages: DiveStage[] }) {
                     <filter id="dive-blur" x="-50%" y="-50%" width="200%" height="200%">
                       <feGaussianBlur stdDeviation="14" />
                     </filter>
+                    <path id="dive-fp" d="M0 -118 C 13 -102 13 -86 0 -70 C -13 -86 -13 -102 0 -118Z" />
                   </defs>
+                  <circle className="dive-ripple" cx="160" cy="160" r="100" fill="none" stroke="#4d84ff" strokeWidth="2" />
+                  <circle className="dive-ripple b" cx="160" cy="160" r="100" fill="none" stroke="#f5b942" strokeWidth="1.6" />
+                  <g className="dive-turn" style={{ transformOrigin: "160px 160px" }}>
+                    <g transform="translate(160 160)" fill="none" strokeWidth="1.6">
+                      {PETALS.map(([a, c]) => (
+                        <use key={a} href="#dive-fp" transform={`rotate(${a})`} stroke={c} opacity=".8" />
+                      ))}
+                    </g>
+                  </g>
                   <g transform="translate(160 160)">
                     <circle r="104" fill="#2f6bff" opacity=".35" filter="url(#dive-blur)" />
                     <path d={flamePath(0, 0, 64)} fill="#4d84ff" />

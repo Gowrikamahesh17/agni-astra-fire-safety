@@ -11,7 +11,7 @@ function diveStages(): DiveStage[] {
   const f = flexFacts();
   return [
     { scale: "12,742 km across", title: "Earth", text: "We start with the whole planet. NASA's fire experiments ran about 400 km above it." },
-    { scale: "About 400 km up", title: "The space station", text: "On the International Space Station, crews burned small, carefully controlled fires to learn how fire behaves without gravity." },
+    { scale: "About 400 km up", title: "The space station", text: "On the International Space Station, crews burned small, carefully controlled fires to learn how fire behaves without gravity. The picture is an illustration, not the real station." },
     { scale: "About 2 m", title: "The combustion rack", text: "The Combustion Integrated Rack holds a sealed chamber where a small fire can be run, filmed and put out safely." },
     {
       scale: f ? `${Math.round(f.dropletMm[0])}–${Math.round(f.dropletMm[1])} mm` : "A few millimetres",
