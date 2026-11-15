@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import GravityFlame from "@/components/GravityFlame";
 import LaunchButton from "@/components/LaunchButton";
+import HeroAstronaut from "@/components/HeroAstronaut";
 import ScrollDive, { type DiveStage } from "@/components/ScrollDive";
 import { flexFacts, lunarHeadline } from "@/lib/headline";
 
@@ -52,14 +52,7 @@ export default function Home() {
           <p className="muted small">Made for aerospace researchers, engineers and students. No account needed. The flame animation is an illustration, not a simulation.</p>
         </div>
         <figure className="hero-art">
-          <Image
-            src="/images/astronaut.png"
-            alt="Illustration of an astronaut in a white spacesuit floating in space and holding a red fire extinguisher"
-            width={432}
-            height={578}
-            sizes="(max-width: 800px) 280px, 380px"
-            priority
-          />
+          <HeroAstronaut />
           <figcaption className="ai-mark">AI-generated image</figcaption>
         </figure>
       </section>
@@ -73,8 +66,8 @@ export default function Home() {
         <p className="eyebrow">Why it matters</p>
         <h2 id="gravity-title">Why a flame in space looks different</h2>
         <p className="muted">
-          On Earth, hot gas rises, which pulls a flame into a teardrop. Without gravity nothing rises, so the flame goes round and blue. Move the slider to see the
-          idea behind everything in our data.
+          On Earth, hot gas rises, which pulls a flame into a teardrop. Without gravity nothing rises, so the flame goes round and blue. It changes by itself, and
+          you can use the slider to take over. This is the idea behind everything in our data.
         </p>
         <GravityFlame />
       </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { gravityLoop } from "@/lib/extinguish";
 import { describeGravity, flameColors, flamePath } from "@/lib/flame";
 import { useReducedMotion } from "@/lib/motion";
 
@@ -14,7 +15,10 @@ const ARROWS = [-110, -66, -22, 22, 66, 110];
 /** A flame that reshapes with gravity: a flickering teardrop on Earth, a calm blue sphere in microgravity. */
 export default function GravityFlame() {
   const [g, setG] = useState(100);
+  const [auto, setAuto] = useState(true); // the flame cycles between Earth and orbit by itself until the visitor takes over
   const reduce = useReducedMotion();
+  const autoOn = auto && !reduce;
+  const autoRef = useRef(true);
   const gRef = useRef(1);
   const boxRef = useRef<HTMLDivElement>(null);
   const outer = useRef<SVGPathElement>(null);
@@ -43,6 +47,10 @@ export default function GravityFlame() {
   }, []);
 
   useEffect(() => {
+    autoRef.current = autoOn;
+  }, [autoOn]);
+
+  useEffect(() => {
     gRef.current = g / 100;
     if (reduce) draw(0.5); // a still picture that still follows the slider
   }, [g, reduce, draw]);
@@ -55,6 +63,11 @@ export default function GravityFlame() {
     const loop = (now: number) => {
       raf = 0;
       if (!visible) return;
+      if (autoRef.current) {
+        const next = Math.round(gravityLoop(now / 1000) * 100);
+        gRef.current = next / 100;
+        setG((cur) => (cur === next ? cur : next)); // one small update per percent, so the label and slider follow
+      }
       draw(now / 1000);
       raf = requestAnimationFrame(loop);
     };
@@ -78,16 +91,33 @@ export default function GravityFlame() {
           <span>
             Gravity: <strong>{v.toFixed(2)} g</strong>
           </span>
-          <input type="range" min={0} max={100} value={g} onChange={(e) => setG(Number(e.target.value))} aria-describedby="gf-desc" />
+          <input type="range" min={0} max={100} value={g} onChange={(e) => {
+              setAuto(false);
+              setG(Number(e.target.value));
+            }} aria-describedby="gf-desc" />
         </label>
         <div className="chips" role="group" aria-label="Gravity presets">
+          {!reduce && (
+            <button type="button" className="chip" aria-pressed={auto} onClick={() => setAuto((a) => !a)}>
+              Auto
+            </button>
+          )}
           {PRESETS.map((p) => (
-            <button key={p.label} type="button" className="chip" aria-pressed={g === p.g} onClick={() => setG(p.g)}>
+            <button
+              key={p.label}
+              type="button"
+              className="chip"
+              aria-pressed={!auto && g === p.g}
+              onClick={() => {
+                setAuto(false);
+                setG(p.g);
+              }}
+            >
               {p.label}
             </button>
           ))}
         </div>
-        <p id="gf-desc" className="gf-desc" aria-live="polite">
+        <p id="gf-desc" className="gf-desc" aria-live={autoOn ? "off" : "polite"}>
           {describeGravity(v)}
         </p>
         <p className="small muted">
