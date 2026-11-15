@@ -70,14 +70,29 @@ def investigation_facts(inv, rows, scenarios):
         )
     else:
         lines.append((f"The loaded table has {len(rows)} test rows.", [iid]))
-        for field, label, unit in (("o2_pct", "Oxygen", "%"), ("pressure_bar", "Pressure", "bar")):
-            line = _range_line(rows, field, label, unit)
+        flame_types = sorted({r["flame_type"] for r in rows if r["flame_type"]})
+        if flame_types:
+            # CFI-G: in normal flames O2 is the chamber atmosphere; in inverse flames it is the
+            # oxidizer stream from the burner and the chamber holds fuel. Never mix the two.
+            o2_labels = {
+                "normal": "Oxygen in the chamber atmosphere of normal flames",
+                "inverse": "Oxygen in the burner stream of inverse flames",
+            }
+            for ft in flame_types:
+                line = _range_line([r for r in rows if r["flame_type"] == ft], "o2_pct", o2_labels[ft], "%")
+                if line:
+                    lines.append(line)
+            line = _range_line(rows, "pressure_bar", "Pressure", "bar")
             if line:
                 lines.append(line)
+        else:
+            for field, label, unit in (("o2_pct", "Oxygen", "%"), ("pressure_bar", "Pressure", "bar")):
+                line = _range_line(rows, field, label, unit)
+                if line:
+                    lines.append(line)
         fuels = Counter(r["material"] or r["fuel"] for r in rows if r["material"] or r["fuel"])
         if fuels:
             lines.append((f"Fuels or materials by number of tests: {counts_text(fuels)}.", [iid]))
-        flame_types = sorted({r["flame_type"] for r in rows if r["flame_type"]})
         if flame_types:
             for ft in flame_types:
                 outcomes = Counter(
@@ -93,15 +108,18 @@ def investigation_facts(inv, rows, scenarios):
         for s in scenarios:
             if s["id"] == "custom":
                 continue
+            # Inverse-flame rows are left out: their O2 is not the chamber atmosphere.
             near = [
                 r
                 for r in rows
-                if (r["distance"].get(s["id"]) is not None and r["distance"][s["id"]] <= NEAR)
+                if r["flame_type"] != "inverse"
+                and (r["distance"].get(s["id"]) is not None and r["distance"][s["id"]] <= NEAR)
             ]
             if near:
+                what = "normal-flame tests" if flame_types else "tests"
                 lines.append(
                     (
-                        f"{len(near)} tests ran close to the {s['name']} atmosphere "
+                        f"{len(near)} {what} ran close to the {s['name']} atmosphere "
                         f"({fmt(s['o2_pct'])} % O2, {fmt(s['pressure_bar'], 3)} bar).",
                         [r["id"] for r in near[:3]],
                     )
