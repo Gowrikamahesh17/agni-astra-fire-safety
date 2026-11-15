@@ -7,6 +7,12 @@ import { useTheme } from "@/lib/theme";
 
 type Star = { x: number; y: number; r: number; ph: number; tw: number; c: string; spark: boolean };
 type Comet = { x: number; y: number; l: number };
+type Rocket = { x: number; y: number; a: number; v: number; len: number };
+type Spark = { x: number; y: number; l: number; m: number; r: number; hue: number };
+
+// The small rockets that cross every page. The picture points up and is about 1 : 3.9, so it is drawn rotated to its heading.
+const ROCKET_SRC = "/images/rocket.png";
+const ROCKET_RATIO = 180 / 696;
 
 // Three depth layers: far stars are small and barely move, near stars are bigger and shift more with the mouse and scroll.
 const LAYERS = [
@@ -17,25 +23,34 @@ const LAYERS = [
 const rand = (a: number, b: number) => a + Math.random() * (b - a);
 
 /**
- * A quiet star field behind every page (dark theme only). Stars twinkle, drift slowly on their own, shift with the pointer and scroll, and a few flash as sparkles, and on the home page
- * an occasional comet crosses. With reduced motion it is drawn once and stays still.
+ * A quiet sky behind every page. In the dark theme it has stars that twinkle, drift and flash as sparkles, and on the home page an
+ * occasional comet. Small rockets cross it on every page, in both themes. With reduced motion it is drawn once and nothing moves.
  */
 export default function StarField() {
   const ref = useRef<HTMLCanvasElement>(null);
+  const rocketRef = useRef<HTMLCanvasElement>(null);
   const theme = useTheme();
   const reduce = useReducedMotion();
   const home = usePathname() === "/";
 
   useEffect(() => {
     const cv = ref.current;
-    if (!cv || theme === "light") return;
+    if (!cv) return;
     const ctx = cv.getContext("2d");
-    if (!ctx) return;
+    const rv = rocketRef.current;
+    const rc = rv?.getContext("2d");
+    if (!ctx || !rv || !rc) return;
     let W = 0;
     let H = 0;
     let layers: { z: number; s: Star[] }[] = [];
     let comets: Comet[] = [];
     let cometIn = 4;
+    let rockets: Rocket[] = [];
+    let sparks: Spark[] = [];
+    let rocketIn = 1.2;
+    const dark = theme !== "light";
+    const img = new Image();
+    img.src = ROCKET_SRC;
     let mx = 0.5;
     let raf = 0;
 
@@ -46,6 +61,9 @@ export default function StarField() {
       cv.width = Math.round(W * dpr);
       cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      rv.width = cv.width;
+      rv.height = cv.height;
+      rc.setTransform(dpr, 0, 0, dpr, 0, 0);
       layers = LAYERS.map((L) => ({
         z: L.z,
         s: Array.from({ length: Math.round(W * H * L.k) }, () => ({
@@ -60,10 +78,68 @@ export default function StarField() {
       }));
     };
 
+    let lastT = 0;
+    const drawRockets = (t: number) => {
+      const dt = Math.min(0.05, lastT ? t - lastT : 0.016);
+      lastT = t;
+      rc.clearRect(0, 0, W, H);
+      rocketIn -= dt;
+      if (rocketIn < 0 && rockets.length < 4 && img.complete && img.naturalWidth > 0) {
+        rocketIn = rand(2.2, 5);
+        const fromLeft = Math.random() < 0.7;
+        rockets.push({
+          x: fromLeft ? rand(-40, W * 0.35) : rand(W * 0.65, W + 40),
+          y: rand(H * 0.55, H + 30),
+          a: fromLeft ? rand(-0.9, -0.35) : rand(-2.8, -2.25), // up and to the right, or up and to the left
+          v: rand(38, 85),
+          len: rand(34, 60), // drawn length of the rocket in pixels
+        });
+      }
+      rockets = rockets.filter((r) => {
+        r.x += Math.cos(r.a) * r.v * dt;
+        r.y += Math.sin(r.a) * r.v * dt;
+        for (let i = 0; i < 2; i++)
+          sparks.push({
+            x: r.x - Math.cos(r.a) * r.len * 0.5 + rand(-1, 1),
+            y: r.y - Math.sin(r.a) * r.len * 0.5 + rand(-1, 1),
+            l: 0,
+            m: rand(0.5, 0.9),
+            r: r.len * rand(0.03, 0.06),
+            hue: Math.random(),
+          });
+        return r.x > -90 && r.x < W + 90 && r.y > -90 && r.y < H + 90;
+      });
+      // A short trail of embers behind each rocket, so it reads as moving even though the picture has its own flame.
+      sparks = sparks.filter((p) => {
+        p.l += dt;
+        if (p.l >= p.m) return false;
+        const k = p.l / p.m;
+        rc.globalAlpha = 0.6 * (1 - k);
+        rc.fillStyle = p.hue > 0.85 ? "#8be8cf" : p.hue < 0.5 ? "#ff9a3c" : "#f5b942";
+        rc.beginPath();
+        rc.arc(p.x, p.y, p.r * (1 + k * 1.4), 0, 6.3);
+        rc.fill();
+        return true;
+      });
+      for (const r of rockets) {
+        const h = r.len;
+        const w = h * ROCKET_RATIO;
+        rc.save();
+        rc.translate(r.x, r.y);
+        rc.rotate(r.a + Math.PI / 2); // the picture points up
+        rc.globalAlpha = 1;
+        rc.shadowColor = "rgba(255, 190, 90, .55)"; // a soft glow so it stands out from the sky
+        rc.shadowBlur = 10;
+        rc.drawImage(img, -w / 2, -h / 2, w, h);
+        rc.restore();
+      }
+      rc.globalAlpha = 1;
+    };
+
     const draw = (t: number) => {
       ctx.clearRect(0, 0, W, H);
       const sy = reduce ? 0 : window.scrollY;
-      for (const L of layers) {
+      for (const L of dark ? layers : []) {
         const ox = reduce ? 0 : (mx - 0.5) * L.z * 40;
         const oy = -(sy * L.z * 0.22) % (H * 1.5);
         const drift = reduce ? 0 : t * L.z * 6; // the field keeps drifting sideways on its own, nearer layers faster
@@ -94,7 +170,8 @@ export default function StarField() {
         }
       }
       ctx.globalAlpha = 1;
-      if (home && !reduce) {
+      if (!reduce) drawRockets(t);
+      if (home && !reduce && dark) {
         cometIn -= 0.016;
         if (cometIn < 0) {
           cometIn = rand(6, 11);
@@ -147,5 +224,11 @@ export default function StarField() {
     };
   }, [theme, reduce, home]);
 
-  return <canvas ref={ref} className="starfield" aria-hidden="true" />;
+  return (
+    <>
+      <canvas ref={ref} className="starfield" aria-hidden="true" />
+      {/* The rockets fly in front of the page content (never blocking clicks), so they show on every tab, not only in the gaps. */}
+      <canvas ref={rocketRef} className="rocket-sky" aria-hidden="true" />
+    </>
+  );
 }
