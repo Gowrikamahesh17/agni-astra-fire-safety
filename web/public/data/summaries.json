@@ -16,7 +16,7 @@
   },
   {
    "investigation_id": "PSI-159",
-   "text": "CFI-G studied normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner in microgravity, varying oxygen (12-85 % for inverse flames, 17.97-39.97 % for normal flames) and pressure (0.5-3.31 bar) across 333 tests. In inverse flames 81 self-extinguished, 58 burned until flow stopped, and 15 did not ignite; in normal flames 102 self-extinguished, 46 did not ignite, and 31 burned until stopped, indicating ignition limits for oxygen-enriched cabin safety.",
+   "text": "CFI-G studied normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner in microgravity across 333 tests at 0.5-3.31 bar. Normal flames (17.97-39.97 % chamber oxygen): 102 self-extinguished, 46 did not ignite, 31 burned until stopped. Inverse flames (12-85 % burner-stream oxygen): 81 self-extinguished, 58 burned until flow stopped, 15 did not ignite.",
    "cites": [
     "PSI-159",
     "PSI-159-0183",
@@ -26,9 +26,9 @@
     "PSI-159-0190",
     "PSI-159-0220"
    ],
-   "model": "openai/gpt-oss-120b",
-   "generated_at": "2026-11-15T10:28:28+00:00",
-   "prompt_version": "summary-v1",
+   "model": "human-edited (draft by openai/gpt-oss-120b)",
+   "generated_at": "2026-11-15T10:31:14+00:00",
+   "prompt_version": "summary-v2",
    "verified": false
   },
   {
