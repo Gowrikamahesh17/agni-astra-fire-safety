@@ -4,22 +4,25 @@ NASA Space Apps Challenge 2026 · challenge: *Flame in Freefall: SI-Powered Fire
 
 **Deadline: Sunday 15 Nov 2026, 11:59 p.m. in the time zone of our Local Event** (confirm the exact cutoff with the Local Lead). Internal target: submit by 18:00. Only the last saved submission is judged, and we can resubmit until the deadline.
 
-Suggested location in the repo: `docs/demo/SUBMISSION.md` (owned by Person C in the plan, so no CODEOWNERS change is needed).
-
 ---
 
-## 0. How to use this file
+## 0. Status of this file
 
-> **For Claude Code:** fill this file from the code in this repository. Work in this order.
->
-> 1. Fill the **Facts sheet** (section 2) first by reading the repo. Every `{{PLACEHOLDER}}` in later sections takes its value from that sheet, so the numbers can never disagree between the form, the slides and the site.
-> 2. Then write each section's draft text with the facts substituted.
-> 3. **Never invent a number, URL, name or feature.** If the code does not show it, write `HUMAN:` followed by what is needed, and leave it for the team.
-> 4. Obey every limit in the "Limits" lines (word counts, character counts, slide counts). Count them and write the count in the "Check" line.
-> 5. When done, run `grep -n "{{\|TODO" docs/demo/SUBMISSION.md`. It must print nothing. `HUMAN:` items may remain, but list them at the top of your final reply.
-> 6. Do not commit secrets. The form's "Save Progress" button publishes the text on our public team page, so nothing private belongs in it.
+Refilled from the code on 2026-11-15 (after the Moon-window fix). Every number below was read from the repo (`web/public/data/`, `ai/config.yaml`, `web/package.json`, the Python `pyproject.toml` files) or computed from `observations.json`. Items only the team can answer are marked `HUMAN:`. Find them with `grep -n "HUMAN" docs/demo/SUBMISSION.md`.
 
-Marker meanings: `{{NAME}}` = fill from code · `HUMAN:` = only the team knows · `[ ]` = a task to tick.
+Open HUMAN items:
+
+1. Demo link (slides or video).
+2. Screenshots: `docs/demo/screenshots/` exists but is empty. Add 6 to 8 clean shots.
+3. Team-page banner (reported by the team; not in the repo).
+4. The PSI-47 id and the two paper titles (reported by the team; not in the repo, so not checked here). `docs/references.md` already lists the two exploration-atmosphere papers and marks the Saffire and SAME ids "to verify".
+5. SI form tick "Other Project-Related SI Use" (section 3.6).
+6. The NASA presentation reference (section 3.7).
+7. Team photos on `/team` (see section 6): confirm every person pictured is an adult who agreed, and who made the photos.
+8. Decide the 17-versus-20 wording (section 3.5, "Factors we considered").
+9. Tick the verification boxes and submit.
+
+Marker meanings: `HUMAN:` = only the team knows · `[ ]` = a task to tick.
 
 ---
 
@@ -34,41 +37,43 @@ Marker meanings: `{{NAME}}` = fill from code · `HUMAN:` = only the team knows �
 - **Idea:** AI should not be used to come up with our idea for solving the challenge. Using it inside the product is allowed and disclosed.
 - **People:** no image, video, audio or other likeness of anyone under 18 in the demo or project.
 - **Team:** all members registered for the same Local Event and listed on the team page's Members tab.
-- **Saving is public:** "Save Progress" makes the content visible to anyone who visits the team page. It does **not** submit. Only **Submit for Judging** does.
+- **Saving is public:** "Save Progress" makes the content visible to anyone who visits the team page. It does **not** submit. Only **Submit for Judging** does. Nothing private (keys, emails) belongs in the form.
 
 ---
 
 ## 2. Facts sheet (single source of truth)
 
-> **For Claude Code:** fill the "Value" column. "Where" says how.
+All numbers in this file come from here.
 
-| Placeholder | Value | Where |
+| Item | Value | Source |
 | --- | --- | --- |
-| `{{PROJECT_NAME}}` | | HUMAN: pick one spelling. The team page uses both "BrahmAstra" and "BrahmAshtra", and the form default is "Project BrahmAshtra Analytics". Use one everywhere. |
-| `{{TAGLINE}}` | | One line, 12 words or fewer, from the README's first paragraph |
-| `{{TEAM_MEMBERS}}` | | HUMAN: full names as on the team page's Members tab |
-| `{{LIVE_URL}}` | | HUMAN: production URL on Vercel; open it in a private window and confirm it needs no login |
-| `{{REPO_URL}}` | | `git remote get-url origin`, as an `https://` URL; the repo must be public |
-| `{{DEMO_URL}}` | | HUMAN: public link to the slides or video |
-| `{{N_TABLES}}` | | Count of CSV files in `data/raw/psi/` |
-| `{{N_INVESTIGATIONS}}` | | Length of `web/public/data/investigations.json` |
-| `{{N_OBSERVATIONS}}` | | Length of `web/public/data/observations.json` |
-| `{{MOON_WINDOW_COUNT}}` | | Count of observations with `in_moon_window: true` (30% oxygen or more at 0.7033 bar / 10.2 psi or less) |
-| `{{PAGES}}` | | Routes under `web/app/` |
-| `{{SCORE_FORMULA}}` | | `data/src/ffd_data/scoring.py` and its `formula_version`, in one plain sentence |
-| `{{MODEL_TASK}}`, `{{MODEL_METRIC}}` | | `web/public/data/models/*.json`: `task`, `metrics` (rows, cross-validation score), `valid_range` |
-| `{{GROQ_MODEL}}` | | `ai/config.yaml`, `model`; also check it is not a model from a Chinese lab if the team decided to avoid those |
-| `{{N_SUMMARIES}}`, `{{N_SUMMARIES_VERIFIED}}` | | `web/public/data/summaries.json`: total, and count with `verified: true` |
-| `{{WEB_DEPS}}` | | `web/package.json` dependencies with versions and licences |
-| `{{PY_DEPS}}` | | `data/pyproject.toml` and `ai/pyproject.toml` |
-| `{{SCREENSHOTS}}` | | Files in `docs/demo/screenshots/` (ask Person A for 6 to 8 clean shots) |
+| Project name | **Flame in Freefall** (site title and README). HUMAN: confirm. The team page has used both "BrahmAstra" and "BrahmAshtra". The code uses **BrahmAstra Analytics** everywhere, so use that spelling | `web/app/layout.tsx`, `docs/ai-disclosure.md` |
+| Tagline (10 words) | Fire safety for crew habitats, from NASA's microgravity data | Home page heading, `web/app/page.tsx` |
+| Team members | Gowrika Mahesh, Utkarsh Sawant, Arun Kumar. HUMAN: match the team page's Members tab | Site footer, `web/lib/team.ts` |
+| Live URL | https://agni-astra-fire-safety-web.vercel.app/ . HUMAN: open it in a private window and confirm it needs no login | Team |
+| Repo URL | https://github.com/Gowrikamahesh17/agni-astra-fire-safety (public, confirmed by the team) | `git remote get-url origin` |
+| Demo URL | HUMAN: public link to the slides or video | |
+| NASA tables | 6 CSV files from 5 investigations (CFI-G has a normal-flame and an inverse-flame file) | `data/raw/psi/` |
+| Investigations on the site | 15: 5 with test tables and 10 text-only (Saffire-I, II, III, SAME, DAFT and 5 ACME experiments) | `web/public/data/investigations.json` |
+| Test records | **967** (CFI-G 333, FLEX 274, BASS-II 129, BASS 122, SAME-R 109) | `web/public/data/observations.json` |
+| Moon-habitat window | **20 of 967** tests have Moon-range chamber air (oxygen 30 % or more at 0.7033 bar / 10.2 psi or less). All 20 are CFI-G normal flames. 28 CFI-G inverse-flame tests also fall in the numeric range but are excluded: their oxygen value describes the burner stream, not the chamber. FLEX, BASS-II, BASS and SAME-R have none | Computed from `observations.json`; `ai/src/ffd_ai/facts.py` |
+| FLEX near the lunar atmosphere | 17 FLEX droplet tests within one distance step of 30 % O2 and 0.703 bar. 15 were disrupted and 2 burned to completion. None went out (extinguished). These are a different count from the 20 above | `observations.json`, `distance.lunar_habitat <= 1` |
+| Pages | `/` home, `/guide`, `/dashboard`, `/compare`, `/investigations/[id]`, `/gaps`, `/implications`, `/predict`, `/team`, plus the chat panel (API route `/api/chat`) | `web/app/` |
+| Score formula (version 2.0) | Site score = weighted mean of three 0-100 parts, default weights 50 % proximity, 30 % relevance, 20 % usability. Proximity = 100 × (1 − closest distance ÷ 3), where distance counts 5 points of oxygen or 0.10 bar as one unit. Relevance is fixed by role (solid-material prevention 100, suppression 90, detection 90, gas-flame behaviour 70). Usability adds 40 for a recorded outcome, 30 for oxygen and pressure, 20 for 100 or more rows and 10 for source rows | `data/src/ffd_data/scoring.py`, `docs/model-card.md` |
+| Known limitation | Distance and proximity scores treat CFI-G inverse-flame oxygen as the burner-stream value. The Moon-window count excludes those tests. Stated in the model card and in a footnote on the Evidence gaps chart | `docs/model-card.md`, `web/components/GapsView.tsx` |
+| Main model | `flex_extinction`: logistic regression, will a FLEX droplet flame go out? 261 rows, 5-fold cross-validation, balanced accuracy **0.787** (baseline 0.500), ROC AUC **0.870**. Valid range: O2 12-34 %, 0.70-3.09 bar, CO2 0-70 %, He 0-45 %, droplet 1.1-4.67 mm | `web/public/data/models/flex_extinction.json` |
+| Other models | `cfig_self_extinction` (logistic, 272 rows, balanced accuracy 0.679, AUC 0.734); `flex_burning_rate` (ridge, 257 rows, R² 0.713, mean error 0.047 mm²/s against 0.107 for the mean) | `web/public/data/models/` |
+| AI model | `openai/gpt-oss-120b` on Groq (an OpenAI open-weight model, not from a Chinese lab) | `ai/config.yaml`, `web/lib/chat/index.ts` |
+| AI summaries | 15 written, 15 verified. The PSI-159 summary was edited by hand by the team after drafting | `web/public/data/summaries.json` |
+| AI implications | 8 written, 8 verified | `web/public/data/implications.json` |
+| Chat search index | 1005 documents (15 investigations, 15 summaries, 8 implications, 967 test rows) | `web/public/data/search-docs.json` |
+| Screenshots | HUMAN: folder `docs/demo/screenshots/` exists but is empty | |
 
-Fixed facts we already verified (still re-check against the repo):
+Facts from the challenge and PSI pages (re-check before submitting):
 
 - PSI combustion science lists 24 investigations; all but one show licence CC0-1.0.
 - The challenge page says PSI holds no partial-gravity combustion data today (LUCI and FM2 are planned).
-- Moon-habitat air is expected to be **30% oxygen or more at 10.2 psi or less**, against about 21% at 14.7 psi on Earth (challenge page).
-- 20 of 967 tests have Moon-range chamber air (CFI-G normal flames). 28 CFI-G inverse-flame tests are excluded because their oxygen value describes the burner stream, not the chamber. FLEX and BASS-II have none.
+- Moon-habitat air is expected to be **30 % oxygen or more at 10.2 psi or less**, against about 21 % at 14.7 psi on Earth.
 
 ---
 
@@ -78,87 +83,86 @@ Where: team page, **Project** tab, **Edit**. Fields marked * are required.
 
 ### 3.1 Project Name
 
-- **Form text:** "Give your project a title that helps describe what your team worked on." Short, saying what problem it solves.
+- **Form text:** "Give your project a title that helps describe what your team worked on."
 - **Limit:** none shown. Keep it under 70 characters.
-- **Draft:** `{{PROJECT_NAME}}: {{TAGLINE}}`
-- **Check:** characters = `___`
+- **Draft:** `Flame in Freefall: Fire safety for crew habitats, from NASA's microgravity data`
+- **Check:** characters = 79. Over the 70 suggested, so shorten to `Flame in Freefall` (17) if the form allows only a short title.
 
 ### 3.2 Summary *
 
 - **Form text:** "What did you develop? How does it address the challenge? Why is it important?"
 - **Limits:** suggested 50 to 200 words; the form's counter stops at **1500 characters**.
-- **Draft** (replace placeholders, keep it factual, no hype):
+- **Draft:**
 
-> {{PROJECT_NAME}} is a web dashboard that turns NASA's microgravity combustion experiments into ranked, searchable fire-safety insight for Moon and Mars habitats. We cleaned {{N_TABLES}} experimental tables from {{N_INVESTIGATIONS}} investigations in NASA's Physical Sciences Informatics (PSI) repository into {{N_OBSERVATIONS}} individual test records. Users rank investigations with adjustable weights for oxygen, pressure, habitat relevance and data usability, search and group the tests, and click any finding to see the exact source row. AI-written summaries and a chatbot are checked against the data and answer "not in the PSI data" instead of guessing. Only {{MOON_WINDOW_COUNT}} of {{N_OBSERVATIONS}} tests match Moon-habitat air, and PSI has no partial-gravity data, so the dashboard shows that gap openly. It helps researchers and engineers decide which experiments matter before habitats are built.
+> Flame in Freefall is a web dashboard that turns NASA's microgravity combustion experiments into ranked, searchable fire-safety insight for Moon and Mars habitats. We cleaned 6 experimental tables from 5 investigations in NASA's Physical Sciences Informatics (PSI) repository into 967 individual test records, and added 10 text-only entries for related experiments. Users rank investigations with adjustable weights for atmosphere proximity, habitat relevance and data usability, search and group the tests, and click any finding to see the exact source row. AI-written summaries and a chatbot are checked against the data, and the chatbot answers "Not in the PSI data we loaded." instead of guessing. Only 20 of 967 tests have Moon-range chamber air, and PSI has no partial-gravity data, so the site shows that gap openly. It helps researchers and engineers decide which experiments matter before habitats are built.
 
-- **Check:** words = `___` (50 to 200), characters = `___` (1500 or fewer)
+- **Check:** words = 139 (50 to 200), characters = 916 (1500 or fewer)
 
 ### 3.3 Project Links: Project Demonstration *
 
 - **Form text:** a slide presentation (7 slides or fewer, including title and introduction) or a video (30 seconds or less), on a public host, link needing no password, permission or registration.
-- **Value:** `{{DEMO_URL}}` (full URL with `https://`)
+- **Value:** HUMAN: demo URL (full URL with `https://`)
 - **Check:** opens in a private window; slides <= 7 or video <= 30 s. Build it from section 4.
 
 ### 3.4 Project Links: Project *
 
 - **Form text:** a public link to the final project (website, hosting service or code repository). No password, permission or registration.
-- **Value:** `{{LIVE_URL}}` (the repo `{{REPO_URL}}` goes in the details text and the link lists)
-- **Check:** every page loads in a private window; the site works with the chatbot switched off.
+- **Value:** https://agni-astra-fire-safety-web.vercel.app/ . The repo, https://github.com/Gowrikamahesh17/agni-astra-fire-safety, goes in the details text and the link lists.
+- **Check:** every page loads in a private window. The site works with the chatbot switched off: if `GROQ_API_KEY` is missing, only the chat shows that it is unavailable.
 
 ### 3.5 Project Information: Project Details *
 
 - **Form text:** what it does and how it works, benefits, intended impact, tools, languages, hardware and software, how it is creative, factors the team considered.
-- **Editor:** a rich-text box (bold, italics, underline, links). No limit is shown; keep to **about 400 to 700 words**. Use short bold lead-ins instead of long headings.
-- **Draft skeleton** (fill from the code; delete any line the code does not support):
+- **Editor:** a rich-text box (bold, italics, underline, links). No limit is shown; aim for **about 400 to 700 words**. Use short bold lead-ins instead of long headings.
+- **Draft:**
 
-> **What it does.** {{PROJECT_NAME}} ranks and explains NASA combustion experiments for crew-habitat fire safety. Pages: {{PAGES}}.
+> **What it does.** Flame in Freefall ranks and explains NASA combustion experiments for crew-habitat fire safety. Pick a mission scenario (ISS cabin, lunar habitat, exploration atmosphere, pressurized rover, Mars transit vehicle, spacesuit or your own oxygen and pressure) and every page compares the experiments to it. The pages are: a Dashboard that ranks investigations; Compare, which sets two or three side by side; an investigation page listing every test with its source file and row and a CSV download; Evidence gaps, a chart of every test by oxygen and pressure; Implications for prevention, detection and suppression; Predict, a what-if tool; a Guide for newcomers; and a chat panel that answers questions from the data.
 >
-> **How it works.** Python pipelines clean the PSI experimental tables offline into JSON; the Next.js site serves those files. Every observation keeps its source file and row. Ranking uses: {{SCORE_FORMULA}}
+> **How it works.** Python pipelines clean the PSI experimental tables offline into JSON files that follow shared JSON Schemas. The Next.js site loads those files in the browser, so no Python runs in production. The only server code is the chat route. Every observation keeps its source file and row. Ranking is a weighted average of three parts: how close the nearest test came to your atmosphere (proximity), how directly the study bears on crew fire safety (relevance), and how usable its data is. The default weights are 50 %, 30 % and 20 %, and you can change them.
 >
-> **Data.** {{N_OBSERVATIONS}} test records from {{N_INVESTIGATIONS}} PSI investigations, all CC0-1.0 and cited by DOI (see the NASA Data list).
+> **Data.** 967 test records from 6 CSV tables in 5 PSI investigations (FLEX, CFI-G, BASS, BASS-II, SAME-R), all CC0-1.0 and cited by DOI. Ten more investigations (Saffire I to III, SAME, DAFT and five ACME experiments) appear as text-only entries with links to their NASA sources.
 >
-> **Prediction.** A simple baseline model: {{MODEL_TASK}}; {{MODEL_METRIC}}. The weights are exported to JSON and run in the browser. It is only valid inside the tested range, and the interface warns when an input falls outside it.
+> **Prediction.** Three simple baseline models are trained offline with scikit-learn and run in the browser. The main one predicts whether a FLEX droplet flame will go out: 261 tests, 5-fold cross-validation, balanced accuracy 0.787 against 0.500 for always guessing the majority, and ROC AUC 0.870. The other two cover CFI-G gas-flame self-extinction and the FLEX burning rate. Each is only valid inside its tested range, and the Predict page greys out the number and warns when an input falls outside it.
 >
-> **AI.** {{N_SUMMARIES_VERIFIED}} of {{N_SUMMARIES}} summaries were written by {{GROQ_MODEL}} (via Groq) from computed facts, then checked: every number must appear in the source data and a person read each one. The chatbot answers only from retrieved rows, cites them, and refuses when the data does not support an answer.
+> **AI.** All 15 investigation summaries and all 8 implication statements were drafted by openai/gpt-oss-120b on Groq from facts computed in code. A script rejects any draft whose numbers are not in those facts, and a person reviewed each one. The PSI-159 summary was then edited by hand. Only approved text is shown. The chatbot answers only from documents retrieved from our own search index, cites them, and replies "Not in the PSI data we loaded." when the data does not cover the question. AI-generated content is labelled on the site.
 >
-> **Tools.** {{WEB_DEPS}}; {{PY_DEPS}}; hosting on Vercel; code at {{REPO_URL}}.
+> **Tools.** Next.js 16, React 19, TypeScript, Chart.js and MiniSearch for the site; Python 3.12 with pandas, NumPy, scikit-learn, jsonschema, httpx, PyYAML and python-dotenv for the data and AI layers; Vitest and pytest for tests; Groq for the model; hosted on Vercel. Code: https://github.com/Gowrikamahesh17/agni-astra-fire-safety
 >
-> **Creativity.** Every finding links back to its exact source row; the chatbot is built to say "not in the data".
+> **Creativity.** Every finding links back to its exact source row. The chatbot is built to say "not in the data" rather than guess. A scroll story takes the visitor from Earth to one fuel droplet, and the Predict page shows its answer as a flame that shrinks as the chance of going out rises.
 >
-> **Factors we considered.** No partial-gravity data exists, so Moon and Mars gravity are not modelled; only {{MOON_WINDOW_COUNT}} tests match Moon-habitat air; tables record different columns, so we normalised units and labels (pressure to bar, oxygen to percent).
+> **Factors we considered.** No partial-gravity data exists in PSI, so Moon and Mars gravity are not modelled and the site says so. Only 20 of 967 tests have Moon-range chamber air, and all are gas flames (CFI-G normal flames). 28 CFI-G inverse-flame tests are excluded from that count because their oxygen value describes the burner stream, not the chamber. The FLEX tests nearest that atmosphere (17) ended in disruption or burning to completion, not extinction. Flames still burning when a CFI-G test was stopped are marked as censored, so they may have burned longer. Distance scores still use the burner-stream value for inverse flames, a limitation noted in the model card and on the chart. The models are baselines and not flight-qualified.
 >
-> **Impact.** Helps researchers and engineers find the experiments that matter for habitat fire safety, and points to Earth uses such as water-mist extinguishers, smoke detection and firefighter gear.
+> **Impact.** Helps researchers and engineers find the experiments that matter for habitat fire safety. The site also notes general Earth applications (extinguishers, smoke detection, protective gear), clearly labelled as context rather than measured results.
 >
-> **Links.** Live site: {{LIVE_URL}} · Code: {{REPO_URL}} · Demo: {{DEMO_URL}}
+> **Links.** Live site: https://agni-astra-fire-safety-web.vercel.app/ · Code: https://github.com/Gowrikamahesh17/agni-astra-fire-safety · Demo: HUMAN
 
-- **Check:** words = `___`; every claim matches a fact in section 2.
+- **Check:** words = 694 (target 400 to 700); every claim matches section 2. Recount after filling the demo link.
+- **HUMAN (17 versus 20):** the draft keeps both numbers and says why they differ. Cut the FLEX 17 sentence if it confuses readers.
 
 ### 3.6 Use of Super Intelligence (SI) *
 
 - **Form text:** a multi-select. "Select all that apply." The answer is for data collection and is **not seen by judges**, but judges do see watermarks, descriptive text and metadata in the project itself.
 - **Options on the form:** Ideation or Brainstorming · Research or Information Gathering · Data Analysis and Interpretation · Building SI/ML Into the Project · Coding, Debugging, or Troubleshooting · Writing, Editing, or Translation · Visual Design or Image Creation · Presentation, Video, or Audio · Other Project-Related SI Use · None / Did not use SI or SI tools.
-- **Our suggested answers.** The team confirms each tick honestly:
+- **Our answers.** Team-confirmed rows are marked:
 
-| Option | Likely | Evidence |
+| Option | Tick? | Evidence |
 | --- | --- | --- |
-| Ideation or Brainstorming | Yes | AI helped plan the architecture, tech stack and work split. The solution idea itself comes from the challenge text and NASA's own presentation, not from AI. |
-| Research or Information Gathering | Yes | AI read the challenge pages, submission guides and the PSI repository. |
-| Data Analysis and Interpretation | Yes | AI profiled the experimental tables. |
-| Building SI/ML Into the Project | Yes | Groq-hosted model for summaries and chatbot; scikit-learn baseline model. |
-| Coding, Debugging, or Troubleshooting | Yes | Claude and Claude Code wrote or reviewed code. |
-| Writing, Editing, or Translation | Yes | AI drafted summaries and form text. |
-| Visual Design or Image Creation | Yes | Header image generated with Gemini; prototype UI drafted with Claude. |
-| Presentation, Video, or Audio | HUMAN | Tick only if AI helped make the slides or video. |
-| Other Project-Related SI Use | HUMAN | |
-| None / Did not use SI or SI tools | No | Do not combine with the others. |
+| Ideation or Brainstorming | Yes (team confirmed) | Humans and AI planned the architecture and work split together. The solution idea itself comes from the challenge text, not from AI |
+| Research or Information Gathering | Yes (team confirmed) | The team read the NASA sources (see `docs/references.md`) and used AI to assist |
+| Data Analysis and Interpretation | Yes | `docs/ai-disclosure.md`: Claude Code helped build the data pipeline and models |
+| Building SI/ML Into the Project | Yes | Groq `openai/gpt-oss-120b` for summaries, implications and chat; scikit-learn baseline models |
+| Coding, Debugging, or Troubleshooting | Yes | `docs/ai-disclosure.md`: Claude Code wrote or helped write the `web/` app, data pipeline, AI layer and docs |
+| Writing, Editing, or Translation | Yes | AI drafted the summaries and implications, and Claude Code helped write the interface text and docs |
+| Visual Design or Image Creation | Yes | The home-page astronaut illustration was generated with Google Gemini, background removed with remove.bg, and carries a visible "AI-generated image" label |
+| Presentation, Video, or Audio | Yes (team confirmed) | AI will help make the slides or video. If the final demo contains AI-generated images, video or audio, add a visible watermark or label |
+| Other Project-Related SI Use | HUMAN | Tick only if AI was used in a way none of the other options cover |
+| None / Did not use SI or SI tools | No | Do not combine with the others |
 
-> **For Claude Code:** also create or update `docs/ai-disclosure.md` and the site footer with this text, adjusted to the code: *"Summaries and chat answers on this site are AI-generated by {{GROQ_MODEL}} via Groq and checked against NASA PSI data. Parts of the code and documentation were written with Claude and Claude Code. The header image was generated with Gemini and carries an AI watermark."* Add `Generated-by` notes in the headers of AI-assisted source files if the team wants metadata-level acknowledgement.
+The site already carries the disclosure: the footer says "AI-generated content is labelled", the home-page image is labelled, and `docs/ai-disclosure.md` lists every use, including prompt versions (`summary-v2` for PSI-159 only, `summary-v1` for the other 14). The footer does not yet name the model. Suggested wording if the team wants it there: *"Summaries and chat answers on this site are AI-generated by openai/gpt-oss-120b via Groq and checked against NASA PSI data. Parts of the code and documentation were written with Claude Code. The home-page illustration was generated with Gemini and is labelled."*
 
 ### 3.7 NASA Data * (Link Text + Link URL pairs)
 
-Press **Add New Link** once per row. **Keep a row only if the final data files use that investigation, and add rows for any other PSI investigation or NASA page we used.** Check each DOI link opens before submitting.
-
-> **For Claude Code:** compare this list with `data/raw/psi/` and `investigations.json`, remove unused rows, and add every NASA source that appears in the code or docs.
+Press **Add New Link** once per row. Check each DOI link opens before submitting. All five tables below are used by the final data files. The text-only rows are shown on the site with these links.
 
 | Link Text | Link URL |
 | --- | --- |
@@ -168,39 +172,58 @@ Press **Add New Link** once per row. **Keep a row only if the final data files u
 | NASA PSI-69 Flame Extinguishment Experiment (FLEX), v5, DOI 10.60555/mbq8-0451 | https://doi.org/10.60555/mbq8-0451 |
 | NASA PSI-159 ACME Cool Flames Investigation with Gases (CFI-G), v1, DOI 10.60555/cyt1-kh64 | https://doi.org/10.60555/cyt1-kh64 |
 | NASA Physical Sciences Informatics (PSI) Data Repository | https://psi.nasa.gov/physci/repo |
+| NASA PSI-98 Saffire-I (text-only entry) | https://psi.nasa.gov/physci/repo/data/investigations/PSI-98 |
+| NASA PSI-99 Saffire-II (text-only entry) | https://psi.nasa.gov/physci/repo/data/investigations/PSI-99 |
+| NASA PSI-100 Saffire-III (text-only entry) | https://psi.nasa.gov/physci/repo/data/investigations/PSI-100 |
+| NASA PSI-102 Smoke Aerosol Measurement Experiment, SAME (text-only entry) | https://psi.nasa.gov/physci/repo/data/investigations/PSI-102 |
+| NASA Glenn, Sheredy, "Fundamental Research Applied To Enable Hardware Performance in Microgravity" (DAFT, text-only entry) | https://ntrs.nasa.gov/citations/20050215648 |
+| NASA ACME (BRE, s-Flame, Flame Design, CLD Flame, E-FIELD Flames, text-only entries) | https://science.nasa.gov/mission/acme |
+| NASA Saffire spacecraft fire safety demonstration (PDF) | https://www.nasa.gov/wp-content/uploads/2025/07/spacecraft-fire-safety-demonstration-saffire.pdf |
+| NASA Technical Paper, Detailed Results from the Flame Extinguishment Experiment (FLEX), NASA/TP-2015-216046 | https://ntrs.nasa.gov/citations/20150023456 |
+| NASA exploration atmosphere: Siders et al., Effects of Mild Hypobaric Hypoxia on Response From Mild Exercise in NASA Exploration Atmosphere Tests, AsMA 2024 | https://ntrs.nasa.gov/citations/20230015594 |
+| NASA exploration atmosphere: Sanders et al., Medical Lessons Learned from the Exploration Atmospheres Study, AsMA 2023 | https://ntrs.nasa.gov/citations/20220015741 |
 | Space Apps challenge page: Flame in Freefall (Moon-habitat oxygen and pressure figures) | https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/ |
-| HUMAN: the NASA presentation that inspired the experiment viewer (title and URL) | HUMAN |
+| HUMAN: the NASA presentation that inspired the experiment viewer (title and URL), if one was used | HUMAN |
+
+The Saffire PSI ids (98, 99, 100) and SAME (102) are marked "to verify" in `docs/references.md`. Open each link before submitting and delete the row if it does not match. HUMAN: the team also mentioned a "PSI-47" id that is not in the repo. Add or correct a row only after checking that link.
 
 ### 3.8 Space Agency Partner & Other Data (Link Text + Link URL pairs)
 
 - **Form text:** list all other data, resources and tools used, **including code, text and images, even if open source or freely available**. All links must be public and be full URLs.
-- **Not required to have rows, but our originality checkbox (3.9) says every external resource is listed in 3.7 or 3.8**, so this list must be complete.
+- Our originality checkbox (3.9) says every external resource is listed in 3.7 or 3.8, so this list must be complete.
 
-> **For Claude Code:** build one row per item from the code. Look in `web/package.json`, `data/pyproject.toml`, `ai/pyproject.toml`, `web/app/layout.tsx` and CSS for fonts, `web/public/` for images and icons, and the landing-page code for any copied snippets. Use each package's real homepage or repository URL and its licence. Do not list anything you cannot find in the repo.
-
-Rows to start from (confirm each against the code):
+Rows read from `web/package.json`, `data/pyproject.toml`, `ai/pyproject.toml`, `web/app/layout.tsx`, `web/public/` and `docs/references.md`:
 
 | Link Text | Link URL |
 | --- | --- |
-| This project's source code ({{PROJECT_NAME}}) | {{REPO_URL}} |
-| Next.js | https://nextjs.org |
-| React | https://react.dev |
-| HUMAN or code: search library (Fuse.js or MiniSearch) | from `package.json` |
-| HUMAN or code: charting library, if any | from `package.json` |
-| pandas | https://pandas.pydata.org |
-| scikit-learn | https://scikit-learn.org |
-| Groq API and the {{GROQ_MODEL}} model | https://console.groq.com |
+| This project's source code (Flame in Freefall, MIT licence) | https://github.com/Gowrikamahesh17/agni-astra-fire-safety |
+| Next.js 16 (MIT) | https://nextjs.org |
+| React 19 (MIT) | https://react.dev |
+| Chart.js 4 (MIT), charts | https://www.chartjs.org |
+| MiniSearch 7 (MIT), chat retrieval and test search | https://lucaong.github.io/minisearch/ |
+| TypeScript, ESLint, Vitest (dev tools) | https://vitest.dev |
+| Geist and Geist Mono fonts (OFL), via Google Fonts | https://fonts.google.com/specimen/Geist |
+| Noto Sans Devanagari font (OFL), via Google Fonts | https://fonts.google.com/noto/specimen/Noto+Sans+Devanagari |
+| pandas (BSD-3-Clause) | https://pandas.pydata.org |
+| NumPy (BSD-3-Clause) | https://numpy.org |
+| scikit-learn (BSD-3-Clause) | https://scikit-learn.org |
+| jsonschema (MIT) | https://github.com/python-jsonschema/jsonschema |
+| httpx (BSD-3-Clause), PyYAML (MIT), python-dotenv (BSD-3-Clause) | https://www.python-httpx.org |
+| pytest and Ruff (dev tools) | https://docs.pytest.org |
+| Groq API and the openai/gpt-oss-120b model | https://console.groq.com |
 | Vercel (hosting) | https://vercel.com |
-| Gemini: AI-generated team header image | https://gemini.google.com |
-| Claude / Claude Code (Anthropic): AI-assisted code, plan and analysis | https://claude.ai |
-| HUMAN: fonts, icons and any other images or code, with licences | HUMAN |
+| Gemini: AI-generated home-page astronaut illustration (labelled "AI-generated image") | https://gemini.google.com |
+| remove.bg: automatic background removal for that illustration | https://www.remove.bg |
+| Claude Code (Anthropic): AI-assisted code and documentation | https://claude.com/claude-code |
+| Team photos on the `/team` page (`web/public/team/`). HUMAN: confirm they are the team's own photos, and whether any was edited or AI-generated | HUMAN |
+| HUMAN: any other icons, images or code copied from elsewhere. `web/app/icon.svg` is drawn for this project (`docs/references.md`) | HUMAN |
 
 ### 3.9 Project Submission Verification
 
 - [ ] **Agree to Terms and Conditions *:** "I have read and understand the project submission requirements contained in the NASA Space Apps Project Submission Guide, and I agree to the Participant Terms and Conditions and Privacy Policy."
 - [ ] **Confirm All Work is Original *:** the work is our team's own, **all external resources including code, text and images are listed in the NASA Data and Space Agency Partner & Other Data fields**, and we used no copyrighted material (music, images, text) without permission.
 
-Both boxes already appeared ticked from an earlier save when this form was read, but only people who have really read and agreed should leave them ticked. Re-read both statements before submitting.
+Only people who have really read and agreed should leave these ticked. Re-read both statements before submitting.
 
 ### 3.10 Save and submit
 
@@ -216,19 +239,19 @@ Both boxes already appeared ticked from an earlier save when this form was read,
 
 **Requirements from the guide:** at most 7 slides including title and introduction · readable font size and few words per slide · strong visuals · English · public link · must include **team name, names of team members, the challenge we chose** · visuals must show **an image of the project**, **the user experience**, and **how NASA and space-agency open data and technology make the solution possible**. Judges also use the demo for the Presentation score.
 
-> **For Claude Code:** fill each slide's text from section 2, then reference real screenshot files from `docs/demo/screenshots/`. Keep every slide to at most about 30 words plus one image. Put speaker notes below each slide. If asked, build the deck as a `.pptx` or Google Slides outline; otherwise leave this as a content plan.
+Keep every slide to about 30 words plus one image. HUMAN: take the screenshots first and save them in `docs/demo/screenshots/` (folder created, empty).
 
 | # | Slide | Content | Visual |
 | --- | --- | --- | --- |
-| 1 | **Title** | `{{PROJECT_NAME}}`; `{{TAGLINE}}`; team: BrahmAstra Analytics; members: `{{TEAM_MEMBERS}}`; challenge: *Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data* | AI-generated header image, with a visible "AI-generated" watermark and **no NASA logos or wording** |
-| 2 | **Why it matters** (introduction) | Flames behave differently without gravity; Moon habitats will likely hold 30% oxygen or more at 10.2 psi or less, which makes materials burn more easily; decades of experiments are hard to search and compare | Earth flame vs microgravity flame illustration (label it an illustration) |
-| 3 | **Our solution** | One sentence: rank, search and trace NASA combustion tests, with a source row on every finding | Dashboard screenshot: ranking page |
-| 4 | **User experience** | Three steps: set weights and filter, open an investigation and search its tests, click a finding to see its source row; optional chat | Three screenshots in a row, numbered |
-| 5 | **NASA data behind it** | `{{N_OBSERVATIONS}}` tests from `{{N_INVESTIGATIONS}}` PSI investigations, CC0-1.0, cited by DOI; `{{MOON_WINDOW_COUNT}}` in the Moon-habitat window; no partial-gravity data exists | Small pipeline picture: PSI CSV, clean, JSON, dashboard |
-| 6 | **How we keep it honest** | Baseline model: `{{MODEL_TASK}}`, `{{MODEL_METRIC}}`; AI summaries checked against the data; chatbot refuses when unsure; limits stated | Screenshot of a source chip or a refused answer |
-| 7 | **Impact and next steps** | For researchers and engineers choosing experiments; Earth uses; ready for LUCI and FM2 partial-gravity data when published; links: `{{LIVE_URL}}`, `{{REPO_URL}}`; one-line AI disclosure | QR code or short link, and the team |
+| 1 | **Title** | Flame in Freefall; Fire safety for crew habitats, from NASA's microgravity data; team: BrahmAstra Analytics; members: Gowrika Mahesh, Utkarsh Sawant, Arun Kumar; challenge: *Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data* | The home-page astronaut illustration, with its visible "AI-generated image" label, and **no NASA logos or wording** |
+| 2 | **Why it matters** (introduction) | Flames behave differently without gravity; Moon habitats will likely hold 30 % oxygen or more at 10.2 psi or less, which can make materials burn more easily; decades of experiments are hard to search and compare | The gravity flame on the home page (tall Earth flame next to a round microgravity flame), labelled as an illustration |
+| 3 | **Our solution** | One sentence: rank, search and trace NASA combustion tests, with a source row on every finding | Dashboard screenshot: the ranking page |
+| 4 | **User experience** | Three steps: pick a scenario and set weights, open an investigation and search its tests, click a finding to see its source row; optional chat | Three screenshots in a row, numbered (Dashboard, investigation page, Evidence gaps or chat) |
+| 5 | **NASA data behind it** | 967 tests from 5 PSI investigations (6 tables), plus 10 text-only entries; CC0-1.0, cited by DOI; 20 tests have Moon-range chamber air; no partial-gravity data exists | Small pipeline picture: PSI CSV, clean, JSON, dashboard |
+| 6 | **How we keep it honest** | Baseline FLEX model: balanced accuracy 0.787 against 0.500 for guessing, with a warning outside its range; AI text number-checked and reviewed (15 of 15 summaries, 8 of 8 implications); chat refuses when unsure | Screenshot of the Predict page, a source chip or a refused chat answer |
+| 7 | **Impact and next steps** | For researchers and engineers choosing experiments; general Earth applications, labelled as context, not measured results; ready for LUCI and FM2 partial-gravity data when published; links to the live site and repo; one-line AI disclosure | QR code or short link, and the team |
 
-**Hosting the deck:** Google Slides ("Anyone with the link can view") or a PDF committed to a **public** GitHub repo. Test the link in a private window.
+**Hosting the deck:** Google Slides ("Anyone with the link can view") or a PDF committed to the **public** GitHub repo. Test the link in a private window.
 
 ### 4b. If we make a 30-second video instead
 
@@ -246,30 +269,30 @@ Total 30 seconds or less, English or English subtitles, no one under 18 on scree
 
 ## 5. Judging criteria and our evidence
 
-Each of five criteria is scored 1 to 5. Add one real piece of evidence per row.
+Each of five criteria is scored 1 to 5. One piece of evidence per row, all present in the repo:
 
 | Criterion | Evidence we show | Where in the repo or site |
 | --- | --- | --- |
-| **Impact** | Helps researchers and engineers choose experiments for Moon and Mars habitat fire safety; Earth applications | Dashboard, "Earth applications" note |
-| **Creativity** | Every finding links to its source row; chatbot that refuses to guess | Viewer page, `web/lib/chat/` |
-| **Validity** | Real PSI data with DOIs; documented scoring formula; model card with limits; AI text verified against data | `docs/model-card.md`, `ai/src/ffd_ai/verify_numbers.py` |
-| **Relevance** | PSI data is core to every page; each challenge objective is addressed | `data/`, all pages |
-| **Presentation** | Clear landing page, demo, complete form | Landing page, section 4 |
+| **Impact** | Helps researchers and engineers choose experiments for Moon and Mars habitat fire safety, and shows where evidence is missing (20 of 967 tests with Moon-range chamber air); general Earth applications, labelled as context, not measured results | Dashboard, Evidence gaps, Implications, home page "Why it matters on Earth" block |
+| **Creativity** | Every finding links to its source row; a chatbot that refuses to guess; scroll story, gravity flame and flame meter | Investigation pages, `web/lib/chat/`, `web/components/ScrollDive.tsx`, `GravityFlame.tsx`, `FlameMeter.tsx` |
+| **Validity** | Real PSI data with DOIs; documented scoring formula; model card with limits and a known-limitation note; AI text verified against data; tests on both sides | `docs/model-card.md`, `ai/src/ffd_ai/verify_numbers.py`, `data/tests/`, `web/lib/*.test.ts` |
+| **Relevance** | PSI data is core to every page; the dashboard, gaps, implications, predict and chat pages each address the challenge | `data/`, all pages |
+| **Presentation** | Clear home page and Guide, team page, light and dark themes, accessibility options, demo, complete form | Home page, `/guide`, `/team`, section 4 |
 
 ---
 
 ## 6. Final checks (do these in order before the final submit)
 
-- [ ] `grep -n "{{\|TODO" docs/demo/SUBMISSION.md` prints nothing, and all `HUMAN:` items are resolved.
+- [ ] No `{{` placeholders remain in this file, and all `HUMAN:` items are resolved.
 - [ ] Every number in the form, slides and site matches section 2.
-- [ ] `{{LIVE_URL}}` opens in a private window with no login, and every page loads.
-- [ ] `{{REPO_URL}}` is public and has a README, licence and `.env.example` (no real keys anywhere in the git history).
-- [ ] `{{DEMO_URL}}` opens with no login; slides <= 7 or video <= 30 s; English.
-- [ ] Every DOI link in 3.7 opens.
+- [ ] The live URL opens in a private window with no login, and every page loads. Ask the chat one question to confirm the Groq key is set on Vercel.
+- [x] The repo is public (confirmed). Check it still has a README, licence and `.env.example` (no real keys anywhere in the git history).
+- [ ] The demo link opens with no login; slides <= 7 or video <= 30 s; English.
+- [ ] Every DOI link in 3.7 opens, and the "to verify" PSI ids (98, 99, 100, 102) point to the right investigations.
 - [ ] Section 3.8 lists every library, font, icon, image and AI tool actually used.
 - [ ] AI disclosure is present in `docs/ai-disclosure.md`, the site footer and the project text.
-- [ ] AI-generated images are watermarked. No NASA logos, flags or mission identifiers appear in any AI-generated image. The team header image previously showed the words "NASA Space Apps Challenge"; regenerate or crop it to be safe.
-- [ ] No one under 18 appears in any image, video or audio.
+- [ ] AI-generated images are labelled. No NASA logos, flags or mission identifiers appear in any AI-generated image. `docs/ai-disclosure.md` says the astronaut image was regenerated to remove a national flag; check the final image once more.
+- [ ] No one under 18 appears in any image, video or audio. The `/team` page now shows three team photos (`web/public/team/`): confirm each person is an adult and agreed to publication.
 - [ ] All teammates are on the Members tab for the same Local Event.
 - [ ] Both verification boxes are ticked by someone who has read them, then **Submit for Judging** is clicked and the banner is confirmed.
 - [ ] Re-open the saved Project tab and read it as a judge would.
