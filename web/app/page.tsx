@@ -3,7 +3,6 @@ import Link from "next/link";
 import GravityFlame from "@/components/GravityFlame";
 import LaunchButton from "@/components/LaunchButton";
 import ScrollDive, { type DiveStage } from "@/components/ScrollDive";
-import TeamSection from "@/components/TeamSection";
 import { flexFacts, lunarHeadline } from "@/lib/headline";
 
 const num = (n: number) => String(Math.round(n * 100) / 100);
@@ -130,7 +129,6 @@ export default function Home() {
         </ul>
         <p className="small muted">General context only. None of these applications are measured in the PSI tables used on this site.</p>
       </section>
-      <TeamSection />
     </>
   );
 }
