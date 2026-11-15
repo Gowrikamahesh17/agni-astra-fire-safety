@@ -114,6 +114,13 @@
    "investigation_id": "PSI-69"
   },
   {
+   "id": "PSI-159-summary",
+   "type": "summary",
+   "title": "Summary of CFI-G",
+   "text": "CFI-G studied normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner in microgravity across 333 tests at 0.5-3.31 bar. Normal flames (17.97-39.97 % chamber oxygen): 102 self-extinguished, 46 did not ignite, 31 burned until stopped. Inverse flames (12-85 % burner-stream oxygen): 81 self-extinguished, 58 burned until flow stopped, 15 did not ignite.",
+   "investigation_id": "PSI-159"
+  },
+  {
    "id": "PSI-25-summary",
    "type": "summary",
    "title": "Summary of BASS-II",
@@ -224,6 +231,13 @@
    "title": "Suppression implication SUP-3",
    "text": "FLEX tested CO2 dilution in 123 tests and helium dilution in 50 tests; at 15–21 % O2 flames were extinguished in 63 of 75 CO2-diluted, 32 of 39 helium-diluted, and 26 of 44 tests without diluent, and model shows CO2 and helium affect extinction. At the same oxygen level, CO2 or helium dilution went with more extinctions, which supports diluent gases as suppressants; other test conditions were not held fixed.",
    "investigation_id": "PSI-69"
+  },
+  {
+   "id": "PRE-1",
+   "type": "implication",
+   "title": "Prevention implication PRE-1",
+   "text": "In 20 CFI-G normal-flame tests at 30 % O₂ or higher and 0.703 bar or less, the flame was burning when the test ended in 5 cases, self-extinguished in 13 cases, and did not ignite in 2 cases, while flames burned gaseous fuel in atmospheres up to 39.97 % O₂. Some gas-leak flames in a lunar-habitat-like atmosphere kept burning until the test ended, so leaks still need to be stopped quickly.",
+   "investigation_id": "PSI-159"
   },
   {
    "id": "PRE-2",

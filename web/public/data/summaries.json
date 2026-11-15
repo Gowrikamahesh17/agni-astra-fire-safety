@@ -29,7 +29,7 @@
    "model": "human-edited (draft by openai/gpt-oss-120b)",
    "generated_at": "2026-11-15T10:31:14+00:00",
    "prompt_version": "summary-v2",
-   "verified": false
+   "verified": true
   },
   {
    "investigation_id": "PSI-25",
