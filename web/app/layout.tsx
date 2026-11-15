@@ -25,6 +25,7 @@ const NAV = [
   ["/gaps", "Evidence gaps"],
   ["/implications", "Implications"],
   ["/predict", "Predict"],
+  ["/team", "Team"],
 ] as const;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
