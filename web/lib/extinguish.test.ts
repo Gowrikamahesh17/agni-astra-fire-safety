@@ -25,6 +25,7 @@ describe("extinguisher cycle", () => {
   it("describes the picture in words", () => {
     expect(noteFor(1, phaseAt(1))).toBe("On Earth: tall orange flame, burning");
     expect(noteFor(0, phaseAt(CYCLE_S + CYCLE_S * 0.4))).toBe("In orbit: round blue flame, being put out");
+    expect(noteFor(1, phaseAt(CYCLE_S * 0.7))).toBe("Agni Shant: the fire is calm");
   });
 });
 

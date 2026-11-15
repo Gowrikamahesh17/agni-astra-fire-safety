@@ -2,133 +2,287 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { gravityForCycle, noteFor, phaseAt } from "@/lib/extinguish";
-import { flameColors, flamePath, lerp } from "@/lib/flame";
+import { gravityForCycle, noteFor, phaseAt, type Phase } from "@/lib/extinguish";
+import { clamp, lerp, mixHex } from "@/lib/flame";
 import { useReducedMotion } from "@/lib/motion";
 
-const NS = "http://www.w3.org/2000/svg";
-const FX = 70; // how far in front of the nozzle the fire burns (drawing units; the picture is 380 wide)
-const R0 = 32;
+// Drawing units: the picture is 380 wide, the nozzle is the origin, and the fire burns this far in front of it.
+const F = { x: 105, y: -8 };
+// The three elements behind the callsigns: Agni (fire), Jala (water), Vayu (air).
+const EL: [string, number][] = [
+  ["#ff8a3d", 0],
+  ["#4db8ff", 2.094],
+  ["#8be8cf", 4.189],
+];
+const ease = (k: number) => k * k * (3 - 2 * k);
+const TAU = Math.PI * 2;
+// Light glow adds up on a dark sky; on the light theme the same effects are drawn normally, with a warm core instead of a white one.
+const MODE = { op: "lighter" as GlobalCompositeOperation, core: "255,255,255" };
 
-function dot(parent: SVGElement, cls: string) {
-  const c = document.createElementNS(NS, "circle");
-  c.setAttribute("class", cls);
-  parent.appendChild(c);
-  return c;
+type Shock = { t0: number };
+
+/** One petal pointing along `ang`, from the origin of the current transform. Leaves the context saved: call ctx.restore() after drawing. */
+function petalPath(ctx: CanvasRenderingContext2D, x: number, y: number, ang: number, L: number, W: number) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(ang + Math.PI / 2);
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(W, -L * 0.3, W * 0.8, -L * 0.8, 0, -L);
+  ctx.bezierCurveTo(-W * 0.8, -L * 0.8, -W, -L * 0.3, 0, 0);
+  ctx.closePath();
 }
 
-type Puff = { x: number; y: number; vx: number; vy: number; l: number; max: number; r: number; el: SVGCircleElement };
+/** A fire built from petals. g = 1 is Earth (a fan of tongues pointing up), g = 0 is orbit (an even, round, blue lotus). */
+function lotusFire(ctx: CanvasRenderingContext2D, t: number, g: number, I: number) {
+  if (I < 0.01) return;
+  const n = 9;
+  const R = 38 * (0.25 + 0.75 * I);
+  const hot = mixHex("#4d84ff", "#ff6a14", g);
+  const mid = mixHex("#8fb8ff", "#ffb23c", g);
+  const tip = mixHex("#dcecff", "#fff2bf", g);
+  const cy = lerp(F.y - R * 0.35, F.y, g);
+  ctx.globalCompositeOperation = MODE.op;
+  const gl = ctx.createRadialGradient(F.x, cy - R * 0.6 * g, 0, F.x, cy - R * 0.6 * g, R * 3.2);
+  const glowHex = mixHex("#2f6bff", "#ff7a1a", g);
+  gl.addColorStop(0, `${glowHex}${Math.round(0.5 * I * 255).toString(16).padStart(2, "0")}`);
+  gl.addColorStop(1, `${glowHex}00`); // fade to the same colour, not to black, so it never greys the page
+  ctx.fillStyle = gl;
+  ctx.fillRect(F.x - R * 4, cy - R * 4.5, R * 8, R * 8);
+  for (let ring = 0; ring < 2; ring++) {
+    for (let j = 0; j < n; j++) {
+      const f = j / (n - 1) - 0.5;
+      const rad = (j / n) * TAU - Math.PI / 2;
+      const fan = -Math.PI / 2 + f * 1.75;
+      const ang = lerp(rad, fan, g);
+      const flick = 1 + 0.14 * Math.sin(t * 9 + j * 1.7 + ring) + 0.08 * Math.sin(t * 4.3 + j);
+      const L = R * lerp(1.05, 2.4, g) * (1 - 0.45 * Math.abs(f) * 2 * g) * flick * (ring ? 0.62 : 1);
+      const W = R * (ring ? 0.34 : 0.5);
+      petalPath(ctx, F.x, cy, ang, L, W);
+      const gr = ctx.createLinearGradient(0, 0, 0, -L);
+      gr.addColorStop(0, ring ? tip : hot);
+      gr.addColorStop(0.6, ring ? tip : mid);
+      gr.addColorStop(1, "rgba(255,200,80,0)");
+      ctx.fillStyle = gr;
+      ctx.globalAlpha = (ring ? 0.9 : 0.55) * I;
+      ctx.fill();
+      ctx.strokeStyle = "#f5b942";
+      ctx.globalAlpha = 0.55 * I;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+  ctx.globalAlpha = 1;
+  const cc = cy - R * 0.6 * g;
+  const core = ctx.createRadialGradient(F.x, cc, 0, F.x, cc, R * 0.7);
+  core.addColorStop(0, `rgba(${MODE.core},${0.95 * I})`);
+  core.addColorStop(1, `rgba(${MODE.core},0)`);
+  ctx.fillStyle = core;
+  ctx.beginPath();
+  ctx.arc(F.x, cc, R * 0.7, 0, TAU);
+  ctx.fill();
+  ctx.globalCompositeOperation = "source-over";
+}
+
+/** Three braided streams, one per element, twist from the nozzle to the fire. Three coloured lights then circle it and gather it into a calm orb. */
+function braid(ctx: CanvasRenderingContext2D, t: number, ph: Phase) {
+  ctx.globalCompositeOperation = MODE.op;
+  for (const [col, off] of EL) {
+    for (let i = 0; i < 46; i++) {
+      const s = i / 46;
+      const x = lerp(0, F.x - 10, s);
+      const y = lerp(-2, F.y, s) + Math.sin(s * 13 - t * 9 + off) * (3 + s * 18);
+      ctx.fillStyle = col;
+      ctx.globalAlpha = (ph.spraying ? 0.85 : 0) * (1 - Math.abs(s - 0.5) * 0.6) * clamp(s * 6);
+      ctx.beginPath();
+      ctx.arc(x, y, 1.2 + s * 2.2, 0, TAU);
+      ctx.fill();
+      ctx.globalAlpha *= 0.2;
+      ctx.beginPath();
+      ctx.arc(x, y, 3 + s * 6, 0, TAU);
+      ctx.fill();
+    }
+  }
+  const u = ph.u;
+  const vis = u >= 0.2 && u < 0.8 ? (u < 0.3 ? clamp((u - 0.2) / 0.1) : u > 0.7 ? clamp((0.8 - u) / 0.1) : 1) : 0;
+  if (vis > 0) {
+    const rr = lerp(40, 15, ease(clamp((u - 0.2) / 0.42)));
+    for (const [col, off] of EL) {
+      const a = t * 3.2 + off;
+      const x = F.x + Math.cos(a) * rr;
+      const y = F.y - 3 + Math.sin(a) * rr * 0.8;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 10);
+      g.addColorStop(0, col);
+      g.addColorStop(1, `${col}00`);
+      ctx.globalAlpha = vis;
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, 10, 0, TAU);
+      ctx.fill();
+      ctx.strokeStyle = col;
+      ctx.globalAlpha = 0.25 * vis;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(F.x, F.y - 3, rr, rr * 0.8, 0, 0, TAU);
+      ctx.stroke();
+    }
+    const orb = ctx.createRadialGradient(F.x, F.y - 3, 0, F.x, F.y - 3, rr * 0.9);
+    orb.addColorStop(0, `rgba(190,215,255,${0.6 * vis * clamp((u - 0.3) / 0.3)})`);
+    orb.addColorStop(1, "rgba(90,140,255,0)");
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = orb;
+    ctx.beginPath();
+    ctx.arc(F.x, F.y - 3, rr * 0.9, 0, TAU);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = "source-over";
+}
+
+/** The moment the fire is put out: gold, blue and teal rings, a burst of petals and a flash of light. */
+function drawShocks(ctx: CanvasRenderingContext2D, t: number, shocks: Shock[]): Shock[] {
+  ctx.globalCompositeOperation = MODE.op;
+  const keep = shocks.filter((s) => {
+    const d = t - s.t0;
+    if (d > 1.4) return false;
+    const a = 1 - d / 1.4;
+    for (const [col, sp, w] of [["#f5b942", 230, 3], ["#4db8ff", 160, 2.2], ["#8be8cf", 110, 1.6]] as const) {
+      ctx.strokeStyle = col;
+      ctx.globalAlpha = a * 0.85;
+      ctx.lineWidth = w;
+      ctx.beginPath();
+      ctx.arc(F.x, F.y, d * sp, 0, TAU);
+      ctx.stroke();
+    }
+    for (let j = 0; j < 12; j++) {
+      const ang = (j / 12) * TAU + 0.2;
+      const r = 14 + d * 150;
+      petalPath(ctx, F.x + Math.cos(ang) * r, F.y + Math.sin(ang) * r, ang, 16 * (1 - d / 1.4) + 3, 5);
+      ctx.fillStyle = j % 3 === 0 ? "#4db8ff" : j % 3 === 1 ? "#f5b942" : "#8be8cf";
+      ctx.globalAlpha = a * 0.8;
+      ctx.fill();
+      ctx.restore();
+    }
+    const g = ctx.createRadialGradient(F.x, F.y, 0, F.x, F.y, 90);
+    g.addColorStop(0, `rgba(255,245,210,${0.7 * Math.max(0, 1 - d / 0.35)})`);
+    g.addColorStop(1, "rgba(255,245,210,0)");
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = g;
+    ctx.fillRect(F.x - 90, F.y - 90, 180, 180);
+    return true;
+  });
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = "source-over";
+  return keep;
+}
+
+/** The small calm blue lotus left behind while the fire is out. */
+function calmBloom(ctx: CanvasRenderingContext2D, t: number, u: number) {
+  if (u < 0.6 || u > 0.84) return;
+  const a = clamp(u < 0.7 ? (u - 0.6) / 0.1 : 1 - (u - 0.7) / 0.14);
+  ctx.globalCompositeOperation = MODE.op;
+  for (let j = 0; j < 8; j++) {
+    const ang = (j / 8) * TAU + t * 0.25;
+    petalPath(ctx, F.x, F.y - 2, ang, 18 + 4 * Math.sin(t * 2 + j), 6);
+    ctx.fillStyle = "#6fa2ff";
+    ctx.globalAlpha = 0.55 * a;
+    ctx.fill();
+    ctx.strokeStyle = "#f5b942";
+    ctx.globalAlpha = 0.7 * a;
+    ctx.stroke();
+    ctx.restore();
+  }
+  const c = ctx.createRadialGradient(F.x, F.y, 0, F.x, F.y, 16);
+  c.addColorStop(0, `rgba(220,236,255,${0.9 * a})`);
+  c.addColorStop(1, "rgba(100,150,255,0)");
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = c;
+  ctx.beginPath();
+  ctx.arc(F.x, F.y, 16, 0, TAU);
+  ctx.fill();
+  ctx.globalCompositeOperation = "source-over";
+}
 
 /**
- * The home-page astronaut, floating in zero gravity. A flame burns in front of the extinguisher, the extinguisher sprays it, it shrinks and
- * goes out, and a new one lights: a tall orange flame on Earth, then a round blue one in orbit. With reduced motion, nothing moves.
+ * The home-page astronaut, floating in zero gravity. A petal fire burns in front of the extinguisher. Three streams (fire, water and air,
+ * the callsigns Agni, Jala and Vayu) braid across to it, three lights gather it into a calm orb, and it goes out in a burst of light.
+ * Then a new fire lights: a tall orange one on Earth, a round blue one in orbit. The effects are drawn on a full-screen overlay anchored to the nozzle.
  */
 export default function HeroAstronaut() {
   const reduce = useReducedMotion();
-  const outer = useRef<SVGPathElement>(null);
-  const inner = useRef<SVGPathElement>(null);
-  const glow = useRef<SVGEllipseElement>(null);
-  const spray = useRef<SVGGElement>(null);
-  const smoke = useRef<SVGGElement>(null);
-  const embers = useRef<SVGGElement>(null);
+  const anchor = useRef<HTMLDivElement>(null);
+  const figure = useRef<HTMLDivElement>(null);
+  const fx = useRef<HTMLCanvasElement>(null);
+  const flash = useRef<HTMLDivElement>(null);
   const note = useRef<HTMLParagraphElement>(null);
-  const box = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const o = outer.current;
-    const i = inner.current;
-    const gl = glow.current;
-    const sp = spray.current;
-    const sm = smoke.current;
-    const em = embers.current;
+    const cv = fx.current;
+    const ctx = cv?.getContext("2d");
+    const an = anchor.current;
+    const fg = figure.current;
+    const fl = flash.current;
     const nt = note.current;
-    const root = box.current;
-    if (!o || !i || !gl || !sp || !sm || !em || !nt || !root) return;
-    const ember = Array.from({ length: 8 }, (_, k) => ({ el: dot(em, "nz-ember"), ph: k / 8, dx: (k % 3) * 9 - 9 }));
-    let puffs: Puff[] = [];
-    let wisps: Puff[] = [];
-    let accSpray = 0;
-    let accSmoke = 0;
-    let last = 0;
+    if (!cv || !ctx || !an || !fg || !fl || !nt) return;
+    let W = 0;
+    let H = 0;
+    let dpr = 1;
+    let shocks: Shock[] = [];
+    let wasSpray = false;
     let lastNote = "";
     let raf = 0;
     let visible = true;
+    let flashTimer = 0;
 
-    const draw = (t: number, dt: number) => {
-      const ph = reduce ? { cycle: 0, intensity: 1, spraying: false, smoking: false } : phaseAt(t);
+    const size = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+    };
+
+    const draw = (t: number) => {
+      const light = document.documentElement.dataset.theme === "light";
+      MODE.op = light ? "source-over" : "lighter";
+      MODE.core = light ? "255,214,120" : "255,255,255";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      const a = an.getBoundingClientRect();
+      const sc = fg.getBoundingClientRect().width / 380;
+      const ph: Phase = reduce ? { cycle: 0, u: 0.05, intensity: 1, spraying: false, smoking: false } : phaseAt(t);
       const g = gravityForCycle(ph.cycle);
-      const I = ph.intensity;
-      const R = R0 * (0.25 + 0.75 * I);
-      const col = flameColors(g);
-      const cy = lerp(-4, -R, g);
-      o.style.display = i.style.display = I > 0.01 ? "" : "none";
-      o.setAttribute("transform", `translate(${FX} ${cy})`);
-      i.setAttribute("transform", `translate(${FX} ${cy + lerp(0, R * 0.2, g)})`);
-      o.setAttribute("d", flamePath(g, t, R));
-      i.setAttribute("d", flamePath(g, t + 1.3, R * 0.55));
-      o.setAttribute("fill", col.outer);
-      i.setAttribute("fill", col.inner);
-      gl.setAttribute("fill", col.glow);
-      gl.setAttribute("opacity", (col.glowOpacity * I).toFixed(2));
-      gl.setAttribute("cx", String(FX));
-      gl.setAttribute("cy", cy.toFixed(1));
-      gl.setAttribute("rx", (lerp(30, 46, g) * (0.4 + 0.6 * I)).toFixed(1));
-      gl.setAttribute("ry", (lerp(30, 56, g) * (0.4 + 0.6 * I)).toFixed(1));
-      ember.forEach((e, k) => {
-        const p = (t * 0.45 + e.ph) % 1;
-        e.el.setAttribute("r", "1.6");
-        e.el.setAttribute("cx", (FX + e.dx * p + Math.sin(t * 3 + k) * 3).toFixed(1));
-        e.el.setAttribute("cy", (cy - R * 1.6 - p * 70).toFixed(1));
-        e.el.setAttribute("opacity", (g * g * (1 - p) * 0.9 * I).toFixed(2));
-      });
-
+      ctx.save();
+      ctx.translate(a.left, a.top);
+      ctx.scale(sc, sc);
+      // a warm (Earth) or cool (orbit) glow on the astronaut's glove while the fire burns
+      const gv = ctx.createRadialGradient(-20, 0, 0, -20, 0, 70);
+      const gvc = g ? "255,140,60" : "90,140,255";
+      gv.addColorStop(0, `rgba(${gvc},${0.22 * ph.intensity})`);
+      gv.addColorStop(1, `rgba(${gvc},0)`);
+      ctx.globalCompositeOperation = MODE.op;
+      ctx.fillStyle = gv;
+      ctx.fillRect(-110, -80, 180, 160);
+      ctx.globalCompositeOperation = "source-over";
+      lotusFire(ctx, t, g, ph.intensity);
+      if (!reduce) braid(ctx, t, ph);
+      calmBloom(ctx, t, ph.u);
+      shocks = drawShocks(ctx, t, shocks);
+      ctx.restore();
       if (!reduce) {
-        // Spray: a pale cloud leaves the nozzle, spreads as it travels, and fades on the flame.
-        if (ph.spraying) {
-          accSpray += dt * 70;
-          while (accSpray >= 1) {
-            accSpray--;
-            puffs.push({ x: 2, y: -2 + (Math.random() - 0.5) * 4, vx: 90 + Math.random() * 60, vy: (Math.random() - 0.5) * 26 - 4, l: 0, max: 0.55 + Math.random() * 0.25, r: 2 + Math.random() * 2, el: dot(sp, "nz-spray") });
-          }
+        if (wasSpray && !ph.spraying && ph.u >= 0.6) {
+          shocks.push({ t0: t });
+          fl.style.transition = "none";
+          fl.style.opacity = "0.9";
+          window.clearTimeout(flashTimer);
+          flashTimer = window.setTimeout(() => {
+            fl.style.transition = "opacity .9s ease-out";
+            fl.style.opacity = "0";
+          }, 30);
         }
-        // Smoke: a thin wisp after the flame is out. It rises on Earth and drifts apart in orbit.
-        if (ph.smoking) {
-          accSmoke += dt * 14;
-          while (accSmoke >= 1) {
-            accSmoke--;
-            wisps.push({
-              x: FX + (Math.random() - 0.5) * 10,
-              y: -6,
-              vy: g > 0.5 ? -22 - Math.random() * 14 : -3 - Math.random() * 4,
-              vx: g > 0.5 ? (Math.random() - 0.5) * 6 : (Math.random() - 0.5) * 14,
-              l: 0,
-              max: 1.3 + Math.random() * 0.6,
-              r: 4,
-              el: dot(sm, "nz-smoke"),
-            });
-          }
-        }
+        wasSpray = ph.spraying;
       }
-      const step = (list: Puff[], grow: number, peak: number, fadeIn: boolean) =>
-        list.filter((p) => {
-          p.l += dt;
-          if (p.l >= p.max) {
-            p.el.remove();
-            return false;
-          }
-          p.x += p.vx * dt;
-          p.y += p.vy * dt;
-          if (fadeIn) p.vx *= 0.992;
-          const k = p.l / p.max;
-          p.el.setAttribute("cx", p.x.toFixed(1));
-          p.el.setAttribute("cy", p.y.toFixed(1));
-          p.el.setAttribute("r", (p.r + k * grow).toFixed(1));
-          p.el.setAttribute("opacity", (peak * (1 - k) * (fadeIn && k < 0.1 ? k / 0.1 : 1)).toFixed(2));
-          return true;
-        });
-      puffs = step(puffs, 13, 0.7, true);
-      wisps = step(wisps, 9, 0.32, false);
-
       const text = noteFor(g, ph);
       if (text !== lastNote) {
         lastNote = text;
@@ -139,33 +293,41 @@ export default function HeroAstronaut() {
     const loop = (now: number) => {
       raf = 0;
       if (!visible) return;
-      const t = now / 1000;
-      const dt = Math.min(0.05, last ? t - last : 0.016);
-      last = t;
-      draw(t, dt);
+      draw(now / 1000);
       raf = requestAnimationFrame(loop);
     };
+    const redraw = () => {
+      if (!raf) draw(0);
+    };
+    const onResize = () => {
+      size();
+      redraw();
+    };
+    size();
+    window.addEventListener("resize", onResize);
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;
-      if (visible && !raf && !reduce) {
-        last = 0;
-        raf = requestAnimationFrame(loop);
-      }
+      if (!visible) ctx.clearRect(0, 0, W, H);
+      else if (!reduce && !raf) raf = requestAnimationFrame(loop);
     });
-    io.observe(root);
-    if (reduce) draw(0, 0);
-    else raf = requestAnimationFrame(loop);
+    io.observe(fg);
+    if (reduce) {
+      draw(0);
+      window.addEventListener("scroll", redraw, { passive: true }); // the overlay is fixed, so a still picture must follow the page
+    } else raf = requestAnimationFrame(loop);
     return () => {
       io.disconnect();
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", redraw);
+      window.clearTimeout(flashTimer);
       if (raf) cancelAnimationFrame(raf);
-      [...puffs, ...wisps].forEach((p) => p.el.remove());
-      ember.forEach((e) => e.el.remove());
+      ctx.clearRect(0, 0, W, H);
     };
   }, [reduce]);
 
   return (
-    <div className="hero-astro" ref={box}>
-      <div className="hero-float">
+    <div className="hero-astro">
+      <div className="hero-float" ref={figure}>
         <Image
           src="/images/astronaut.png"
           alt="Illustration of an astronaut in a white spacesuit floating in space and holding a red fire extinguisher"
@@ -174,22 +336,10 @@ export default function HeroAstronaut() {
           sizes="(max-width: 800px) 280px, 380px"
           priority
         />
-        <div className="nz" aria-hidden="true">
-          <svg viewBox="-100 -170 240 240">
-            <defs>
-              <filter id="nz-blur" x="-80%" y="-80%" width="260%" height="260%">
-                <feGaussianBlur stdDeviation="9" />
-              </filter>
-            </defs>
-            <g ref={smoke} />
-            <ellipse ref={glow} cx="0" cy="-30" rx="46" ry="50" filter="url(#nz-blur)" />
-            <g ref={embers} />
-            <path ref={outer} />
-            <path ref={inner} />
-            <g ref={spray} />
-          </svg>
-        </div>
+        <div className="nz" ref={anchor} aria-hidden="true" />
       </div>
+      <canvas ref={fx} className="hero-fx" aria-hidden="true" />
+      <div ref={flash} className="hero-flash" aria-hidden="true" />
       <p className="hero-flame-note small muted" ref={note} aria-hidden="true" />
     </div>
   );
