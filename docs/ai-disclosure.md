@@ -13,6 +13,8 @@ Flame in Freefall, by BrahmAstra Analytics (Gowrika Mahesh, Utkarsh Sawant, Arun
 | Code and documentation (data and AI layers) | Claude Code (Anthropic) | Data pipeline, models, contract, AI layer, docs | Reviewed by the team and covered by automated tests (`data/tests`, `ai/tests`). |
 | Home-page illustration | Google Gemini (image generation); remove.bg (automatic background removal) | The astronaut picture on the home page (`web/public/images/astronaut.png`) | Generated with Gemini. The first image had a national flag on the suit, so the team asked Gemini by prompt to remove it and to add the fire extinguisher, so the final image carries no NASA or national marks. The background was then removed with remove.bg, an automated tool. It is shown with a visible "AI-generated image" label. It is an illustration, not a photograph of a real event. |
 
+Summary prompt versions: only the PSI-159 (CFI-G) summary was generated with prompt `summary-v2`; the other 14 summaries were generated with `summary-v1`. v2 adds a rule to keep oxygen per flame type separate. The PSI-159 text was then edited by hand by the team (its `model` field reads `human-edited`), and it passes the same number check.
+
 The home-page astronaut illustration is the only AI-generated image, and it is labelled on the page. No AI-generated content contains NASA logos, flags or mission identifiers.
 
 ## Limits

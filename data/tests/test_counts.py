@@ -43,7 +43,11 @@ def test_cfig_outcomes(by_investigation):
 def test_strict_moon_window(by_investigation):
     cfig = by_investigation["PSI-159"]
     window = [r for r in cfig if r["o2_pct"] >= LUNAR_O2 and r["pressure_bar"] <= LUNAR_P]
+    # The raw count is 48, but in inverse flames the O2 value is the burner oxidizer stream and the
+    # chamber holds fuel, so only the 20 normal-flame tests have Moon-range chamber air.
     assert Counter(r["flame_type"] for r in window) == {"normal": 20, "inverse": 28}
+    chamber_window = [r for r in window if r["flame_type"] == "normal"]
+    assert len(chamber_window) == 20
 
 
 def test_flex_near_lunar_window(by_investigation, investigations):

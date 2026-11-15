@@ -5,5 +5,5 @@ reasoning_effort: low
 retries: 3
 tolerance: 0.01
 prompt_versions:
-  summary: summary-v1
+  summary: summary-v2
   implication: implication-v1

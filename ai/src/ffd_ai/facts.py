@@ -9,7 +9,7 @@ TAKEAWAYS = {
     "SUP-1": "In an atmosphere close to the planned lunar habitat, droplet flames did not go out by themselves, so a fire there should not be expected to self-extinguish and needs active suppression.",
     "SUP-2": "Lowering oxygen strongly favours extinction of droplet flames.",
     "SUP-3": "At the same oxygen level, CO2 or helium dilution went with more extinctions, which supports diluent gases as suppressants; other test conditions were not held fixed.",
-    "PRE-1": "Gas-leak flames in a lunar-habitat-like atmosphere often kept burning for the whole test, so leaks need to be stopped quickly.",
+    "PRE-1": "Some gas-leak flames in a lunar-habitat-like atmosphere kept burning until the test ended, so leaks still need to be stopped quickly.",
     "PRE-2": "Solid-material flammability at habitat oxygen levels is a data gap in the loaded tables.",
     "PRE-3": "Large-scale burn results are in the Saffire documents and should be read alongside the loaded tables.",
     "DET-1": "The table shows which spacecraft materials were used to make smoke; detector performance must be read from the SAME-R documents.",
@@ -70,14 +70,29 @@ def investigation_facts(inv, rows, scenarios):
         )
     else:
         lines.append((f"The loaded table has {len(rows)} test rows.", [iid]))
-        for field, label, unit in (("o2_pct", "Oxygen", "%"), ("pressure_bar", "Pressure", "bar")):
-            line = _range_line(rows, field, label, unit)
+        flame_types = sorted({r["flame_type"] for r in rows if r["flame_type"]})
+        if flame_types:
+            # CFI-G: in normal flames O2 is the chamber atmosphere; in inverse flames it is the
+            # oxidizer stream from the burner and the chamber holds fuel. Never mix the two.
+            o2_labels = {
+                "normal": "Oxygen in the chamber atmosphere of normal flames",
+                "inverse": "Oxygen in the burner stream of inverse flames",
+            }
+            for ft in flame_types:
+                line = _range_line([r for r in rows if r["flame_type"] == ft], "o2_pct", o2_labels[ft], "%")
+                if line:
+                    lines.append(line)
+            line = _range_line(rows, "pressure_bar", "Pressure", "bar")
             if line:
                 lines.append(line)
+        else:
+            for field, label, unit in (("o2_pct", "Oxygen", "%"), ("pressure_bar", "Pressure", "bar")):
+                line = _range_line(rows, field, label, unit)
+                if line:
+                    lines.append(line)
         fuels = Counter(r["material"] or r["fuel"] for r in rows if r["material"] or r["fuel"])
         if fuels:
             lines.append((f"Fuels or materials by number of tests: {counts_text(fuels)}.", [iid]))
-        flame_types = sorted({r["flame_type"] for r in rows if r["flame_type"]})
         if flame_types:
             for ft in flame_types:
                 outcomes = Counter(
@@ -93,15 +108,18 @@ def investigation_facts(inv, rows, scenarios):
         for s in scenarios:
             if s["id"] == "custom":
                 continue
+            # Inverse-flame rows are left out: their O2 is not the chamber atmosphere.
             near = [
                 r
                 for r in rows
-                if (r["distance"].get(s["id"]) is not None and r["distance"][s["id"]] <= NEAR)
+                if r["flame_type"] != "inverse"
+                and (r["distance"].get(s["id"]) is not None and r["distance"][s["id"]] <= NEAR)
             ]
             if near:
+                what = "normal-flame tests" if flame_types else "tests"
                 lines.append(
                     (
-                        f"{len(near)} tests ran close to the {s['name']} atmosphere "
+                        f"{len(near)} {what} ran close to the {s['name']} atmosphere "
                         f"({fmt(s['o2_pct'])} % O2, {fmt(s['pressure_bar'], 3)} bar).",
                         [r["id"] for r in near[:3]],
                     )
@@ -214,11 +232,23 @@ def implication_facts(investigations, observations, scenarios):
         }
     )
 
-    o2c = [r for r in cfig if r["o2_pct"] is not None]
+    # Only normal flames have the test O2 in the chamber. In inverse flames the O2 value is the
+    # oxidizer stream from the burner and the chamber holds fuel, so those rows are left out.
+    normal = [r for r in cfig if r["flame_type"] == "normal"]
+    o2c = [r for r in normal if r["o2_pct"] is not None]
     window = [
         r
-        for r in cfig
+        for r in normal
         if r["o2_pct"] is not None
+        and r["pressure_bar"] is not None
+        and r["o2_pct"] >= lunar["o2_pct"]
+        and r["pressure_bar"] <= lunar["pressure_bar"]
+    ]
+    inverse_excluded = [
+        r
+        for r in cfig
+        if r["flame_type"] == "inverse"
+        and r["o2_pct"] is not None
         and r["pressure_bar"] is not None
         and r["o2_pct"] >= lunar["o2_pct"]
         and r["pressure_bar"] <= lunar["pressure_bar"]
@@ -230,8 +260,9 @@ def implication_facts(investigations, observations, scenarios):
             "id": "PRE-1",
             "pillar": "prevention",
             "facts": [
-                f"CFI-G burned gaseous fuel flames, like a small gas leak, at up to {fmt(top['o2_pct'])} % O2.",
-                f"{len(window)} CFI-G tests ran at {fmt(lunar['o2_pct'])} % O2 or more and {fmt(lunar['pressure_bar'], 3)} bar or less, the lunar habitat window.",
+                f"CFI-G normal flames burned gaseous fuel, like a small gas leak, in atmospheres of up to {fmt(top['o2_pct'])} % O2.",
+                f"{len(window)} CFI-G normal-flame tests ran at {fmt(lunar['o2_pct'])} % O2 or more and {fmt(lunar['pressure_bar'], 3)} bar or less, the lunar habitat window.",
+                f"{len(inverse_excluded)} CFI-G inverse-flame tests are left out because their oxygen value describes the burner stream, not the chamber.",
                 f"Of those {len(window)} tests: still burning when the test ended {wc['sustained_until_stopped']}, self-extinguished {wc['self_extinguished']}, did not ignite {wc['no_ignition']}.",
                 "A test ends when the fuel flow is cut, a time limit is reached or the burner gets too hot, so a flame still burning at the end could have burned longer.",
             ],
