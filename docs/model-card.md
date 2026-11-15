@@ -96,6 +96,10 @@ d = sqrt( ((o2_pct - O2_s) / 5)^2 + ((pressure_bar - P_s) / 0.10)^2 )
 
 Check: for `lunar_habitat`, FLEX has `n_near = 17`, `d_min = 0.093`, proximity 97. All 17 near tests ended in disruption (15) or completion (2); none in extinction.
 
+## Known limitation: inverse-flame oxygen
+
+In CFI-G inverse flames the `o2_pct` value is the oxidizer stream from the burner, not the chamber air (the chamber holds fuel). The distance, proximity and `n_near` scores above still treat that value as the test atmosphere, so inverse-flame tests can look closer to a scenario than their chamber air really is. The scoring code is unchanged. Moon-range counts are different: they exclude inverse flames, so only the 20 normal-flame tests (of 333 CFI-G tests) count as having Moon-range chamber air. The Evidence gaps chart plots inverse-flame points at burner-stream oxygen and says so.
+
 ## Reproduce
 
 ```bash

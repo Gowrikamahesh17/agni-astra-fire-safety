@@ -12,7 +12,7 @@
    "id": "PSI-159",
    "type": "investigation",
    "title": "CFI-G: Cool Flames Investigation with Gases (PSI-159)",
-   "text": "Objective: Studies normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner over a wide range of oxygen and pressure, recording ignition, self-extinction and cool-flame behaviour relevant to gas leaks in oxygen-enriched cabins. Hardware: CIR / ACME burner. Sensors: color camera, photomultiplier tube, burner thermocouple. Measured: hot ignition, burn time, self-extinction vs flow termination, peak burner temperature, cool flame presence. The loaded table has 333 test rows. Oxygen ranged from 12 to 85 % across 333 tests. Pressure ranged from 0.5 to 3.31 bar across 333 tests. Fuels or materials by number of tests: butane 140, propane 99, ethane 94. Outcomes of inverse flames: self extinguished 81, sustained until stopped 58, no ignition 15. Outcomes of normal flames: self extinguished 102, no ignition 46, sustained until stopped 31. 43 tests ran close to the ISS cabin atmosphere (21 % O2, 1.013 bar). 21 tests ran close to the Exploration atmosphere atmosphere (34 % O2, 0.565 bar). 21 tests ran close to the Pressurized rover atmosphere (34 % O2, 0.565 bar). 43 tests ran close to the Mars transit vehicle atmosphere (21 % O2, 1.013 bar). Program: ACME. Fire-safety role: flame behavior. Fuel phase: gas. DOI 10.60555/cyt1-kh64.",
+   "text": "Objective: Studies normal and inverse spherical gas flames (ethane, propane, butane) from a porous burner over a wide range of oxygen and pressure, recording ignition, self-extinction and cool-flame behaviour relevant to gas leaks in oxygen-enriched cabins. Hardware: CIR / ACME burner. Sensors: color camera, photomultiplier tube, burner thermocouple. Measured: hot ignition, burn time, self-extinction vs flow termination, peak burner temperature, cool flame presence. The loaded table has 333 test rows. Oxygen in the burner stream of inverse flames ranged from 12 to 85 % across 154 tests. Oxygen in the chamber atmosphere of normal flames ranged from 17.97 to 39.97 % across 179 tests. Pressure ranged from 0.5 to 3.31 bar across 333 tests. Fuels or materials by number of tests: butane 140, propane 99, ethane 94. Outcomes of inverse flames: self extinguished 81, sustained until stopped 58, no ignition 15. Outcomes of normal flames: self extinguished 102, no ignition 46, sustained until stopped 31. 35 normal-flame tests ran close to the ISS cabin atmosphere (21 % O2, 1.013 bar). 15 normal-flame tests ran close to the Exploration atmosphere atmosphere (34 % O2, 0.565 bar). 15 normal-flame tests ran close to the Pressurized rover atmosphere (34 % O2, 0.565 bar). 35 normal-flame tests ran close to the Mars transit vehicle atmosphere (21 % O2, 1.013 bar). Program: ACME. Fire-safety role: flame behavior. Fuel phase: gas. DOI 10.60555/cyt1-kh64.",
    "investigation_id": "PSI-159"
   },
   {
@@ -112,13 +112,6 @@
    "title": "Summary of FLEX",
    "text": "FLEX burned isolated methanol (157 tests) and heptane (117 tests) droplets in microgravity while varying oxygen (12-34 %), pressure (0.7-3.09 bar) and diluent gases, measuring droplet size, flame extinction diameter, burning rate and burn time. Across 274 tests, flames extinguished in 186 cases, were disrupted in 61 and burned to completion in 27, including 104 tests at ISS-like conditions (21 % O2, 1.013 bar) and 17 tests at Lunar-habitat conditions (30 % O2, 0.703 bar).",
    "investigation_id": "PSI-69"
-  },
-  {
-   "id": "PSI-159-summary",
-   "type": "summary",
-   "title": "Summary of CFI-G",
-   "text": "NASA’s CFI-G study examined normal and inverse spherical flames of ethane, propane and butane over 333 microgravity tests, varying oxygen from 12 % to 85 % and pressure from 0.5 to 3.31 bar using a porous CIR/ACME burner. Inverse flames self-extinguished in 81 tests, burned until stopped in 58 and failed to ignite in 15, while normal flames self-extinguished in 102, failed to ignite in 46 and burned until stopped in 31. The dataset includes 43 runs at ISS-like (21 % O₂, 1.013 bar) and 21 runs at Exploration/Pressurized rover conditions (34 % O₂, 0.565 bar).",
-   "investigation_id": "PSI-159"
   },
   {
    "id": "PSI-25-summary",
