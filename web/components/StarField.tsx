@@ -7,7 +7,7 @@ import { useTheme } from "@/lib/theme";
 
 type Star = { x: number; y: number; r: number; ph: number; tw: number; c: string; spark: boolean };
 type Comet = { x: number; y: number; l: number };
-type Rocket = { x: number; y: number; a: number; v: number; len: number };
+type Rocket = { x: number; y: number; vx: number; vy: number; len: number; side: 0 | 1 };
 type Spark = { x: number; y: number; l: number; m: number; r: number; hue: number };
 
 // The small rockets that cross every page. The picture points up and is about 1 : 3.9, so it is drawn rotated to its heading.
@@ -47,7 +47,6 @@ export default function StarField() {
     let cometIn = 4;
     let rockets: Rocket[] = [];
     let sparks: Spark[] = [];
-    let rocketIn = 1.2;
     const dark = theme !== "light";
     const img = new Image();
     img.src = ROCKET_SRC;
@@ -83,32 +82,67 @@ export default function StarField() {
       const dt = Math.min(0.05, lastT ? t - lastT : 0.016);
       lastT = t;
       rc.clearRect(0, 0, W, H);
-      rocketIn -= dt;
-      if (rocketIn < 0 && rockets.length < 4 && img.complete && img.naturalWidth > 0) {
-        rocketIn = rand(2.2, 5);
-        const fromLeft = Math.random() < 0.7;
-        rockets.push({
-          x: fromLeft ? rand(-40, W * 0.35) : rand(W * 0.65, W + 40),
-          y: rand(H * 0.55, H + 30),
-          a: fromLeft ? rand(-0.9, -0.35) : rand(-2.8, -2.25), // up and to the right, or up and to the left
-          v: rand(38, 85),
-          len: rand(34, 60), // drawn length of the rocket in pixels
+      // The rockets stay out of the text: they live in the empty margins either side of the page content and bounce off the edges of
+      // those margins and of the screen. If a margin is too narrow (phones, small windows) there are no rockets on that side.
+      const main = document.querySelector("main")?.getBoundingClientRect();
+      const zones: [number, number][] = main
+        ? [
+            [0, main.left],
+            [main.right, W],
+          ]
+        : [];
+      const MIN_ZONE = 40;
+      rockets = rockets.filter((r) => zones[r.side] && zones[r.side][1] - zones[r.side][0] >= MIN_ZONE);
+      if (img.complete && img.naturalWidth > 0) {
+        zones.forEach(([x0, x1], side) => {
+          if (x1 - x0 < MIN_ZONE) return;
+          const want = x1 - x0 > 110 ? 2 : 1;
+          while (rockets.filter((r) => r.side === side).length < want) {
+            const v = rand(38, 85);
+            const tilt = rand(-0.34, 0.34); // mostly up or down, a little sideways
+            const up = Math.random() < 0.5 ? -1 : 1;
+            rockets.push({
+              x: rand(x0 + 14, x1 - 14),
+              y: rand(40, H - 40),
+              vx: v * tilt,
+              vy: up * v * Math.sqrt(1 - tilt * tilt),
+              len: rand(34, 60), // drawn length of the rocket in pixels
+              side: side as 0 | 1,
+            });
+          }
         });
       }
-      rockets = rockets.filter((r) => {
-        r.x += Math.cos(r.a) * r.v * dt;
-        r.y += Math.sin(r.a) * r.v * dt;
+      for (const r of rockets) {
+        const [x0, x1] = zones[r.side];
+        r.x += r.vx * dt;
+        r.y += r.vy * dt;
+        const padX = Math.min(r.len * 0.18 + 6, (x1 - x0) / 2 - 1);
+        const padY = r.len * 0.55;
+        if (r.x < x0 + padX) {
+          r.x = x0 + padX;
+          r.vx = Math.abs(r.vx);
+        } else if (r.x > x1 - padX) {
+          r.x = x1 - padX;
+          r.vx = -Math.abs(r.vx);
+        }
+        if (r.y < padY) {
+          r.y = padY;
+          r.vy = Math.abs(r.vy);
+        } else if (r.y > H - padY) {
+          r.y = H - padY;
+          r.vy = -Math.abs(r.vy);
+        }
+        const hx = Math.atan2(r.vy, r.vx);
         for (let i = 0; i < 2; i++)
           sparks.push({
-            x: r.x - Math.cos(r.a) * r.len * 0.5 + rand(-1, 1),
-            y: r.y - Math.sin(r.a) * r.len * 0.5 + rand(-1, 1),
+            x: r.x - Math.cos(hx) * r.len * 0.5 + rand(-1, 1),
+            y: r.y - Math.sin(hx) * r.len * 0.5 + rand(-1, 1),
             l: 0,
             m: rand(0.5, 0.9),
             r: r.len * rand(0.03, 0.06),
             hue: Math.random(),
           });
-        return r.x > -90 && r.x < W + 90 && r.y > -90 && r.y < H + 90;
-      });
+      }
       // A short trail of embers behind each rocket, so it reads as moving even though the picture has its own flame.
       sparks = sparks.filter((p) => {
         p.l += dt;
@@ -126,7 +160,7 @@ export default function StarField() {
         const w = h * ROCKET_RATIO;
         rc.save();
         rc.translate(r.x, r.y);
-        rc.rotate(r.a + Math.PI / 2); // the picture points up
+        rc.rotate(Math.atan2(r.vy, r.vx) + Math.PI / 2); // the picture points up, and it faces the way it is flying
         rc.globalAlpha = 1;
         rc.shadowColor = "rgba(255, 190, 90, .55)"; // a soft glow so it stands out from the sky
         rc.shadowBlur = 10;
