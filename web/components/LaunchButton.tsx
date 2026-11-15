@@ -23,7 +23,7 @@ export default function LaunchButton({ href, children, className = "button" }: {
   const [count, setCount] = useState(3);
   const done = useRef(false);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const rocket = useRef<SVGSVGElement>(null);
+  const rocket = useRef<HTMLImageElement>(null);
   const box = useRef<HTMLDivElement>(null);
 
   const finish = useCallback(() => {
@@ -115,12 +115,8 @@ export default function LaunchButton({ href, children, className = "button" }: {
           <div className="launch" ref={box} onClick={finish} aria-hidden="true">
             <canvas ref={canvas} className="launch-plume" />
             <div className="launch-count">{count > 0 ? <span key={count}>{count}</span> : null}</div>
-            <svg ref={rocket} className="launch-rocket" viewBox="0 0 64 150" style={{ opacity: 1 }}>
-              <path d="M32 4c13 14 16 40 14 78H18C16 44 19 18 32 4z" fill="#eef2ff" />
-              <circle cx="32" cy="46" r="8" fill="#0b1432" stroke="#f5b942" strokeWidth="3" />
-              <path d="M18 66L2 100l16-8zM46 66l16 34-16-8z" fill="#e0474f" />
-              <rect x="24" y="82" width="16" height="10" fill="#6b7390" />
-            </svg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img ref={rocket} className="launch-rocket" src="/images/rocket.png" alt="" style={{ opacity: 1 }} />
             <p className="launch-skip">Press Esc or click to skip</p>
           </div>,
           document.body,
